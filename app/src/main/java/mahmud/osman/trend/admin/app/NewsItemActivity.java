@@ -112,9 +112,14 @@ public class NewsItemActivity extends AppCompatActivity implements View.OnClickL
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            case R.id.satting:
+            case R.id.edit:
+                Intent intent = new Intent(NewsItemActivity.this , CreateNews.class);
+                intent.putExtra("edit" , KAY);
+                startActivity(intent);
 
                 return true;
+            case  R.id.delete:
+                return  true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -173,7 +178,7 @@ public class NewsItemActivity extends AppCompatActivity implements View.OnClickL
 
             case R.id.fab:
                 PopupMenu popupMenu = new PopupMenu(NewsItemActivity.this , fab);
-                popupMenu.getMenuInflater().inflate(R.menu.more_item , popupMenu.getMenu());
+                popupMenu.getMenuInflater().inflate(R.menu.more_bar , popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
