@@ -1,0 +1,60 @@
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_user"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:openDrawer="left"
+    tools:context=".user.app.UserActivity">
+
+    <include
+        layout="@layout/app_bar_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nev_veiw_user"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/darkWhit"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header">
+
+        <ExpandableListView
+            android:id="@+id/expend_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="176dp"
+            android:layout_marginBottom="70dp"
+            android:background="@android:color/white"
+            android:divider="@color/background"
+            android:dividerHeight="0dp"
+            android:groupIndicator="@null" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black" />
+
+            <TextView
+                android:id="@+id/logout_btn_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/logout"
+                android:textColor="@color/background"
+                android:textSize="17sp" />
+
+
+        </LinearLayout>
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

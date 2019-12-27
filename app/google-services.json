@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "672332865926",
+    "firebase_url": "https://trend-5517f.firebaseio.com",
+    "project_id": "trend-5517f",
+    "storage_bucket": "trend-5517f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:672332865926:android:c201f6f95dafd790c70c07",
+        "android_client_info": {
+          "package_name": "mahmud.osman.trend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "672332865926-uiuaioaf4nj7itsffbgmb0c8homnfprf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mahmud.osman.trend",
+            "certificate_hash": "1d6278b363a6acf8b010ddabf56bda884fd9ed2a"
+          }
+        },
+        {
+          "client_id": "672332865926-hrbh41lvp5jpu7cf7s38ia4n0sdjsvh7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGJoAMGdAs1QH_RvcTuK-f9qh5xE8p4zA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "672332865926-hrbh41lvp5jpu7cf7s38ia4n0sdjsvh7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

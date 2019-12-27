@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/item"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/whit"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="5dp"
+        app:contentPadding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:id="@+id/item_click"
+            style="@style/RippleStyleMainColor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:mrl_rippleRoundedCorners="15dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="15">
+
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/item_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="8.0"
+                    android:contentDescription="@string/photo"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/newspaper"
+                    app:riv_border_color="@color/background"
+                    app:riv_border_width="1dp"
+                    app:riv_corner_radius="15dp"
+                    app:riv_mutate_background="true"
+                    app:riv_tile_mode="clamp" />
+
+                <TextView
+                    android:id="@+id/item_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="2.0"
+                    android:hint="@string/adress"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/item_subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="4.0"
+                    android:hint="@string/hint_of_subject"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.0"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="9">
+
+                    <TextView
+                        android:id="@+id/item_writer"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:hint="@string/writer_name"
+                        android:textColor="@color/background"
+                        android:textColorHint="@color/background"
+                        android:textSize="14sp"
+                        tools:ignore="NestedWeights" />
+
+                    <TextView
+                        android:id="@+id/item_date"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="3.5"
+                        android:hint="@string/date"
+                        android:textSize="12sp" />
+
+                    <ImageButton
+                        android:id="@+id/more_btn"
+                        android:layout_width="1dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="end|right"
+                        android:layout_weight="1.5"
+                        android:background="@color/transparent"
+                        android:contentDescription="@string/more"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_more_horiz_black_24dp"
+                        android:tint="@color/background" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

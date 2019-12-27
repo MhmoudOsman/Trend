@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/C1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/create_your_account"
+                android:textColor="@color/gold"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/enter_your_details"
+                android:textColor="@color/gold"
+                android:textSize="16sp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/darkWhit"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/pro_pic"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/ic_user" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/name_filed"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:textColorHint="@color/background"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintAnimationEnabled="true"
+                        app:hintEnabled="true"
+                        app:hintTextAppearance="@style/HintTextRegister">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            style="@style/HintTextRegister"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_name"
+                            android:drawableLeft="@drawable/ic_name"
+                            android:drawablePadding="20dp"
+                            android:hint="@string/name"
+                            android:inputType="textEmailAddress|textNoSuggestions"
+                            android:textAppearance="@style/HintTextRegister" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/email_filed_r"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:textColorHint="@color/background"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintAnimationEnabled="true"
+                        app:hintEnabled="true"
+                        app:hintTextAppearance="@style/HintTextRegister">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            style="@style/HintTextRegister"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_user_email"
+                            android:drawableLeft="@drawable/ic_user_email"
+                            android:drawablePadding="20dp"
+                            android:drawableTint="@color/background"
+                            android:hint="@string/email"
+                            android:inputType="textEmailAddress|textNoSuggestions"
+                            android:textAppearance="@style/HintTextLogin"
+                            tools:targetApi="m" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/pass_filed_r"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:textColorHint="@color/background"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintAnimationEnabled="true"
+                        app:hintEnabled="true"
+                        app:hintTextAppearance="@style/HintTextRegister"
+                        app:passwordToggleEnabled="true"
+                        app:passwordToggleTint="@color/background">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            style="@style/HintTextRegister"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_password"
+                            android:drawableLeft="@drawable/ic_password"
+                            android:drawablePadding="20dp"
+                            android:drawableTint="@color/background"
+                            android:hint="@string/password"
+                            android:inputType="textPassword"
+                            android:textAppearance="@style/HintTextRegister"
+                            tools:targetApi="m" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/confrim_pass_filed_r"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:textColorHint="@color/background"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintAnimationEnabled="true"
+                        app:hintEnabled="true"
+                        app:hintTextAppearance="@style/HintTextRegister"
+                        app:passwordToggleEnabled="true"
+                        app:passwordToggleTint="@color/background">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            style="@style/HintTextRegister"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_password"
+                            android:drawableLeft="@drawable/ic_password"
+                            android:drawablePadding="20dp"
+                            android:drawableTint="@color/background"
+                            android:hint="@string/confrim_password"
+                            android:inputType="textPassword"
+                            android:textAppearance="@style/HintTextRegister"
+                            tools:targetApi="m" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/C1"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                style="@style/RippleStyleLight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/cancel_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background"
+                    android:text="@string/cancel"
+                    android:textColor="@color/gold"
+                    android:textStyle="bold" />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/gold" />
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                style="@style/RippleStyleLight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/creat_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background"
+                    android:text="@string/register"
+                    android:textColor="@color/gold"
+                    android:textStyle="bold" />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <com.victor.loading.rotate.RotateLoading
+        android:id="@+id/rotateloading"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        app:loading_color="@color/background"
+        app:loading_width="5dp" />
+
+</RelativeLayout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
+    tools:showIn="@layout/news_item_activity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/c_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:title=" "
+            app:collapsedTitleTextAppearance="@style/ToolbarTitel"
+            app:expandedTitleTextAppearance="@style/ToolbarTitel"
+            app:collapsedTitleGravity="start"
+            app:contentScrim="@color/background"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <ImageView
+                android:id="@+id/expand_image"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.7"
+                android:src="@drawable/newspaper"
+                android:contentDescription="TODO" />
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_collapsing"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:textAlignment="textStart"
+                app:title=" "
+                android:theme="@style/AppTheme.PopupOverlay"
+                app:layout_collapseMode="pin"/>
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/contain_scroll"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="@color/background"
+        android:src="@drawable/ic_more_vert_black_24dp"
+        android:tint="@color/gold"
+        app:layout_anchor="@id/c_app_bar"
+        app:layout_anchorGravity="bottom|end" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
