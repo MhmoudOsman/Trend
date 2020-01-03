@@ -134,7 +134,8 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        date.setText(dayOfMonth + " / " + month + " / " + year);
+                        month = month+1;
+                        date.setText(dayOfMonth + " / " + month  + " / " + year);
 
 
                     }

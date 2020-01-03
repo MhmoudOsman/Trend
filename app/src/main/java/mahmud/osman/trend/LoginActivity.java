@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private TextInputLayout email, pass;
-    private Button login_btn, regiter_btn;
+    private Button login_btn, register_ben;
     private TextView join_to_us;
 
     //Dialog
@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
         pass = findViewById(R.id.pass_filed);
         join_to_us = findViewById(R.id.join_to_us);
         login_btn = findViewById(R.id.login_btn);
-        regiter_btn = findViewById(R.id.regiter_btn);
+        register_ben = findViewById(R.id.regiter_btn);
 
         rotateLoding = findViewById(R.id.rotateloading);
 
@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        regiter_btn.setOnClickListener(new View.OnClickListener() {
+        register_ben.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialog();

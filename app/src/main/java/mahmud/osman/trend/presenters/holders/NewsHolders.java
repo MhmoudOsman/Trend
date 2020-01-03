@@ -25,6 +25,8 @@ public class NewsHolders extends RecyclerView.ViewHolder {
         item_image = itemView.findViewById(R.id.item_image);
         more = itemView.findViewById(R.id.more_btn);
         title = itemView.findViewById(R.id.item_title);
+        title.setSelected(true);
+        title.requestFocus();
         subject = itemView.findViewById(R.id.item_subject);
         writer = itemView.findViewById(R.id.item_writer);
         date = itemView.findViewById(R.id.item_date);

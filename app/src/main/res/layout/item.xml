@@ -17,6 +17,7 @@
         app:cardCornerRadius="15dp"
         app:cardElevation="5dp"
         app:contentPadding="5dp"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,10 +63,16 @@
                     android:layout_marginBottom="5dp"
                     android:layout_weight="2.0"
                     android:hint="@string/adress"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:singleLine="true"
                     android:textAlignment="viewStart"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/title_size"
                     android:textStyle="bold" />
 
                 <TextView
@@ -79,7 +86,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_weight="4.0"
                     android:hint="@string/hint_of_subject"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/text_size" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

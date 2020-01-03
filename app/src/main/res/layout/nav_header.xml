@@ -28,15 +28,15 @@
         android:gravity="bottom">
 
         <TextView
-        android:id="@+id/name_filed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="3dp"
-        android:text="@string/name"
-        android:textColor="@color/gold"
-        android:textSize="15sp"
-        android:textStyle="bold|italic"
-        app:fontFamily="casual" />
+            android:id="@+id/name_filed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:text="@string/name"
+            android:textColor="@color/gold"
+            android:textSize="@dimen/item"
+            android:textStyle="bold|italic"
+            app:fontFamily="casual" />
 
         <TextView
             android:id="@+id/email_filed"
@@ -45,7 +45,7 @@
             android:padding="3dp"
             android:text="@string/email"
             android:textColor="@color/gold"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_size"
             android:textStyle="italic"
             app:fontFamily="casual" />
 

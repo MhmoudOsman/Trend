@@ -59,4 +59,5 @@
     <string name="valid_mobile">Mobile Number Not Correct</string>
     <string name="tacken_email">Email is Already Tacken</string>
     <string name="edit">Save Edit</string>
+    <string name="day_month_year">Day / Month / Year</string>
 </resources>
