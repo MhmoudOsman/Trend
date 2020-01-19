@@ -17,10 +17,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/actionbar_foreground"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toTopOf="@+id/first_name_filed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,257 +45,263 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:src="@drawable/ic_user"
-        app:layout_constraintBottom_toTopOf="@+id/email_filed"
-        app:layout_constraintEnd_toStartOf="@+id/first_name_filed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_join" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/first_name_filed"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:textColorHint="@color/background"
-        app:errorEnabled="true"
-        app:errorTextAppearance="@style/ErrorText"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
-        app:hintTextAppearance="@style/HintTextRegister"
-        app:layout_constraintBottom_toTopOf="@+id/last_name_filed"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/profile_image"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_join">
-
-        <com.google.android.material.textfield.TextInputEditText
-            style="@style/HintTextRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_name"
-            android:drawablePadding="20dp"
-            android:hint="@string/first_name"
-            android:inputType="textEmailAddress|textNoSuggestions"
-            android:textAppearance="@style/HintTextRegister" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/last_name_filed"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:textColorHint="@color/background"
-        app:errorEnabled="true"
-        app:errorTextAppearance="@style/ErrorText"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
-        app:hintTextAppearance="@style/HintTextRegister"
-        app:layout_constraintBottom_toTopOf="@+id/email_filed"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/profile_image"
-        app:layout_constraintTop_toBottomOf="@+id/first_name_filed">
-
-        <com.google.android.material.textfield.TextInputEditText
-            style="@style/HintTextRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_name"
-            android:drawablePadding="20dp"
-            android:hint="@string/last_name"
-            android:inputType="textEmailAddress|textNoSuggestions"
-            android:textAppearance="@style/HintTextRegister" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/email_filed"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="8dp"
-        android:textColorHint="@color/background"
-        app:errorEnabled="true"
-        app:errorTextAppearance="@style/ErrorText"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
-        app:hintTextAppearance="@style/HintTextRegister"
-        app:layout_constraintBottom_toTopOf="@+id/pass_filed"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/last_name_filed">
-
-        <com.google.android.material.textfield.TextInputEditText
-            style="@style/HintTextRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_user_email"
-            android:drawablePadding="20dp"
-            android:drawableTint="@color/background"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress|textNoSuggestions"
-            android:textAppearance="@style/HintTextLogin"
-            tools:targetApi="m" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/pass_filed"
+    <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:textColorHint="@color/background"
-        app:errorEnabled="true"
-        app:errorTextAppearance="@style/ErrorText"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
-        app:hintTextAppearance="@style/HintTextRegister"
-        app:layout_constraintBottom_toTopOf="@+id/confrim_pass_filed"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_filed"
-        app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/background">
-
-        <com.google.android.material.textfield.TextInputEditText
-            style="@style/HintTextRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_password"
-            android:drawablePadding="20dp"
-            android:drawableTint="@color/background"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:textAppearance="@style/HintTextRegister"
-            tools:targetApi="m" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/confrim_pass_filed"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:textColorHint="@color/background"
-        app:errorEnabled="true"
-        app:errorTextAppearance="@style/ErrorText"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
-        app:hintTextAppearance="@style/HintTextRegister"
-        app:layout_constraintBottom_toTopOf="@+id/code_filed"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pass_filed"
-        app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/background">
-
-        <com.google.android.material.textfield.TextInputEditText
-            style="@style/HintTextRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_password"
-            android:drawablePadding="20dp"
-            android:drawableTint="@color/background"
-            android:hint="@string/confrim_password"
-            android:inputType="textPassword"
-            android:textAppearance="@style/HintTextRegister"
-            tools:targetApi="m" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/code_filed"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:textColorHint="@color/background"
-        app:errorEnabled="true"
-        app:errorTextAppearance="@style/ErrorText"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
-        app:hintTextAppearance="@style/HintTextRegister"
-        app:layout_constraintBottom_toTopOf="@+id/mobile_filed"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confrim_pass_filed"
-        app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/background">
-
-        <com.google.android.material.textfield.TextInputEditText
-            style="@style/HintTextRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_key"
-            android:drawablePadding="20dp"
-            android:drawableTint="@color/background"
-            android:hint="@string/code"
-            android:inputType="textPassword"
-            android:textAppearance="@style/HintTextRegister"
-            tools:targetApi="m" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/mobile_filed"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:textColorHint="@color/background"
-        app:errorEnabled="true"
-        app:errorTextAppearance="@style/ErrorText"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
-        app:hintTextAppearance="@style/HintTextRegister"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/card_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/code_filed">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_join">
 
-        <com.google.android.material.textfield.TextInputEditText
-            style="@style/HintTextRegister"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_smartphone"
-            android:drawablePadding="20dp"
-            android:drawableTint="@color/background"
-            android:hint="@string/mobile"
-            android:inputType="phone"
-            android:textAppearance="@style/HintTextRegister"
-            tools:targetApi="m" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/ic_user"
+                app:layout_constraintBottom_toTopOf="@+id/email_filed"
+                app:layout_constraintEnd_toStartOf="@+id/first_name_filed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/first_name_filed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:textColorHint="@color/background"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/ErrorText"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/HintTextRegister"
+                app:layout_constraintBottom_toTopOf="@+id/last_name_filed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/profile_image"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/HintTextRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_name"
+                    android:drawablePadding="20dp"
+                    android:hint="@string/first_name"
+                    android:inputType="textEmailAddress|textNoSuggestions"
+                    android:textAppearance="@style/HintTextRegister" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/last_name_filed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:textColorHint="@color/background"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/ErrorText"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/HintTextRegister"
+                app:layout_constraintBottom_toTopOf="@+id/email_filed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/profile_image"
+                app:layout_constraintTop_toBottomOf="@+id/first_name_filed">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/HintTextRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_name"
+                    android:drawablePadding="20dp"
+                    android:hint="@string/last_name"
+                    android:inputType="textEmailAddress|textNoSuggestions"
+                    android:textAppearance="@style/HintTextRegister" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/email_filed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
+                android:textColorHint="@color/background"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/ErrorText"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/HintTextRegister"
+                app:layout_constraintBottom_toTopOf="@+id/pass_filed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/last_name_filed">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/HintTextRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_user_email"
+                    android:drawablePadding="20dp"
+                    android:drawableTint="@color/background"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress|textNoSuggestions"
+                    android:textAppearance="@style/HintTextLogin"
+                    tools:targetApi="m" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/pass_filed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:textColorHint="@color/background"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/ErrorText"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/HintTextRegister"
+                app:layout_constraintBottom_toTopOf="@+id/confrim_pass_filed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/email_filed"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/background">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/HintTextRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_password"
+                    android:drawablePadding="20dp"
+                    android:drawableTint="@color/background"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:textAppearance="@style/HintTextRegister"
+                    tools:targetApi="m" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/confrim_pass_filed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:textColorHint="@color/background"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/ErrorText"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/HintTextRegister"
+                app:layout_constraintBottom_toTopOf="@+id/code_filed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pass_filed"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/background">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/HintTextRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_password"
+                    android:drawablePadding="20dp"
+                    android:drawableTint="@color/background"
+                    android:hint="@string/confrim_password"
+                    android:inputType="textPassword"
+                    android:textAppearance="@style/HintTextRegister"
+                    tools:targetApi="m" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/code_filed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:textColorHint="@color/background"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/ErrorText"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/HintTextRegister"
+                app:layout_constraintBottom_toTopOf="@+id/mobile_filed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/confrim_pass_filed"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/background">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/HintTextRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_key"
+                    android:drawablePadding="20dp"
+                    android:drawableTint="@color/background"
+                    android:hint="@string/code"
+                    android:inputType="textPassword"
+                    android:textAppearance="@style/HintTextRegister"
+                    tools:targetApi="m" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/mobile_filed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:textColorHint="@color/background"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/ErrorText"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/HintTextRegister"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/code_filed">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/HintTextRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_smartphone"
+                    android:drawablePadding="20dp"
+                    android:drawableTint="@color/background"
+                    android:hint="@string/mobile"
+                    android:inputType="phone"
+                    android:textAppearance="@style/HintTextRegister"
+                    tools:targetApi="m" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_login"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
         android:layout_marginBottom="32dp"
         android:backgroundTint="@color/background"
         app:cardCornerRadius="15dp"
@@ -305,7 +309,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mobile_filed"
+        app:layout_constraintTop_toBottomOf="@+id/scroll"
         tools:targetApi="lollipop">
 
         <com.balysv.materialripple.MaterialRippleLayout

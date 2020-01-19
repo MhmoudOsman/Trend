@@ -17,12 +17,12 @@
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbarAlwaysDrawHorizontalTrack="true"
             android:fitsSystemWindows="true"
+            android:scrollbarAlwaysDrawHorizontalTrack="true"
             app:collapsedTitleGravity="start"
-            app:collapsedTitleTextAppearance="@style/ToolbarTitel"
+            app:collapsedTitleTextAppearance="@style/collapsing_title"
             app:contentScrim="@color/background"
-            app:expandedTitleTextAppearance="@style/ToolbarTitel"
+            app:expandedTitleTextAppearance="@style/collapsing_title"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:title=" ">
 
@@ -42,22 +42,20 @@
                 android:layout_height="?attr/actionBarSize"
                 android:theme="@style/AppTheme.PopupOverlay"
                 app:layout_collapseMode="pin"
-                android:scrollbars="horizontal"
-                android:scrollbarAlwaysDrawHorizontalTrack="true"
-                app:title=" " >
+                app:titleTextAppearance="@style/collapsing_title"
+                app:title=" ">
 
                 <ImageButton
                     android:id="@+id/fab_hide"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginEnd="20dp"
                     android:layout_marginStart="10dp"
-                    android:src="@drawable/ic_more_vert_black_24dp"
-                    android:tint="@color/gold"
-                    android:scaleType="centerCrop"
+                    android:layout_marginEnd="20dp"
                     android:background="@color/transparent"
-                    />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_more_vert_black_24dp"
+                    android:tint="@color/gold" />
             </androidx.appcompat.widget.Toolbar>
 
 

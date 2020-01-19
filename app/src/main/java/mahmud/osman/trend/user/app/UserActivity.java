@@ -41,7 +41,9 @@ import mahmud.osman.trend.LoginActivity;
 import mahmud.osman.trend.Models.MenuModel;
 import mahmud.osman.trend.Models.UserModel;
 import mahmud.osman.trend.R;
+import mahmud.osman.trend.admin.app.fragment.InterviewAdmenFragment;
 import mahmud.osman.trend.presenters.adapter.ExpandableListAdaptor;
+import mahmud.osman.trend.user.app.fragment.InterviewUserFragment;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -125,6 +127,10 @@ public class UserActivity extends AppCompatActivity {
         reternData();
         prepareMenuData();
         populateExpandableList();
+
+        Fragment news_fragment = new InterviewUserFragment();
+        loadFragment(news_fragment);
+        getSupportActionBar().setTitle(getString(R.string.interview));
     }
     private void prepareMenuData() {
         String interview, report, health, education, road, prices, unemployment;
@@ -137,7 +143,7 @@ public class UserActivity extends AppCompatActivity {
         unemployment = getString(R.string.unemployment);
         MenuModel menuModel;
 
-        menuModel = new MenuModel(interview, false, false, null,getApplicationContext().getResources().getDrawable(R.drawable.ic_interview_gold));
+        menuModel = new MenuModel(interview, false, false, new InterviewUserFragment(),getApplicationContext().getResources().getDrawable(R.drawable.ic_interview_gold));
         header_list.add(menuModel);
         if (!menuModel.hasChildren) {
             chiled_list.put(menuModel, null);
@@ -279,7 +285,6 @@ public class UserActivity extends AppCompatActivity {
         return id;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBackPressed() {
         finishAffinity();

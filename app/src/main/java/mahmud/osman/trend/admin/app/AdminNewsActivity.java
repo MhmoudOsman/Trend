@@ -2,7 +2,6 @@ package mahmud.osman.trend.admin.app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -29,12 +28,12 @@ import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 
 
-public class NewsItemActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+public class AdminNewsActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
     String KAY;
     ImageView news_image;
     ImageButton fab_hide;
-    TextView subject;
+    TextView subject ;
     Toolbar toolbar;
     FloatingActionButton fab;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -51,8 +50,8 @@ public class NewsItemActivity extends AppCompatActivity implements View.OnClickL
         subject = findViewById(R.id.subject_scroll);
         fab = findViewById(R.id.fab);
         fab_hide = findViewById(R.id.fab_hide);
-        collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
         appBarLayout = findViewById(R.id.c_app_bar);
+        collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
 
 
         KAY = extra.getString("open");
@@ -113,16 +112,17 @@ public class NewsItemActivity extends AppCompatActivity implements View.OnClickL
                 .child(getUID())
                 .child(getString(R.string.interview))
                 .child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 NewsModel newsModel = dataSnapshot.getValue(NewsModel.class);
 
-//                getSupportActionBar().setTitle(newsModel.getTitl());
-                collapsingToolbarLayout.setTitle(newsModel.getTitl());
                 toolbar.setTitle(newsModel.getTitl());
+                collapsingToolbarLayout.setTitle(newsModel.getTitl());
                 subject.setText(newsModel.getSubject());
-                Picasso.get().load(newsModel.getImage_uri())
+                Picasso.get()
+                        .load(newsModel.getImage_uri())
                         .placeholder(R.drawable.newspaper)
                         .error(R.drawable.newspaper)
                         .into(news_image);
@@ -150,13 +150,13 @@ public class NewsItemActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
 
             case R.id.fab:
-                PopupMenu fabMenu = new PopupMenu(NewsItemActivity.this , fab);
+                PopupMenu fabMenu = new PopupMenu(AdminNewsActivity.this , fab);
                 fabMenu.getMenuInflater().inflate(R.menu.more_item , fabMenu.getMenu());
                 fabMenu.setOnMenuItemClickListener(this);
                 fabMenu.show();
                 break;
             case R.id.fab_hide:
-                PopupMenu fabHideMenu = new PopupMenu(NewsItemActivity.this,fab_hide);
+                PopupMenu fabHideMenu = new PopupMenu(AdminNewsActivity.this,fab_hide);
                 fabHideMenu.getMenuInflater().inflate(R.menu.more_item,fabHideMenu.getMenu());
                 fabHideMenu.setOnMenuItemClickListener(this);
                 fabHideMenu.show();
@@ -176,7 +176,7 @@ public class NewsItemActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-        NewsItemActivity.super.onBackPressed();
+        AdminNewsActivity.super.onBackPressed();
     }
 
     @Override
@@ -184,7 +184,7 @@ public class NewsItemActivity extends AppCompatActivity implements View.OnClickL
 
         switch (item.getItemId()) {
             case R.id.edit:
-                Intent intent = new Intent(NewsItemActivity.this , CreateNews.class);
+                Intent intent = new Intent(AdminNewsActivity.this , CreateNews.class);
                 intent.putExtra("edit" , KAY);
                 startActivity(intent);
                 return true;

@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginBottom="10dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/C1"
@@ -19,11 +27,7 @@
                 android:layout_marginBottom="10dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/cardView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:cardElevation="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -50,9 +54,9 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:foreground="?android:attr/selectableItemBackground"
                         android:background="@color/whit"
                         android:backgroundTint="@color/whit"
+                        android:foreground="?android:attr/selectableItemBackground"
                         app:cardCornerRadius="10dp"
                         app:cardElevation="10dp">
 
@@ -169,6 +173,7 @@
                                     android:layout_height="wrap_content"
                                     android:drawableStart="@drawable/ic_password"
                                     android:drawableLeft="@drawable/ic_password"
+                                    android:layout_marginBottom="5dp"
                                     android:drawablePadding="20dp"
                                     android:drawableTint="@color/background"
                                     android:hint="@string/confrim_password"
@@ -179,6 +184,7 @@
 
 
                         </LinearLayout>
+
                     </androidx.cardview.widget.CardView>
 
 
@@ -195,11 +201,7 @@
                 android:layout_marginEnd="10dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/C1">
+                app:cardElevation="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -251,18 +253,15 @@
 
             </androidx.cardview.widget.CardView>
 
-            <com.victor.loading.rotate.RotateLoading
-                android:id="@+id/rotateloading"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:loading_color="@color/background"
-                app:loading_width="5dp" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </ScrollView>
+
+    <com.victor.loading.rotate.RotateLoading
+        android:id="@+id/rotateloading"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        app:loading_color="@color/background"
+        app:loading_width="5dp" />
+</RelativeLayout>
 

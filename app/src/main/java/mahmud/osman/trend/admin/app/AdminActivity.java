@@ -138,7 +138,6 @@ public class AdminActivity extends AppCompatActivity {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void prepareMenuData() {
         String interview, report, health, education, road, prices, unemployment;
         interview = getString(R.string.interview);
@@ -291,7 +290,6 @@ public class AdminActivity extends AppCompatActivity {
         return id;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBackPressed() {
         finishAffinity();

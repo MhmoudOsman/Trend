@@ -4,7 +4,8 @@
     android:id="@+id/drawer_user"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="left"
+    android:background="@drawable/nev_corner"
+    tools:openDrawer="start"
     tools:context=".user.app.UserActivity">
 
     <include
@@ -17,14 +18,14 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/darkWhit"
+        android:background="@drawable/nev_corner"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header">
 
         <ExpandableListView
             android:id="@+id/expend_user"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="176dp"
             android:layout_marginBottom="70dp"
             android:background="@android:color/white"

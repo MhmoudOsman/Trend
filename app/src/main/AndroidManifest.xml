@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".admin.app.CreateNews"></activity>
-        <activity android:name=".admin.app.NewsItemActivity" />
+        <activity android:name=".admin.app.AdminNewsActivity" />
+        <activity android:name=".user.app.UserNewsActivity"/>
         <activity android:name=".user.app.UserActivity" />
         <activity android:name=".admin.app.AdminActivity" />
         <activity android:name=".JoinToUsActivity" />

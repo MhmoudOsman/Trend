@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,12 +23,10 @@ import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 import com.victor.loading.rotate.RotateLoading;
 
-import java.util.List;
-
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 import mahmud.osman.trend.admin.app.CreateNews;
-import mahmud.osman.trend.admin.app.NewsItemActivity;
+import mahmud.osman.trend.admin.app.AdminNewsActivity;
 import mahmud.osman.trend.presenters.holders.NewsHolders;
 
 
@@ -55,7 +52,11 @@ public class InterviewAdmenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.interview_admen_fragment, container, false);
-        return view;
+
+          recyclerView = view.findViewById(R.id.recycle_news);
+          rotateLoading = view.findViewById(R.id.rotate_loding);
+
+          return view;
     }
 
     @Override
@@ -69,8 +70,6 @@ public class InterviewAdmenFragment extends Fragment {
 
 
 
-        recyclerView = view.findViewById(R.id.recycle_news);
-        rotateLoading = view.findViewById(R.id.rotate_loding);
 
         layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setHasFixedSize(true);
@@ -113,7 +112,7 @@ public class InterviewAdmenFragment extends Fragment {
                 newsholder.card_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent i = new Intent(getContext(), NewsItemActivity.class);
+                        Intent i = new Intent(getContext(), AdminNewsActivity.class);
                         i.putExtra("open",kay);
                         startActivity(i);
                     }
@@ -157,7 +156,7 @@ public class InterviewAdmenFragment extends Fragment {
             }
         };
         recyclerView.setAdapter(firebaseRecyclerAdapter);
-        rotateLoading.stop();
+        rotateLoading.start();
 
     }
 
@@ -167,6 +166,7 @@ public class InterviewAdmenFragment extends Fragment {
         if (firebaseRecyclerAdapter != null) {
             firebaseRecyclerAdapter.startListening();
         }
+        rotateLoading.stop();
     }
 
     @Override
@@ -175,6 +175,7 @@ public class InterviewAdmenFragment extends Fragment {
         if (firebaseRecyclerAdapter != null) {
             firebaseRecyclerAdapter.startListening();
         }
+        rotateLoading.stop();
     }
 
     private String getUID() {
