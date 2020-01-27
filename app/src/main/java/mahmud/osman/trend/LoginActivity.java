@@ -300,8 +300,9 @@ public class LoginActivity extends AppCompatActivity {
         userLogin(email_text, pass_text);
     }
 
-    private void userLogin(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email, password)
+    private void userLogin(final String s_email, String password) {
+
+        mAuth.signInWithEmailAndPassword(s_email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -325,9 +326,10 @@ public class LoginActivity extends AppCompatActivity {
                                                         @Override
                                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                             if (dataSnapshot.hasChild(id)) {
-                                                                //Toast.makeText(getContext(), "patient : " + id, Toast.LENGTH_SHORT).show();
                                                                 updateUserUI();
                                                                 rotateLoding.stop();
+                                                            }else{
+                                                                pass.setError("Password is Wrong");
                                                             }
                                                         }
 

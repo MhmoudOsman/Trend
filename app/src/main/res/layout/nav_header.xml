@@ -1,65 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="176dp"
-    android:background="@drawable/nev_corner"
-    android:gravity="bottom"
-    android:orientation="horizontal"
-    android:paddingTop="1dp"
-    android:paddingEnd="1dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
-
-    <LinearLayout
+    android:layout_height="200dp"
+    app:cardCornerRadius="20dp"
+>
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_splash"
-        android:gravity="bottom"
-        android:orientation="horizontal"
-        android:padding="16dp"
->
-
+        android:padding="14dp"
+        >
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image1"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:padding="8dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:src="@drawable/ic_user"
         app:civ_border_color="@color/gold"
         app:civ_border_overlay="true"
-        app:civ_border_width="2dp" />
+        app:civ_border_width="2dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/name_filed"
+        app:layout_constraintStart_toStartOf="parent"
+         />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/name_filed"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:orientation="vertical"
-        android:gravity="bottom">
+        android:gravity="start|center"
+        android:text="@string/name"
+        android:textColor="@color/gold"
+        android:textSize="@dimen/item"
+        android:textStyle="bold|italic"
+        app:fontFamily="casual"
+        app:layout_constraintBottom_toTopOf="@id/email_filed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/profile_image1"
+        app:layout_constraintTop_toBottomOf="@id/profile_image1" />
 
-        <TextView
-            android:id="@+id/name_filed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="3dp"
-            android:text="@string/name"
-            android:textColor="@color/gold"
-            android:textSize="@dimen/item"
-            android:textStyle="bold|italic"
-            app:fontFamily="casual" />
+    <TextView
+        android:id="@+id/email_filed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/email"
+        android:textColor="@color/gold"
+        android:textSize="@dimen/text_size"
+        android:textStyle="italic"
+        app:fontFamily="casual"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/name_filed"
+        app:layout_constraintStart_toStartOf="@id/name_filed"
+        app:layout_constraintTop_toBottomOf="@+id/name_filed" />
 
-        <TextView
-            android:id="@+id/email_filed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="3dp"
-            android:text="@string/email"
-            android:textColor="@color/gold"
-            android:textSize="@dimen/text_size"
-            android:textStyle="italic"
-            app:fontFamily="casual" />
-
-
-    </LinearLayout>
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

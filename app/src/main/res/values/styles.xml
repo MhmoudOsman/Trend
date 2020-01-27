@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -7,6 +7,10 @@
         <item name="colorAccent">@color/gold</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+    </style>
 
 
     <style name="Textbox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
@@ -55,7 +59,7 @@
         <item name="android:marqueeRepeatLimit">marquee_forever</item>
     </style>
 
-    <style name="RippleStyleLight" >
+    <style name="RippleStyleLight">
         <item name="mrl_rippleOverlay">true</item>
         <item name="mrl_rippleColor">@color/darkWhit</item>
         <item name="mrl_rippleHover">true</item>
@@ -68,6 +72,7 @@
         <item name="mrl_rippleHover">true</item>
         <item name="mrl_rippleAlpha">0.3</item>
     </style>
+
     <style name="RippleStyleMainColor">
         <item name="mrl_rippleOverlay">true</item>
         <item name="mrl_rippleColor">@color/background</item>
@@ -78,7 +83,6 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 
 
 </resources>

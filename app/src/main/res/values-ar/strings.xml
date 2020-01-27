@@ -16,20 +16,19 @@
     <string name="register">سجل</string>
     <string name="you_dont_have_accont">ليس لديك حساب</string>
     <string name="email">الايميل</string>
-    <string name="health">الصحه</string>
+    <string name="health">كبسوله</string>
     <string name="hint_of_subject">نبذه عن الموضوع</string>
-    <string name="interview">حوارات</string>
+    <string name="sport">بتشجع مين</string>
     <string name="prices">أسعار</string>
     <string name="report">تقارير</string>
-    <string name="road">الطرق</string>
+    <string name="art">الروقان</string>
     <string name="share">نشر</string>
     <string name="subject">الموضوع</string>
     <string name="unemployment">البطاله</string>
     <string name="writer_name">اسم الكاتب</string>
-    <string name="day">يوم</string>
     <string name="month">شهر</string>
     <string name="year">سنه</string>
-    <string name="education">التعليم</string>
+    <string name="education">شهادتك</string>
     <string name="empty_titel">عنوان الموضوع فارغ</string>
     <string name="empty_subject">الرجاء كتابة الموضوع</string>
     <string name="select_type">اختر نوع الخبر</string>
@@ -54,4 +53,8 @@
     <string name="valid_mobile">رقم الموبايل غير صحيح</string>
     <string name="tacken_email">تم التسجيل بهاذا الايميل من قبل</string>
     <string name="edit">تعديل</string>
+    <string name="deleting_news">حذف خبر</string>
+    <string name="sure">هل انت متأكد من حذف هذا الخبر</string>
+    <string name="day_month_year" >يوم / شهر / سنه</string>
+    <string name="trends">ترندات</string>
 </resources>

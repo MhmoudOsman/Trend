@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+<group android:checkableBehavior="single">
+    <item android:id="@+id/trend"
+        android:title="@string/trends"
+        android:icon="@drawable/ic_trends"/>
+
+    <item android:id="@+id/health"
+        android:title="@string/health"
+        android:icon="@drawable/ic_health"/>
+
+    <item android:id="@+id/education"
+        android:title="@string/education"
+        android:icon="@drawable/ic_education"/>
+
+    <item android:id="@+id/sport"
+        android:title="@string/sport"
+        android:icon="@drawable/ic_sport"/>
+
+    <item android:id="@+id/art"
+        android:title="@string/art"
+        android:icon="@drawable/ic_televasion"/>
+</group>
+
+</menu>

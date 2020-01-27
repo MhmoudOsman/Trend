@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/d_head"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/item_margin"
+        android:layout_marginEnd="@dimen/item_margin"
+        android:backgroundTint="@color/background"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/deleting_news"
+            android:textColor="@color/gold"
+            android:textSize="@dimen/title_size" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/d_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/item_margin"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="@dimen/item_margin"
+        android:backgroundTint="@color/whit"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/d_head"
+        app:layout_constraintStart_toStartOf="@+id/d_head"
+        app:layout_constraintTop_toBottomOf="@+id/d_head">
+
+        <TextView
+            android:id="@+id/text_body"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/sure"
+            android:textAllCaps="true"
+            android:textColor="@color/red"
+            android:textSize="20sp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/d_cancel"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="5dp"
+        android:backgroundTint="@color/background"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toStartOf="@id/d_ok"
+        app:layout_constraintStart_toStartOf="@id/d_body"
+        app:layout_constraintTop_toBottomOf="@+id/d_body">
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/d_cancel_btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:text="@string/cancel"
+                android:textColor="@color/gold"
+                android:textSize="@dimen/title_size" />
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/d_ok"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/background"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="@id/d_body"
+        app:layout_constraintStart_toEndOf="@id/d_cancel"
+        app:layout_constraintTop_toBottomOf="@+id/d_body">
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/d_yes_btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:text="@android:string/ok"
+                android:textColor="@color/gold"
+                android:textSize="@dimen/title_size" />
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

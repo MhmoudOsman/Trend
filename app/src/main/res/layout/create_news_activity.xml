@@ -10,66 +10,45 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/image_news"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             android:layout_gravity="top"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="5dp"
+            android:layout_margin="10dp"
             android:contentDescription="@string/image_news"
-            android:src="@drawable/ic_add_a_photo_black_48dp"
-            app:layout_constraintBottom_toTopOf="@+id/checkbox_layout"
+            android:src="@drawable/ic_add_photo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/chose_type"
             app:riv_border_color="@color/gold"
             app:riv_corner_radius="15dp"
             app:riv_mutate_background="true"
             app:riv_tile_mode="clamp" />
 
-        <LinearLayout
-            android:id="@+id/checkbox_layout"
+        <Spinner
+            android:id="@+id/chose_type"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/text_background"
+            android:entries="@array/type_of_news"
+            android:spinnerMode="dialog"
             app:layout_constraintBottom_toTopOf="@+id/titel_news"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_news">
+            app:layout_constraintEnd_toEndOf="@+id/image_news"
+            app:layout_constraintStart_toStartOf="@+id/image_news"
+            app:layout_constraintTop_toBottomOf="@+id/image_news" />
 
-            <Spinner
-                android:id="@+id/chose_type"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/text_background" />
-
-            <!--        <Spinner-->
-            <!--            android:id="@+id/report_type"-->
-            <!--            android:layout_width="0dp"-->
-            <!--            android:layout_height="45dp"-->
-            <!--            android:layout_weight="1"-->
-            <!--            android:background="@drawable/text_background"-->
-            <!--            android:visibility="invisible" />-->
-        </LinearLayout>
 
         <EditText
             android:id="@+id/titel_news"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="8dp"
+            android:layout_margin="10dp"
             android:background="@drawable/text_background"
             android:hint="@string/adress"
             android:importantForAutofill="no"
@@ -78,19 +57,16 @@
             android:scrollbars="horizontal"
             android:textSize="@dimen/title_size"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/rotate_loding"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/checkbox_layout" />
+            app:layout_constraintBottom_toTopOf="@+id/subject_filed"
+            app:layout_constraintEnd_toEndOf="@+id/chose_type"
+            app:layout_constraintStart_toStartOf="@id/chose_type"
+            app:layout_constraintTop_toBottomOf="@id/chose_type" />
 
         <EditText
             android:id="@+id/subject_filed"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="8dp"
+            android:layout_margin="10dp"
             android:background="@drawable/text_background"
             android:hint="@string/subject"
             android:importantForAutofill="no"
@@ -100,25 +76,22 @@
             android:textSize="@dimen/item"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/date_field"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/titel_news"
+            app:layout_constraintStart_toStartOf="@+id/titel_news"
             app:layout_constraintTop_toBottomOf="@+id/titel_news" />
 
         <LinearLayout
             android:id="@+id/date_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="8dp"
+            android:layout_margin="10dp"
             android:gravity="center"
             android:orientation="horizontal"
             android:visibility="visible"
             android:weightSum="5"
             app:layout_constraintBottom_toTopOf="@+id/button_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/subject_filed"
+            app:layout_constraintStart_toStartOf="@id/subject_filed"
             app:layout_constraintTop_toBottomOf="@+id/subject_filed">
 
             <TextView
@@ -150,16 +123,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="1dp"
             android:gravity="center"
             android:orientation="horizontal"
-            android:visibility="visible"
             android:weightSum="2"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/date_field"
+            app:layout_constraintStart_toStartOf="@id/date_field"
             app:layout_constraintTop_toBottomOf="@+id/date_field">
 
             <androidx.cardview.widget.CardView
@@ -170,7 +141,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/background"
                 app:cardCornerRadius="15dp"
-                app:cardElevation="3dp"
+                app:cardElevation="1dp"
                 tools:targetApi="lollipop">
 
                 <com.balysv.materialripple.MaterialRippleLayout
@@ -199,7 +170,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/background"
                 app:cardCornerRadius="15dp"
-                app:cardElevation="3dp"
+                app:cardElevation="1dp"
                 tools:targetApi="lollipop">
 
                 <com.balysv.materialripple.MaterialRippleLayout
@@ -223,7 +194,7 @@
         </LinearLayout>
 
         <com.victor.loading.rotate.RotateLoading
-            android:id="@+id/rotate_loding"
+            android:id="@+id/rl_trend"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerInParent="true"

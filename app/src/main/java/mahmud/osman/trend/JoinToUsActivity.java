@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
@@ -78,7 +76,7 @@ public class JoinToUsActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_arrow_left);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-        rotateLoading = findViewById(R.id.rotate_loding);
+        rotateLoading = findViewById(R.id.rl_trend);
 
         profil_pic = findViewById(R.id.profile_image);
         first_name = findViewById(R.id.first_name_filed);

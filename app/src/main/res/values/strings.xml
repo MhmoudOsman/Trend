@@ -16,12 +16,12 @@
     <string name="code">Code</string>
     <string name="mobile">Mobile</string>
     <string name="report">تقارير</string>
-    <string name="health">الصحه</string>
-    <string name="education">التعليم</string>
-    <string name="road">الطرق</string>
+    <string name="health">كبسوله</string>
+    <string name="education">شهادتك</string>
+    <string name="art">الروقان</string>
     <string name="prices">أسعار</string>
     <string name="unemployment">البطاله</string>
-    <string name="interview">حوارات</string>
+    <string name="sport">بتشجع مين</string>
     <string name="logout">logout</string>
     <string name="name">Name</string>
     <string name="create_your_account">Create Your Account</string>
@@ -36,7 +36,6 @@
     <string name="subject">Subject</string>
     <string name="share">Publish</string>
     <string name="image_news" translatable="false" />
-    <string name="day">Day</string>
     <string name="month">Month</string>
     <string name="year">Year</string>
     <string name="empty_titel">The Titel Is Empty</string>
@@ -59,9 +58,15 @@
     <string name="valid_mobile">Mobile Number Not Correct</string>
     <string name="tacken_email">Email is Already Tacken</string>
     <string name="edit">Save Edit</string>
-    <string name="day_month_year" translatable="false">Day / Month / Year</string>
+    <string name="day_month_year">Day / Month / Year</string>
 
-
+    <string name="Admin_news" translatable="false">Admin_news</string>
     <string name="User_news" translatable="false">User_news</string>
+    <string name="deleting_news">Deleting News</string>
+    <string name="sure">Are you sure to delete this news ?!!</string>
+    <string name="trends">ترندات</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

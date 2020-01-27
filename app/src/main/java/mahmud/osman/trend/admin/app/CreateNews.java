@@ -5,10 +5,8 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -49,7 +47,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
     String selected_type;
     String exist_image;
     String writer_name;
-    String KEY;
+    String KEY, TYPE;
     private EditText title, supject;
     private Spinner type_spinner;
     private RoundedImageView news_image;
@@ -74,7 +72,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
         Bundle extra = getIntent().getExtras();
 
         KEY = extra.getString("edit");
-
+        TYPE = extra.getString("type");
 
         title = findViewById(R.id.titel_news);
         supject = findViewById(R.id.subject_filed);
@@ -83,7 +81,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
         news_image = findViewById(R.id.image_news);
         share_btn = findViewById(R.id.add_btn);
         cancel_btn = findViewById(R.id.cancel_btn);
-        rotateLoading = findViewById(R.id.rotate_loding);
+        rotateLoading = findViewById(R.id.rl_trend);
 
         //firebase
         mAuth = FirebaseAuth.getInstance();
@@ -176,13 +174,13 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
         } else {
             share_btn.setText(getString(R.string.edit));
-            reternData(KEY);
+            reternData(KEY,TYPE);
             share_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     String title_text = title.getText().toString();
-                    String supject_text = supject.getText().toString();
+                    String subject_text = supject.getText().toString();
                     String date_text = date.getText().toString();
 
                     if (selected_type.isEmpty() | selected_type.equals(getString(R.string.select_type))) {
@@ -193,13 +191,13 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                     if (add_pic == null) {
                         Toast.makeText(getApplicationContext(), "pleas add News Photo...!", Toast.LENGTH_SHORT).show();
 
-                        updateNewsDB(exist_image, title_text, supject_text, date_text, writer_name, selected_type);
+                        updateNewsDB(exist_image, title_text, subject_text, date_text, writer_name, selected_type);
 
                         rotateLoading.start();
 
                     } else {
 
-                        updateNewaPicDB(title_text, supject_text, date_text, writer_name, selected_type);
+                        updateNewaPicDB(title_text, subject_text, date_text, writer_name, selected_type);
                         rotateLoading.start();
                     }
                 }
@@ -251,8 +249,8 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
         NewsModel newsModel = new NewsModel(exist_image, title_text, supject_text, date_text, writer_name, selected_type);
 
-        databaseReference.child("Admin_news").child(getUID()).child(selected_type).child(KEY).setValue(newsModel);
-        databaseReference.child("User_news").child(selected_type).child(KEY).setValue(newsModel);
+        databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(selected_type).child(KEY).setValue(newsModel);
+        databaseReference.child(getString(R.string.User_news)).child(selected_type).child(KEY).setValue(newsModel);
 
         onBackPressed();
 
@@ -299,11 +297,10 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
     private void addNewsDB(String news_pic, String titel, String subject, String date, String writer, String selected_type) {
 
         NewsModel newsModel = new NewsModel(news_pic, titel, subject, date, writer, selected_type);
-        String key = databaseReference.child("Admin_news").push().getKey();
+        String key = databaseReference.child(getString(R.string.Admin_news)).push().getKey();
 
-
-        databaseReference.child("Admin_news").child(getUID()).child(selected_type).child(key).setValue(newsModel);
-        databaseReference.child("User_news").child(selected_type).child(key).setValue(newsModel);
+        databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(selected_type).child(key).setValue(newsModel);
+        databaseReference.child(getString(R.string.User_news)).child(selected_type).child(key).setValue(newsModel);
 
         onBackPressed();
 
@@ -312,15 +309,13 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
     public void selectSpinner() {
 
-        ArrayAdapter<CharSequence> type_adapter = ArrayAdapter.createFromResource(getApplicationContext(),
-                R.array.type_of_news, android.R.layout.simple_spinner_dropdown_item);
-        type_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        type_spinner.setAdapter(type_adapter);
 
         type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selected_type = String.valueOf(parent.getItemAtPosition(position));
+
+                selected_type = type_spinner.getSelectedItem().toString();
+
 
             }
 
@@ -343,8 +338,8 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
                     Picasso.get()
                             .load(add_pic)
-                            .placeholder(R.drawable.ic_add_a_photo_black_48dp)
-                            .error(R.drawable.ic_add_a_photo_black_48dp)
+                            .placeholder(R.drawable.ic_add_photo)
+                            .error(R.drawable.ic_add_photo)
                             .into(news_image);
                 }
             } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -381,13 +376,13 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                 });
     }
 
-    private void reternData(String key) {
+    private void reternData(String key,String type) {
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.keepSynced(true);
-        mDatabase.child("Admin_news")
+        mDatabase.child(getString(R.string.Admin_news))
                 .child(getUID())
-                .child(getString(R.string.interview))
+                .child(type)
                 .child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

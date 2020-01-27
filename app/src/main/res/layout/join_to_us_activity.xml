@@ -20,7 +20,6 @@
         android:background="@drawable/actionbar_foreground"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread_inside"
@@ -331,7 +330,7 @@
     </androidx.cardview.widget.CardView>
 
     <com.victor.loading.rotate.RotateLoading
-        android:id="@+id/rotate_loding"
+        android:id="@+id/rl_trend"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerInParent="true"

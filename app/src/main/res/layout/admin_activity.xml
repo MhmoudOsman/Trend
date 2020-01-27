@@ -5,9 +5,8 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".admin.app.AdminActivity"
-    tools:openDrawer="left">
+    tools:openDrawer="start">
 
     <include
         layout="@layout/app_bar_main"
@@ -16,22 +15,16 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nev_veiw"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@drawable/nev_corner"
         android:fitsSystemWindows="true"
+        app:menu="@menu/drawer_item"
+        app:itemTextColor="@color/background"
+        app:itemIconTint="@color/background"
+        app:itemHorizontalPadding="30dp"
         app:headerLayout="@layout/nav_header">
-
-        <ExpandableListView
-            android:id="@+id/expend_admin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="176dp"
-            android:layout_marginBottom="70dp"
-            android:divider="@color/background"
-            android:dividerHeight="0dp"
-            android:groupIndicator="@null" />
 
         <LinearLayout
             android:layout_width="match_parent"

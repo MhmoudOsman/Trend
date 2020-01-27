@@ -5,6 +5,7 @@
     <dimen name="text_size">14sp</dimen>
     <dimen name="title_size">20sp</dimen>
     <dimen name="item">16sp</dimen>
+    <dimen name="item_margin">8dp</dimen>
     <dimen name="round_corner">20dp</dimen>
 
 </resources>

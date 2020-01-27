@@ -22,10 +22,12 @@
         <activity android:name=".admin.app.AdminNewsActivity" />
         <activity android:name=".user.app.UserNewsActivity"/>
         <activity android:name=".user.app.UserActivity" />
-        <activity android:name=".admin.app.AdminActivity" />
+        <activity android:name=".admin.app.AdminActivity"/>
         <activity android:name=".JoinToUsActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".Splash">
+        <activity android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Splash"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
