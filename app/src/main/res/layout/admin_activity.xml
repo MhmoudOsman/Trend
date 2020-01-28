@@ -18,8 +18,10 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:elevation="10dp"
         android:background="@drawable/nev_corner"
-        android:fitsSystemWindows="true"
+        android:verticalScrollbarPosition="defaultPosition"
+
         app:menu="@menu/drawer_item"
         app:itemTextColor="@color/background"
         app:itemIconTint="@color/background"

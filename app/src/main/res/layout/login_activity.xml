@@ -20,7 +20,7 @@
             android:layout_marginTop="40dp"
             android:contentDescription="@string/logo_with_text"
             android:padding="20dp"
-            android:src="@drawable/trend_text_spalsh"
+            android:src="@drawable/logo_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

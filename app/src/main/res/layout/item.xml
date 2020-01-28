@@ -90,16 +90,14 @@
                     android:gravity="center"
                     android:weightSum="9">
 
-                    <ImageButton
+                    <ImageView
                         android:id="@+id/more_btn"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|start"
                         android:layout_weight="1.5"
-                        android:padding="13dp"
                         android:background="@color/transparent"
                         android:contentDescription="@string/more"
-                        android:scaleType="centerCrop"
                         android:src="@drawable/ic_action_more_horiz"
                         android:tint="@color/background" />
 

@@ -24,7 +24,7 @@ import mahmud.osman.trend.admin.app.CreateNews;
 public class NewsHolders extends RecyclerView.ViewHolder  {
 
     public ImageView item_image;
-    public ImageButton more;
+    public ImageView more;
     public TextView title, subject, writer,date;
     public MaterialRippleLayout card_item;
 
