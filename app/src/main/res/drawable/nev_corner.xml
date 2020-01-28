@@ -4,8 +4,8 @@
         android:bottomRightRadius="20dp"/>
     <stroke android:width="2dp" android:color="@color/transparent"/>
     <gradient android:startColor="@color/background"
-        android:centerColor="@color/darkWhit"
-        android:endColor="@color/darkWhit"
+        android:centerColor="@color/whit"
+        android:endColor="@color/whit"
         android:angle="270"
         android:centerY="0.25"/>
 

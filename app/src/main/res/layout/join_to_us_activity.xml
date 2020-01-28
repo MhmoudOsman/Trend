@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whit"
+    android:background="@drawable/bg"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".JoinToUsActivity">
@@ -26,7 +26,7 @@
         app:navigationIcon="@drawable/ic_action_arrow_left"
         app:subtitle="@string/enter_your_details"
         app:subtitleTextAppearance="@style/ToolbarSubTitel"
-        app:subtitleTextColor="@color/whit"
+        app:subtitleTextColor="@color/dark_whit"
         app:title="@string/join_to_us"
         app:titleTextAppearance="@style/ToolbarTitel"
         app:titleTextColor="@color/gold">
@@ -49,6 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="10dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@+id/card_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

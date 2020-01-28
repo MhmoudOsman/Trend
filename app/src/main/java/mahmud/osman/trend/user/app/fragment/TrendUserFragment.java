@@ -1,10 +1,8 @@
 package mahmud.osman.trend.user.app.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,18 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.squareup.picasso.Picasso;
 import com.victor.loading.rotate.RotateLoading;
 
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
-import mahmud.osman.trend.presenters.holders.NewsHolders;
-import mahmud.osman.trend.user.app.UserNewsActivity;
+import mahmud.osman.trend.presenters.adapter.NewsAdaptor;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,11 +36,10 @@ public class TrendUserFragment extends Fragment {
 
       private RecyclerView recyclerView;
       private LinearLayoutManager layoutManager;
-      FirebaseRecyclerAdapter<NewsModel, NewsHolders> firebaseRecyclerAdapter;
+      private NewsAdaptor newsAdaptor;
 
       RotateLoading rotateLoading;
 
-       String kay;
 
 
 
@@ -54,12 +48,10 @@ public class TrendUserFragment extends Fragment {
                                Bundle savedInstanceState) {
 
             view = inflater.inflate(R.layout.fragment_trend_user , container , false);
-            recyclerView = view.findViewById(R.id.rec_news_user);
-            rotateLoading = view.findViewById(R.id.u_rotate_loding);
-            firebaseDatabase = FirebaseDatabase.getInstance();
-            databaseReference = firebaseDatabase.getReference();
-            databaseReference.keepSynced(true);
+            recyclerView = view.findViewById(R.id.rv_trend_user);
+            rotateLoading = view.findViewById(R.id.rl_trend_user);
 
+            rotateLoading.start();
 
             return view ;
       }
@@ -68,13 +60,17 @@ public class TrendUserFragment extends Fragment {
       public void onActivityCreated(@Nullable Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
 
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference();
+            databaseReference.keepSynced(true);
+
            layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
             layoutManager.setStackFromEnd(true);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(layoutManager);
 
             displayInterviewNews();
-            rotateLoading.start();
+
       }
 
       private void displayInterviewNews() {
@@ -88,66 +84,27 @@ public class TrendUserFragment extends Fragment {
                             .setQuery(query, NewsModel.class)
                             .build();
 
-            firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<NewsModel, NewsHolders>(options) {
-                  @Override
-                  protected void onBindViewHolder(@NonNull final NewsHolders newsholder, final int position, @NonNull final NewsModel newsModel) {
+            newsAdaptor = new NewsAdaptor(options,getContext(),getString(R.string.trends));
 
-
-
-                        Picasso.get()
-                                .load(newsModel.getImage_uri())
-                                .placeholder(R.drawable.newspaper)
-                                .error(R.drawable.newspaper)
-                                .into(newsholder.item_image);
-
-                        newsholder.title.setText(newsModel.getTitl());
-                        newsholder.subject.setText(newsModel.getSubject());
-                        newsholder.writer.setText(newsModel.getWriter());
-                        newsholder.date.setText(newsModel.getDate());
-
-                        newsholder.card_item.setOnClickListener(new View.OnClickListener() {
-                              @Override
-                              public void onClick(View v) {
-                                    kay = getRef(position).getKey();
-                                    Intent i = new Intent(getContext(), UserNewsActivity.class);
-                                    i.putExtra("open",kay);
-                                    startActivity(i);
-
-                              }
-                        });
-                        newsholder.more.setVisibility(View.GONE);
-                  }
-
-
-                  @NonNull
-                  @Override
-                  public NewsHolders onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
-                        return new NewsHolders(view);
-
-                  }
-            };
-            recyclerView.setAdapter(firebaseRecyclerAdapter);
-            rotateLoading.start();
+            recyclerView.setAdapter(newsAdaptor);
+            rotateLoading.stop();
 
       }
 
       @Override
       public void onStart() {
             super.onStart();
-            if (firebaseRecyclerAdapter != null) {
-                  firebaseRecyclerAdapter.startListening();
+            if (newsAdaptor != null) {
+                  newsAdaptor.startListening();
             }
-            rotateLoading.stop();
       }
 
       @Override
       public void onStop() {
             super.onStop();
-            if (firebaseRecyclerAdapter != null) {
-                  firebaseRecyclerAdapter.startListening();
+            if (newsAdaptor != null) {
+                  newsAdaptor.startListening();
             }
-            rotateLoading.stop();
       }
 
 }

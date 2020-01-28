@@ -33,6 +33,7 @@ import com.squareup.picasso.Picasso;
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 import mahmud.osman.trend.admin.app.fragment.TrendAdminFragment;
+import mahmud.osman.trend.dialog.DeleteDailog;
 
 
 public class AdminNewsActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
@@ -198,7 +199,8 @@ public class AdminNewsActivity extends AppCompatActivity implements View.OnClick
                         startActivity(intent);
                         return true;
                   case R.id.delete:
-                        showDeleteDialog(KAY);
+                        DeleteDailog deleteDailog = new DeleteDailog(this,getUID(),TYPE);
+                        deleteDailog.showDeleteDialog(KAY);
                         return true;
 
             }
@@ -206,46 +208,5 @@ public class AdminNewsActivity extends AppCompatActivity implements View.OnClick
             return false;
       }
 
-      private void showDeleteDialog(final String kay) {
-
-            databaseReference = FirebaseDatabase.getInstance().getReference();
-            databaseReference.keepSynced(true);
-
-            final Dialog delete_dialog = new Dialog(this);
-            delete_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            delete_dialog.setContentView(R.layout.delete_dialog);
-            delete_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            delete_dialog.getWindow().getAttributes();
-            delete_dialog.setCancelable(false);
-
-            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-            lp.copyFrom(delete_dialog.getWindow().getAttributes());
-            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
-            Button d_cancel = delete_dialog.findViewById(R.id.d_cancel_btn);
-            Button d_ok = delete_dialog.findViewById(R.id.d_yes_btn);
-
-            d_ok.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                        databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(getString(R.string.sport)).child(kay).removeValue();
-                        databaseReference.child(getString(R.string.User_news)).child(getString(R.string.sport)).child(kay).removeValue();
-                        delete_dialog.dismiss();
-                        Intent intent = new Intent(AdminNewsActivity.this, TrendAdminFragment.class);
-                        startActivity(intent);
-                        finish();
-                  }
-            });
-            d_cancel.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                        delete_dialog.dismiss();
-                  }
-            });
-            delete_dialog.show();
-            delete_dialog.getWindow().setAttributes(lp);
-
-      }
 
 }

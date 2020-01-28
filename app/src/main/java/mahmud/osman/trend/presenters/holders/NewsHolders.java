@@ -1,8 +1,12 @@
 package mahmud.osman.trend.presenters.holders;
 
+import android.content.Context;
+import android.content.Intent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,9 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 
-import mahmud.osman.trend.R;
+import java.security.Key;
 
-public class NewsHolders extends RecyclerView.ViewHolder {
+import mahmud.osman.trend.R;
+import mahmud.osman.trend.admin.app.AdminNewsActivity;
+import mahmud.osman.trend.admin.app.CreateNews;
+
+public class NewsHolders extends RecyclerView.ViewHolder  {
 
     public ImageView item_image;
     public ImageButton more;
@@ -31,7 +39,5 @@ public class NewsHolders extends RecyclerView.ViewHolder {
         writer = itemView.findViewById(R.id.item_writer);
         date = itemView.findViewById(R.id.item_date);
         card_item = itemView.findViewById(R.id.item_click);
-
     }
-
 }

@@ -54,8 +54,8 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/whit"
-                        android:backgroundTint="@color/whit"
+                        android:background="@color/dark_whit"
+                        android:backgroundTint="@color/dark_whit"
                         android:foreground="?android:attr/selectableItemBackground"
                         app:cardCornerRadius="10dp"
                         app:cardElevation="10dp">
@@ -64,7 +64,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:background="@color/whit"
+                            android:background="@color/dark_whit"
                             android:gravity="center"
                             android:orientation="vertical">
 

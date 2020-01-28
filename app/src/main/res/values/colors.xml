@@ -5,8 +5,8 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="background">#822224</color>
-    <color name="whit">#C5C5C5</color>
-    <color name="darkWhit">#FFFFFF</color>
+    <color name="dark_whit">#DDDDDD</color>
+    <color name="whit">#FFFFFF</color>
     <color name="gold">#e6b31e</color>
     <color name="black">#252525</color>
     <color name="red">#FF0000</color>

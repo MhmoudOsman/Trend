@@ -35,7 +35,7 @@
         android:layout_marginStart="@dimen/item_margin"
         android:layout_marginTop="3dp"
         android:layout_marginEnd="@dimen/item_margin"
-        android:backgroundTint="@color/whit"
+        android:backgroundTint="@color/dark_whit"
         app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="@+id/d_head"
         app:layout_constraintStart_toStartOf="@+id/d_head"

@@ -26,7 +26,7 @@
 
     <style name="HintTextLogin" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">@dimen/item</item>
-        <item name="android:textColorHint">@color/whit</item>
+        <item name="android:textColorHint">@color/dark_whit</item>
         <item name="android:textColor">@color/gold</item>
     </style>
 
@@ -37,12 +37,12 @@
 
     <style name="ToolbarSubTitel" parent="TextAppearance.AppCompat.Title">
         <item name="android:textSize">@dimen/text_size</item>
-        <item name="android:textColor">@color/whit</item>
+        <item name="android:textColor">@color/dark_whit</item>
     </style>
 
     <style name="HintTextRegister" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">@dimen/item</item>
-        <item name="android:textColorHint">@color/whit</item>
+        <item name="android:textColorHint">@color/dark_whit</item>
         <item name="android:textColor">@color/background</item>
     </style>
 
@@ -61,7 +61,7 @@
 
     <style name="RippleStyleLight">
         <item name="mrl_rippleOverlay">true</item>
-        <item name="mrl_rippleColor">@color/darkWhit</item>
+        <item name="mrl_rippleColor">@color/whit</item>
         <item name="mrl_rippleHover">true</item>
         <item name="mrl_rippleAlpha">0.3</item>
     </style>
