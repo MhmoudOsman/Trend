@@ -34,6 +34,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+import com.tombayley.activitycircularreveal.CircularReveal;
 import com.victor.loading.rotate.RotateLoading;
 
 import java.util.Calendar;
@@ -44,382 +45,386 @@ import mahmud.osman.trend.R;
 
 public class CreateNews extends AppCompatActivity implements View.OnClickListener {
 
-    String selected_type;
-    String exist_image;
-    String writer_name;
-    String KEY, TYPE;
-    private EditText title, supject;
-    private Spinner type_spinner;
-    private RoundedImageView news_image;
-    private RotateLoading rotateLoading;
-    private Button share_btn, cancel_btn;
-    private DatePickerDialog datePickerDialog;
+      String selected_type;
+      String exist_image;
+      String writer_name;
+      String KEY, TYPE;
+      CircularReveal circularReveal;
+      private EditText title, supject;
+      private Spinner type_spinner;
+      private RoundedImageView news_image;
+      private RotateLoading rotateLoading;
+      private Button share_btn, cancel_btn;
+      private DatePickerDialog datePickerDialog;
 
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
-    private StorageReference storageReference;
-    private Uri add_pic = null;
-    private TextView date;
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_news_activity);
+      private FirebaseAuth mAuth;
+      private FirebaseDatabase firebaseDatabase;
+      private DatabaseReference databaseReference;
+      private StorageReference storageReference;
+      private Uri add_pic = null;
+      private TextView date;
 
 
-        Bundle extra = getIntent().getExtras();
+      @Override
+      protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.create_news_activity);
 
-        KEY = extra.getString("edit");
-        TYPE = extra.getString("type");
+            View view = findViewById(R.id.root);
 
-        title = findViewById(R.id.titel_news);
-        supject = findViewById(R.id.subject_filed);
-        date = findViewById(R.id.date_pick);
-        type_spinner = findViewById(R.id.chose_type);
-        news_image = findViewById(R.id.image_news);
-        share_btn = findViewById(R.id.add_btn);
-        cancel_btn = findViewById(R.id.cancel_btn);
-        rotateLoading = findViewById(R.id.rl_trend);
+            circularReveal = new CircularReveal(view);
+            circularReveal.onActivityCreate(getIntent());
+            Bundle extra = getIntent().getExtras();
 
-        //firebase
-        mAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
-        storageReference = FirebaseStorage.getInstance().getReference().child("NewsPic");
+            KEY = extra.getString("edit");
+            TYPE = extra.getString("type");
 
-        cancel_btn.setOnClickListener(CreateNews.this);
+            title = findViewById(R.id.titel_news);
+            supject = findViewById(R.id.subject_filed);
+            date = findViewById(R.id.date_pick);
+            type_spinner = findViewById(R.id.chose_type);
+            news_image = findViewById(R.id.image_news);
+            share_btn = findViewById(R.id.add_btn);
+            cancel_btn = findViewById(R.id.cancel_btn);
+            rotateLoading = findViewById(R.id.rl_trend);
 
-        news_image.setOnClickListener(CreateNews.this);
+            //firebase
+            mAuth = FirebaseAuth.getInstance();
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference();
+            storageReference = FirebaseStorage.getInstance().getReference().child("NewsPic");
 
-        date.setOnClickListener(CreateNews.this);
+            cancel_btn.setOnClickListener(this);
 
+            news_image.setOnClickListener(this);
 
-        publishPost();
-
-        selectSpinner();
-
-
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.cancel_btn:
-                onBackPressed();
-                break;
-            case R.id.image_news:
-                CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-                        .setAspectRatio(1920, 1080)
-                        .setAutoZoomEnabled(true)
-                        .start(CreateNews.this);
-                break;
-            case R.id.date_pick:
-                openDateDialog();
-
-        }
-    }
-
-    private void openDateDialog() {
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        datePickerDialog = new DatePickerDialog(CreateNews.this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        month = month+1;
-                        date.setText(dayOfMonth + " / " + month  + " / " + year);
+            date.setOnClickListener(this);
 
 
-                    }
-                }, year, month, day);
-        datePickerDialog.show();
-    }
+            publishPost();
+
+            selectSpinner();
 
 
-    private void publishPost() {
+      }
 
 
-        if (KEY.equals("creat")) {
-            reternData();
-            share_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+      @Override
+      public void onClick(View v) {
+            switch (v.getId()) {
+                  case R.id.cancel_btn:
+                        onBackPressed();
+                        break;
+                  case R.id.image_news:
+                        CropImage.activity()
+                                .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
+                                .setAspectRatio(1920 , 1080)
+                                .setAutoZoomEnabled(true)
+                                .start(CreateNews.this);
+                        break;
+                  case R.id.date_pick:
+                        openDateDialog();
 
-                    String title_text = title.getText().toString();
-                    String supject_text = supject.getText().toString();
-                    String date_text = date.getText().toString();
+            }
+      }
 
-                    if (selected_type.isEmpty() | selected_type.equals(getString(R.string.select_type))) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.select_type), Toast.LENGTH_SHORT).show();
+      private void openDateDialog() {
+            final Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            datePickerDialog = new DatePickerDialog(CreateNews.this ,
+                    new DatePickerDialog.OnDateSetListener() {
+                          @Override
+                          public void onDateSet(DatePicker view , int year , int month , int dayOfMonth) {
+                                month = month + 1;
+                                date.setText(dayOfMonth + " / " + month + " / " + year);
+
+
+                          }
+                    } , year , month , day);
+            datePickerDialog.show();
+      }
+
+
+      private void publishPost() {
+
+
+            if (KEY.equals("creat")) {
+                  reternData();
+                  share_btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                              String title_text = title.getText().toString();
+                              String supject_text = supject.getText().toString();
+                              String date_text = date.getText().toString();
+
+                              if (selected_type.isEmpty() | selected_type.equals(getString(R.string.select_type))) {
+                                    Toast.makeText(getApplicationContext() , getString(R.string.select_type) , Toast.LENGTH_SHORT).show();
+                                    rotateLoading.stop();
+                                    return;
+
+                              }
+                              if (add_pic == null) {
+                                    Toast.makeText(getApplicationContext() , "pleas add News Photo...!" , Toast.LENGTH_SHORT).show();
+                                    return;
+                              } else {
+                                    addNewaPicDB(title_text , supject_text , date_text , writer_name , selected_type);
+                                    rotateLoading.start();
+                              }
+
+                        }
+                  });
+
+            } else {
+                  share_btn.setText(getString(R.string.save_edit));
+                  reternData(KEY , TYPE);
+                  share_btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                              String title_text = title.getText().toString();
+                              String subject_text = supject.getText().toString();
+                              String date_text = date.getText().toString();
+
+                              if (selected_type.isEmpty() | selected_type.equals(getString(R.string.select_type))) {
+                                    Toast.makeText(getApplicationContext() , getString(R.string.select_type) , Toast.LENGTH_SHORT).show();
+                                    return;
+
+                              }
+                              if (add_pic == null) {
+                                    Toast.makeText(getApplicationContext() , "pleas add News Photo...!" , Toast.LENGTH_SHORT).show();
+
+                                    updateNewsDB(exist_image , title_text , subject_text , date_text , writer_name , selected_type);
+
+                                    rotateLoading.start();
+
+                              } else {
+
+                                    updateNewaPicDB(title_text , subject_text , date_text , writer_name , selected_type);
+                                    rotateLoading.start();
+                              }
+                        }
+                  });
+
+            }
+
+      }
+
+      private void updateNewaPicDB(final String title_text , final String supject_text , final String date_text , final String writer_name , final String selected_type) {
+
+            rotateLoading.start();
+
+            UploadTask uploadTask;
+
+            final StorageReference rf = storageReference.child("/NewsPic" + add_pic.getLastPathSegment());
+
+            uploadTask = rf.putFile(add_pic);
+
+            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                  @Override
+                  public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                              throw task.getException();
+                        }
+                        return rf.getDownloadUrl();
+                  }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                  @Override
+                  public void onComplete(@NonNull Task<Uri> task) {
+                        Uri downloadUri = task.getResult();
+                        String news_Pic = downloadUri.toString();
+
+                        addNewsDB(news_Pic , title_text , supject_text , date_text , writer_name , selected_type);
+
+                  }
+            }).addOnFailureListener(new OnFailureListener() {
+                  @Override
+                  public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext() , "Can't Upload Photo" , Toast.LENGTH_SHORT).show();
                         rotateLoading.stop();
-                        return;
 
-                    }
-                    if (add_pic == null) {
-                        Toast.makeText(getApplicationContext(), "pleas add News Photo...!", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        addNewaPicDB(title_text, supject_text, date_text, writer_name, selected_type);
-                        rotateLoading.start();
-                    }
-
-                }
+                  }
             });
 
-        } else {
-            share_btn.setText(getString(R.string.edit));
-            reternData(KEY,TYPE);
-            share_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+      }
 
-                    String title_text = title.getText().toString();
-                    String subject_text = supject.getText().toString();
-                    String date_text = date.getText().toString();
+      private void updateNewsDB(String exist_image , String title_text , String supject_text , String date_text , String writer_name , String selected_type) {
 
-                    if (selected_type.isEmpty() | selected_type.equals(getString(R.string.select_type))) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.select_type), Toast.LENGTH_SHORT).show();
-                        return;
+            NewsModel newsModel = new NewsModel(exist_image , title_text , supject_text , date_text , writer_name , selected_type);
 
-                    }
-                    if (add_pic == null) {
-                        Toast.makeText(getApplicationContext(), "pleas add News Photo...!", Toast.LENGTH_SHORT).show();
+            databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(selected_type).child(KEY).setValue(newsModel);
+            databaseReference.child(getString(R.string.User_news)).child(selected_type).child(KEY).setValue(newsModel);
 
-                        updateNewsDB(exist_image, title_text, subject_text, date_text, writer_name, selected_type);
+            onBackPressed();
 
-                        rotateLoading.start();
+      }
 
-                    } else {
+      private void addNewaPicDB(final String titel , final String subject , final String date , final String writer , final String selected_type) {
 
-                        updateNewaPicDB(title_text, subject_text, date_text, writer_name, selected_type);
-                        rotateLoading.start();
-                    }
-                }
+            rotateLoading.start();
+
+            UploadTask uploadTask;
+
+            final StorageReference rf = storageReference.child("/NewsPic" + add_pic.getLastPathSegment());
+
+            uploadTask = rf.putFile(add_pic);
+
+            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                  @Override
+                  public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                              throw task.getException();
+                        }
+                        return rf.getDownloadUrl();
+                  }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                  @Override
+                  public void onComplete(@NonNull Task<Uri> task) {
+                        Uri downloadUri = task.getResult();
+                        String news_Pic = downloadUri.toString();
+
+                        addNewsDB(news_Pic , titel , subject , date , writer , selected_type);
+
+                  }
+            }).addOnFailureListener(new OnFailureListener() {
+                  @Override
+                  public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext() , "Can't Upload Photo" , Toast.LENGTH_SHORT).show();
+                        rotateLoading.stop();
+
+                  }
             });
 
-        }
+      }
 
-    }
+      private void addNewsDB(String news_pic , String titel , String subject , String date , String writer , String selected_type) {
 
-    private void updateNewaPicDB(final String title_text, final String supject_text, final String date_text, final String writer_name, final String selected_type) {
+            NewsModel newsModel = new NewsModel(news_pic , titel , subject , date , writer , selected_type);
+            String key = databaseReference.child(getString(R.string.Admin_news)).push().getKey();
 
-        rotateLoading.start();
+            databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(selected_type).child(key).setValue(newsModel);
+            databaseReference.child(getString(R.string.User_news)).child(selected_type).child(key).setValue(newsModel);
 
-        UploadTask uploadTask;
+            onBackPressed();
 
-        final StorageReference rf = storageReference.child("/NewsPic" + add_pic.getLastPathSegment());
+      }
 
-        uploadTask = rf.putFile(add_pic);
 
-        Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw task.getException();
-                }
-                return rf.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                Uri downloadUri = task.getResult();
-                String news_Pic = downloadUri.toString();
+      public void selectSpinner() {
 
-                addNewsDB(news_Pic, title_text, supject_text, date_text, writer_name, selected_type);
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Can't Upload Photo", Toast.LENGTH_SHORT).show();
-                rotateLoading.stop();
+            type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                  @Override
+                  public void onItemSelected(AdapterView<?> parent , View view , int position , long id) {
 
-            }
-        });
+                        selected_type = type_spinner.getSelectedItem().toString();
 
-    }
 
-    private void updateNewsDB(String exist_image, String title_text, String supject_text, String date_text, String writer_name, String selected_type) {
+                  }
 
-        NewsModel newsModel = new NewsModel(exist_image, title_text, supject_text, date_text, writer_name, selected_type);
+                  @Override
+                  public void onNothingSelected(AdapterView<?> parent) {
 
-        databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(selected_type).child(KEY).setValue(newsModel);
-        databaseReference.child(getString(R.string.User_news)).child(selected_type).child(KEY).setValue(newsModel);
+                  }
+            });
 
-        onBackPressed();
+      }
 
-    }
+      public void onActivityResult(int requestCode , int resultCode , Intent data) {
+            super.onActivityResult(requestCode , resultCode , data);
 
-    private void addNewaPicDB(final String titel, final String subject, final String date, final String writer, final String selected_type) {
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                  CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                  if (resultCode == Activity.RESULT_OK) {
+                        if (result != null) {
+                              add_pic = result.getUri();
 
-        rotateLoading.start();
+                              Picasso.get()
+                                      .load(add_pic)
+                                      .placeholder(R.drawable.ic_add_photo)
+                                      .error(R.drawable.ic_add_photo)
+                                      .into(news_image);
+                        }
+                  } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                        Exception error = result.getError();
 
-        UploadTask uploadTask;
-
-        final StorageReference rf = storageReference.child("/NewsPic" + add_pic.getLastPathSegment());
-
-        uploadTask = rf.putFile(add_pic);
-
-        Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw task.getException();
-                }
-                return rf.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                Uri downloadUri = task.getResult();
-                String news_Pic = downloadUri.toString();
-
-                addNewsDB(news_Pic, titel, subject, date, writer, selected_type);
+                  }
 
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Can't Upload Photo", Toast.LENGTH_SHORT).show();
-                rotateLoading.stop();
-
-            }
-        });
-
-    }
-
-    private void addNewsDB(String news_pic, String titel, String subject, String date, String writer, String selected_type) {
-
-        NewsModel newsModel = new NewsModel(news_pic, titel, subject, date, writer, selected_type);
-        String key = databaseReference.child(getString(R.string.Admin_news)).push().getKey();
-
-        databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(selected_type).child(key).setValue(newsModel);
-        databaseReference.child(getString(R.string.User_news)).child(selected_type).child(key).setValue(newsModel);
-
-        onBackPressed();
-
-    }
+      }
 
 
-    public void selectSpinner() {
+      public void reternData() {
+
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            mDatabase.keepSynced(true);
+
+            mDatabase.child("Admin").child(getUID()).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                          @Override
+                          public void onDataChange(DataSnapshot dataSnapshot) {
+                                // Get user value
+                                AdminModel adminModel = dataSnapshot.getValue(AdminModel.class);
+
+                                writer_name = adminModel.getName();
+
+                          }
+
+                          @Override
+                          public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                Toast.makeText(getApplicationContext() , "can\'t fetch data" , Toast.LENGTH_SHORT).show();
+
+                          }
+                    });
+      }
+
+      private void reternData(String key , String type) {
+
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            mDatabase.keepSynced(true);
+            mDatabase.child(getString(R.string.Admin_news))
+                    .child(getUID())
+                    .child(type)
+                    .child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                  @Override
+                  public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        NewsModel newsModel = dataSnapshot.getValue(NewsModel.class);
+
+                        title.setText(newsModel.getTitl());
+                        supject.setText(newsModel.getSubject());
+                        date.setText(newsModel.getDate());
+                        selected_type = newsModel.getType();
+                        exist_image = newsModel.getImage_uri();
+                        writer_name = newsModel.getWriter();
+                        Picasso.get().load(newsModel.getImage_uri())
+                                .placeholder(R.drawable.newspaper)
+                                .error(R.drawable.newspaper)
+                                .into(news_image);
+
+                  }
+
+                  @Override
+                  public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                  }
+            });
 
 
-        type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+      }
 
-                selected_type = type_spinner.getSelectedItem().toString();
+      private String getUID() {
+            String id = mAuth.getCurrentUser().getUid();
+            return id;
+      }
 
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == Activity.RESULT_OK) {
-                if (result != null) {
-                    add_pic = result.getUri();
-
-                    Picasso.get()
-                            .load(add_pic)
-                            .placeholder(R.drawable.ic_add_photo)
-                            .error(R.drawable.ic_add_photo)
-                            .into(news_image);
-                }
-            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-
-            }
-
-        }
-    }
-
-
-    public void reternData() {
-
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.keepSynced(true);
-
-        mDatabase.child("Admin").child(getUID()).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get user value
-                        AdminModel adminModel = dataSnapshot.getValue(AdminModel.class);
-
-                        writer_name = adminModel.getName();
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        Toast.makeText(getApplicationContext(), "can\'t fetch data", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-    }
-
-    private void reternData(String key,String type) {
-
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.keepSynced(true);
-        mDatabase.child(getString(R.string.Admin_news))
-                .child(getUID())
-                .child(type)
-                .child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                NewsModel newsModel = dataSnapshot.getValue(NewsModel.class);
-
-                title.setText(newsModel.getTitl());
-                supject.setText(newsModel.getSubject());
-                date.setText(newsModel.getDate());
-                selected_type = newsModel.getType();
-                exist_image = newsModel.getImage_uri();
-                writer_name = newsModel.getWriter();
-                Picasso.get().load(newsModel.getImage_uri())
-                        .placeholder(R.drawable.newspaper)
-                        .error(R.drawable.newspaper)
-                        .into(news_image);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
-    }
-
-    private String getUID() {
-        String id = mAuth.getCurrentUser().getUid();
-        return id;
-    }
-
-    @Override
-    public void onBackPressed() {
-        CreateNews.super.onBackPressed();
-        return;
-    }
+      @Override
+      public void onBackPressed() {
+            circularReveal.unRevealActivity(this);
+            return;
+      }
 
 }

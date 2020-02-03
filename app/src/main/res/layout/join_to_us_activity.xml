@@ -9,7 +9,6 @@
     android:orientation="vertical"
     tools:context=".JoinToUsActivity">
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_join"
         android:layout_width="match_parent"
@@ -18,6 +17,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/actionbar_foreground"
+        android:backgroundTint="@color/background"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,21 +28,9 @@
         app:subtitleTextAppearance="@style/ToolbarSubTitel"
         app:subtitleTextColor="@color/dark_whit"
         app:title="@string/join_to_us"
+        app:logo="@mipmap/logo_icon_round"
         app:titleTextAppearance="@style/ToolbarTitel"
-        app:titleTextColor="@color/gold">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:contentDescription="@string/back"
-            app:srcCompat="@mipmap/logo_icon"
-            tools:layout_conversion_absoluteHeight="48dp"
-            tools:layout_conversion_absoluteWidth="48dp"
-            tools:layout_editor_absoluteX="363dp"
-            tools:layout_editor_absoluteY="9dp" />
-
-    </androidx.appcompat.widget.Toolbar>
+        app:titleTextColor="@color/gold"/>
 
     <ScrollView
         android:id="@+id/scroll"
@@ -160,8 +148,7 @@
                     android:drawableTint="@color/background"
                     android:hint="@string/email"
                     android:inputType="textEmailAddress|textNoSuggestions"
-                    android:textAppearance="@style/HintTextLogin"
-                    tools:targetApi="m" />
+                    android:textAppearance="@style/HintTextLogin" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

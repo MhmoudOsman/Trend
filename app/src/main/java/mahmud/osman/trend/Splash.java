@@ -34,6 +34,7 @@ public class Splash extends AppCompatActivity {
     ImageView logo;
 
     Animation animation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,4 +137,8 @@ public class Splash extends AppCompatActivity {
         return UserID;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 }

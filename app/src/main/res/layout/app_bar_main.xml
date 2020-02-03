@@ -12,6 +12,7 @@
         android:layout_height="?attr/actionBarSize"
         android:layout_margin="8dp"
         android:background="@drawable/actionbar_foreground"
+        android:backgroundTint="@color/background"
         app:titleTextAppearance="@style/ToolbarTitel"
         app:titleTextColor="@color/gold" />
 
@@ -27,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_pin"
+        android:src="@drawable/ic_action_edit"
         android:tint="@color/gold"
         app:backgroundTint="@color/background"
         app:fabSize="auto"

@@ -79,7 +79,7 @@ public class TrendAdminFragment extends Fragment {
                             .setQuery(query , NewsModel.class)
                             .build();
 
-            newsAdaptor = new NewsAdaptor(options , getContext() , getString(R.string.trends),getUID());
+            newsAdaptor = new NewsAdaptor(options , getContext() , getString(R.string.trends) , getUID());
             recyclerView.setAdapter(newsAdaptor);
             rotateLoading.stop();
 
@@ -91,7 +91,6 @@ public class TrendAdminFragment extends Fragment {
             super.onStart();
             if (newsAdaptor != null) {
                   newsAdaptor.startListening();
-
             }
       }
 
@@ -101,7 +100,6 @@ public class TrendAdminFragment extends Fragment {
             if (newsAdaptor != null) {
                   newsAdaptor.startListening();
             }
-
       }
 
       private String getUID() {

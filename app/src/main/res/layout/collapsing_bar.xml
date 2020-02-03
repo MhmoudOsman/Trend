@@ -10,52 +10,65 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/c_app_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
-        android:fitsSystemWindows="true">
+        android:layout_height="@dimen/app_bar_height">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/actionbar_foreground"
             android:fitsSystemWindows="true"
             android:scrollbarAlwaysDrawHorizontalTrack="true"
             app:collapsedTitleGravity="start"
             app:collapsedTitleTextAppearance="@style/collapsing_title"
             app:contentScrim="@color/background"
+            app:expandedTitleGravity="bottom|right"
+            app:expandedTitleMarginEnd="20dp"
+            app:expandedTitleMarginStart="20dp"
             app:expandedTitleTextAppearance="@style/collapsing_title"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:title=" ">
+            app:title="">
 
             <ImageView
                 android:id="@+id/expand_image"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:contentDescription="TODO"
-                android:scaleType="centerCrop"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
                 android:src="@drawable/newspaper"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7" />
+
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar_collapsing"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:layout_marginStart="8dp"
                 android:theme="@style/AppTheme.PopupOverlay"
                 app:layout_collapseMode="pin"
-                app:titleTextAppearance="@style/collapsing_title"
-                app:title=" ">
+                app:navigationIcon="@drawable/ic_action_arrow_left"
+                app:title=" "
+                app:titleMarginEnd="8dp"
+                app:titleTextAppearance="@style/collapsing_title">
 
-                <ImageButton
-                    android:id="@+id/fab_hide"
+                <TextView
+                    android:id="@+id/tb_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@color/transparent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_action_more_vert"
-                    android:tint="@color/gold" />
+                    android:layout_gravity="center|start"
+                    android:layout_margin="10dp"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center|right"
+                    android:hint="@string/adress"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textColor="@color/gold"
+                    android:textColorHint="@color/gold"
+                    android:textSize="@dimen/title_size"
+                    android:textStyle="bold" />
             </androidx.appcompat.widget.Toolbar>
 
 
@@ -63,18 +76,56 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/contain_scroll" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:backgroundTint="@color/background"
-        android:src="@drawable/ic_action_more_vert"
-        android:tint="@color/gold"
-        app:elevation="6dp"
         app:layout_anchor="@id/c_app_bar"
-        app:layout_anchorGravity="bottom|end" />
+        app:layout_anchorGravity="bottom|left"
+        app:sdExpansionMode="bottom"
+        app:sdMainFabAnimationRotateAngle="180"
+        app:sdMainFabClosedBackgroundColor="@color/background"
+        app:sdMainFabClosedSrc="@drawable/ic_action_more_vert"
+        app:sdMainFabOpenedBackgroundColor="@color/background"
+        app:sdMainFabOpenedSrc="@drawable/ic_action_clear"
+        app:sdUseReverseAnimationOnClose="false" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="65dp"
+        android:layout_marginRight="10dp"
+        app:cardBackgroundColor="@color/whit"
+        app:cardCornerRadius="8dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
+        app:layout_anchor="@id/c_app_bar"
+        app:layout_anchorGravity="bottom|right">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="10dp"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center|right"
+            android:hint="@string/adress"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:maxLines="3"
+            android:textSize="@dimen/title_size"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+
+    <include layout="@layout/contain_scroll" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -29,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+import com.tombayley.activitycircularreveal.CircularReveal;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import mahmud.osman.trend.LoginActivity;
@@ -53,6 +55,8 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
       FragmentManager fragmentManager;
       FragmentTransaction fragmentTransaction;
 
+      CircularReveal.Builder builder;
+
       //firebase
       FirebaseDatabase firebaseDatabase;
       DatabaseReference databaseReference;
@@ -66,6 +70,7 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
       protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.admin_activity);
+
 
             fragmentManager = getSupportFragmentManager();
 
@@ -95,13 +100,23 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
 
             add_new = findViewById(R.id.add);
 
+            final Intent intent = new Intent(this , CreateNews.class);
+            intent.putExtra("edit" , "creat");
+
+            builder = new CircularReveal.Builder(
+                    AdminActivity.this ,
+                    add_new ,
+                    intent ,
+                    400
+            );
+            builder.setRevealColor(ContextCompat.getColor(getApplicationContext(),R.color.background));
+
             add_new.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
 
-                        Intent intent = new Intent(AdminActivity.this , CreateNews.class);
-                        intent.putExtra("edit" , "creat");
-                        startActivity(intent);
+
+                        CircularReveal.presentActivity(builder);
 
                   }
             });
@@ -138,7 +153,6 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
             // Commit the transaction
             fragmentTransaction.commit();
       }
-
 
 
       public void reternData() {

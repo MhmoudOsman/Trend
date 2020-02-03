@@ -5,11 +5,17 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">@color/background</item>
         <item name="colorAccent">@color/gold</item>
+        <item name="actionMenuTextColor">@color/gold</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:statusBarColor">@color/transparent</item>
+    </style>
+
+    <style name="CircularReveal" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
 

@@ -1,79 +1,138 @@
 package mahmud.osman.trend.admin.app;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.leinardi.android.speeddial.SpeedDialActionItem;
+import com.leinardi.android.speeddial.SpeedDialView;
 import com.squareup.picasso.Picasso;
 
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
-import mahmud.osman.trend.admin.app.fragment.TrendAdminFragment;
-import mahmud.osman.trend.dialog.DeleteDailog;
+import mahmud.osman.trend.dialog.DeleteDialog;
 
 
-public class AdminNewsActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+public class AdminNewsActivity extends AppCompatActivity {
 
-      String KAY,TYPE;
+      String KAY, TYPE;
+      DeleteDialog deleteDialog;
       private ImageView news_image;
-      private ImageButton fab_hide;
-      private TextView subject;
-      private Toolbar toolbar;
-      private FloatingActionButton fab;
-      private CollapsingToolbarLayout collapsingToolbarLayout;
-      private AppBarLayout appBarLayout;
+      private TextView subject, ex_title, cl_title;
+      private SpeedDialView fab;
       private DatabaseReference databaseReference;
+      private CardView card_title;
+      private AppBarLayout appBarLayout;
 
 
       @Override
       protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.news_item_activity);
+
             Bundle extra = getIntent().getExtras();
-            toolbar = findViewById(R.id.toolbar_collapsing);
+            Toolbar toolbar = findViewById(R.id.toolbar_collapsing);
             news_image = findViewById(R.id.expand_image);
             subject = findViewById(R.id.subject_scroll);
+            ex_title = findViewById(R.id.tv_title);
+            cl_title = findViewById(R.id.tb_title);
             fab = findViewById(R.id.fab);
-            fab_hide = findViewById(R.id.fab_hide);
-            appBarLayout = findViewById(R.id.c_app_bar);
-            collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
+            card_title = findViewById(R.id.cv_title);
+
+             appBarLayout = findViewById(R.id.c_app_bar);
+
 
 
             KAY = extra.getString("open");
             TYPE = extra.getString("type");
 
+            fabMenu();
 
-            returnData(KAY,TYPE);
+            returnData(KAY , TYPE);
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_arrow_left);
 
-            fab.setOnClickListener(this);
-            fab_hide.setOnClickListener(this);
+
+      }
+
+      private void fabMenu() {
+            fab.addActionItem(new SpeedDialActionItem.Builder(R.id.edit , R.drawable.ic_action_edit)
+                    .setFabBackgroundColor(ResourcesCompat.getColor(getResources() , R.color.background , getTheme()))
+                    .setLabel(R.string.edit)
+                    .setLabelColor(ResourcesCompat.getColor(getResources() , R.color.gold , getTheme()))
+                    .setLabelBackgroundColor(ResourcesCompat.getColor(getResources() , R.color.background , getTheme()))
+                    .setLabelClickable(false)
+                    .create());
+            fab.addActionItem(new SpeedDialActionItem.Builder(R.id.delete , R.drawable.ic_action_delete)
+                    .setFabBackgroundColor(ResourcesCompat.getColor(getResources() , R.color.background , getTheme()))
+                    .setLabel(R.string.delete)
+                    .setLabelColor(ResourcesCompat.getColor(getResources() , R.color.gold , getTheme()))
+                    .setLabelBackgroundColor(ResourcesCompat.getColor(getResources() , R.color.background , getTheme()))
+                    .setLabelClickable(false)
+                    .create());
+
+            fab.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
+                  @Override
+                  public boolean onActionSelected(SpeedDialActionItem actionItem) {
+                        switch (actionItem.getId()) {
+                              case R.id.edit:
+                                    Intent intent = new Intent(AdminNewsActivity.this , CreateNews.class);
+                                    intent.putExtra("edit" , KAY);
+                                    intent.putExtra("type" , TYPE);
+
+                                    startActivity(intent);
+                                    return true;
+                              case R.id.delete:
+                                    deleteDialog = new DeleteDialog(AdminNewsActivity.this);
+                                    deleteDialog.d_ok.setOnClickListener(new View.OnClickListener() {
+                                          @Override
+                                          public void onClick(View v) {
+                                                databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(TYPE).child(KAY).removeValue();
+                                                databaseReference.child(getString(R.string.User_news)).child(TYPE).child(KAY).removeValue();
+                                                deleteDialog.dismiss();
+                                                onBackPressed();
+                                                finish();
+                                          }
+                                    });
+                                    deleteDialog.d_cancel.setOnClickListener(new View.OnClickListener() {
+                                          @Override
+                                          public void onClick(View v) {
+                                                deleteDialog.dismiss();
+                                          }
+                                    });
+                                    deleteDialog.show();
+                                    return true;
+                        }
+                        return false;
+                  }
+            });
+
+
+      }
+
+      @Override
+      public boolean onCreateOptionsMenu(final Menu menu) {
+            getMenuInflater().inflate(R.menu.more_item , menu);
+            menu.setGroupVisible(R.id.more,false);
+            final MenuItem item = menu.findItem(R.id.more).setVisible(false);
 
             appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
                   boolean isShow = false;
@@ -87,33 +146,70 @@ public class AdminNewsActivity extends AppCompatActivity implements View.OnClick
                         }
                         if (scrollRange + i == 0) {
                               isShow = true;
-                              showOption(fab_hide);
+                              fab.close();
+                              item.setVisible(true);
+                              fab.setVisibility(View.GONE);
+                              card_title.setVisibility(View.GONE);
+                              cl_title.setVisibility(View.VISIBLE);
 
                         } else {
                               isShow = false;
-                              hideOption(fab_hide);
+                              item.setVisible(false);
+                              fab.setVisibility(View.VISIBLE);
+                              card_title.setVisibility(View.VISIBLE);
+                              cl_title.setVisibility(View.GONE);
+
                         }
 
 
                   }
             });
 
-
+            return super.onCreateOptionsMenu(menu);
       }
-
 
       public boolean onOptionsItemSelected(MenuItem item) {
             switch (item.getItemId()) {
+
                   case android.R.id.home:
                         onBackPressed();
                         return true;
+
+                  case R.id.edit:
+                        Intent intent = new Intent(AdminNewsActivity.this , CreateNews.class);
+                        intent.putExtra("edit" , KAY);
+                        intent.putExtra("type" , TYPE);
+                        startActivity(intent);
+                        return true;
+
+                  case R.id.delete:
+                        deleteDialog = new DeleteDialog(this);
+                        deleteDialog.d_ok.setOnClickListener(new View.OnClickListener() {
+                              @Override
+                              public void onClick(View v) {
+                                    databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(TYPE).child(KAY).removeValue();
+                                    databaseReference.child(getString(R.string.User_news)).child(TYPE).child(KAY).removeValue();
+                                    deleteDialog.dismiss();
+                                    onBackPressed();
+                                    finish();
+                              }
+                        });
+                        deleteDialog.d_cancel.setOnClickListener(new View.OnClickListener() {
+                              @Override
+                              public void onClick(View v) {
+                                    deleteDialog.dismiss();
+                              }
+                        });
+                        deleteDialog.show();
+                        return true;
+
                   default:
                         return super.onOptionsItemSelected(item);
             }
       }
 
 
-      private void returnData(String key,String type) {
+      private void returnData(String key , String type) {
 
             databaseReference = FirebaseDatabase.getInstance().getReference();
             databaseReference.keepSynced(true);
@@ -127,8 +223,8 @@ public class AdminNewsActivity extends AppCompatActivity implements View.OnClick
 
                                 NewsModel newsModel = dataSnapshot.getValue(NewsModel.class);
 
-                                toolbar.setTitle(newsModel.getTitl());
-                                collapsingToolbarLayout.setTitle(newsModel.getTitl());
+                                ex_title.setText(newsModel.getTitl());
+                                cl_title.setText(newsModel.getTitl());
                                 subject.setText(newsModel.getSubject());
                                 Picasso.get()
                                         .load(newsModel.getImage_uri())
@@ -147,66 +243,15 @@ public class AdminNewsActivity extends AppCompatActivity implements View.OnClick
 
       }
 
+
       private String getUID() {
             String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
             return id;
-      }
-
-
-      @Override
-      public void onClick(View v) {
-            switch (v.getId()) {
-
-                  case R.id.fab:
-                        PopupMenu fabMenu = new PopupMenu(AdminNewsActivity.this , fab);
-                        fabMenu.getMenuInflater().inflate(R.menu.more_item , fabMenu.getMenu());
-                        fabMenu.setOnMenuItemClickListener(this);
-                        fabMenu.show();
-                        break;
-                  case R.id.fab_hide:
-                        PopupMenu fabHideMenu = new PopupMenu(AdminNewsActivity.this , fab_hide);
-                        fabHideMenu.getMenuInflater().inflate(R.menu.more_item , fabHideMenu.getMenu());
-                        fabHideMenu.setOnMenuItemClickListener(this);
-                        fabHideMenu.show();
-                        break;
-
-
-            }
-      }
-
-      private void showOption(ImageButton fab_hide) {
-            fab_hide.setVisibility(View.VISIBLE);
-      }
-
-      private void hideOption(ImageButton fab_hide) {
-            fab_hide.setVisibility(View.INVISIBLE);
       }
 
       @Override
       public void onBackPressed() {
             AdminNewsActivity.super.onBackPressed();
       }
-
-      @Override
-      public boolean onMenuItemClick(MenuItem item) {
-
-            switch (item.getItemId()) {
-                  case R.id.edit:
-                        Intent intent = new Intent(AdminNewsActivity.this , CreateNews.class);
-                        intent.putExtra("edit" , KAY);
-                        intent.putExtra("type" , TYPE);
-
-                        startActivity(intent);
-                        return true;
-                  case R.id.delete:
-                        DeleteDailog deleteDailog = new DeleteDailog(this,getUID(),TYPE);
-                        deleteDailog.showDeleteDialog(KAY);
-                        return true;
-
-            }
-
-            return false;
-      }
-
 
 }

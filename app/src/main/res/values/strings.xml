@@ -15,7 +15,6 @@
     <string name="confrim_password">Confrim Password</string>
     <string name="code">Code</string>
     <string name="mobile">Mobile</string>
-    <string name="report">تقارير</string>
     <string name="health">كبسوله</string>
     <string name="education">شهادتك</string>
     <string name="art">الروقان</string>
@@ -57,7 +56,7 @@
     <string name="empty_mobile">Enter Your Mobile Number</string>
     <string name="valid_mobile">Mobile Number Not Correct</string>
     <string name="tacken_email">Email is Already Tacken</string>
-    <string name="edit">Save Edit</string>
+    <string name="save_edit">Save Edit</string>
     <string name="day_month_year">Day / Month / Year</string>
 
     <string name="Admin_news" translatable="false">Admin_news</string>
@@ -67,6 +66,9 @@
     <string name="trends">ترندات</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="account_not_found">The Email Doesn\'t Match Any Account</string>
+    <string name="wrong_pass">Pasword isWrong</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 
 </resources>

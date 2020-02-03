@@ -20,7 +20,6 @@
     <string name="hint_of_subject">نبذه عن الموضوع</string>
     <string name="sport">بتشجع مين</string>
     <string name="prices">أسعار</string>
-    <string name="report">تقارير</string>
     <string name="art">الروقان</string>
     <string name="share">نشر</string>
     <string name="subject">الموضوع</string>
@@ -52,9 +51,13 @@
     <string name="valid_email">الايميل غير صحيح</string>
     <string name="valid_mobile">رقم الموبايل غير صحيح</string>
     <string name="tacken_email">تم التسجيل بهاذا الايميل من قبل</string>
-    <string name="edit">تعديل</string>
+    <string name="save_edit">حفظ التعديل</string>
     <string name="deleting_news">حذف خبر</string>
     <string name="sure">هل انت متأكد من حذف هذا الخبر</string>
     <string name="day_month_year" >يوم / شهر / سنه</string>
     <string name="trends">ترندات</string>
+    <string name="account_not_found">البريد الإلكتروني لا يتطابق مع أي حساب</string>
+    <string name="wrong_pass">كلمة المرور خاطئه</string>
+    <string name="delete">حذف</string>
+    <string name="edit">تعديل</string>
 </resources>

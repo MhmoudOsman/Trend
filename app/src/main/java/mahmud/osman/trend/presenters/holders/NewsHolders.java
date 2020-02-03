@@ -24,14 +24,12 @@ import mahmud.osman.trend.admin.app.CreateNews;
 public class NewsHolders extends RecyclerView.ViewHolder  {
 
     public ImageView item_image;
-    public ImageView more;
     public TextView title, subject, writer,date;
     public MaterialRippleLayout card_item;
 
     public NewsHolders(@NonNull View itemView) {
         super(itemView);
         item_image = itemView.findViewById(R.id.item_image);
-        more = itemView.findViewById(R.id.more_btn);
         title = itemView.findViewById(R.id.item_title);
         title.setSelected(true);
         title.requestFocus();
