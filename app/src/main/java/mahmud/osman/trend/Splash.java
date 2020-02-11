@@ -59,7 +59,7 @@ public class Splash extends AppCompatActivity {
             }
         };
         // Show splash screen for 3 seconds
-        new Timer().schedule(task, 5000);}
+        new Timer().schedule(task, 4000);}
 
     }
     public void category() {
@@ -137,8 +137,4 @@ public class Splash extends AppCompatActivity {
         return UserID;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
 }

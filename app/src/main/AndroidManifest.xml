@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 
-    <dist:module dist:instant="true" />
 
     <application
         android:allowBackup="true"
@@ -29,17 +28,25 @@
 
         <activity
             android:name=".admin.app.CreateNews"
+            android:screenOrientation="portrait"
             android:theme="@style/CircularReveal" />
-        <activity android:name=".admin.app.AdminNewsActivity" />
-        <activity android:name=".user.app.UserNewsActivity" />
-        <activity android:name=".user.app.UserActivity" />
-        <activity android:name=".admin.app.AdminActivity" />
-        <activity android:name=".JoinToUsActivity" />
+        <activity android:name=".admin.app.AdminNewsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".user.app.UserNewsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".user.app.UserActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".admin.app.AdminActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".JoinToUsActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".LoginActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Splash"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,6 +57,10 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

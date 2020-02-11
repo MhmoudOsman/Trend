@@ -9,16 +9,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.github.fabtransitionactivity.SheetLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +31,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
-import com.tombayley.activitycircularreveal.CircularReveal;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import mahmud.osman.trend.LoginActivity;
@@ -45,17 +45,18 @@ import mahmud.osman.trend.admin.app.fragment.TrendAdminFragment;
 
 public class AdminActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-      DrawerLayout mDrawerLayout;
-      NavigationView navigationView;
-      TextView name, email, logout;
-      CircleImageView profil_pic;
-      String name_text;
+      private DrawerLayout mDrawerLayout;
+      private NavigationView navigationView;
+      private TextView name, email, logout;
+      private CircleImageView profile_pic;
+      private String name_text;
 
-      FloatingActionButton add_new;
-      FragmentManager fragmentManager;
-      FragmentTransaction fragmentTransaction;
+      private FloatingActionButton add_new;
+      private FragmentManager fragmentManager;
+      private FragmentTransaction fragmentTransaction;
+      private SheetLayout sheetLayout;
 
-      CircularReveal.Builder builder;
+//      CircularReveal.Builder builder;
 
       //firebase
       FirebaseDatabase firebaseDatabase;
@@ -64,6 +65,8 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
       StorageReference storageReference;
       FirebaseAuth mAuth;
 
+      private static final int REQUEST_CODE = 1;
+
 
       @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
       @Override
@@ -71,10 +74,10 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
             super.onCreate(savedInstanceState);
             setContentView(R.layout.admin_activity);
 
-
             fragmentManager = getSupportFragmentManager();
 
             logout = findViewById(R.id.logout_btn);
+            sheetLayout = findViewById(R.id.expand_fab);
 
             Toolbar toolbar = findViewById(R.id.toolbar_main);
             setSupportActionBar(toolbar);
@@ -89,35 +92,33 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
             storageReference = firebaseStorage.getReference().child("admin");
 
             mDrawerLayout = findViewById(R.id.drawer);
-            navigationView = findViewById(R.id.nev_veiw);
+            navigationView = findViewById(R.id.nev_view);
             View view = navigationView.getHeaderView(0);
             navigationView.setNavigationItemSelectedListener(this);
 
 
             name = view.findViewById(R.id.name_filed);
-            profil_pic = view.findViewById(R.id.profile_image1);
+            profile_pic = view.findViewById(R.id.profile_image1);
             email = view.findViewById(R.id.email_filed);
 
             add_new = findViewById(R.id.add);
+            sheetLayout.setFab(add_new);
+            sheetLayout.setFabAnimationEndListener(new SheetLayout.OnFabAnimationEndListener() {
+                  @Override
+                  public void onFabAnimationEnd() {
 
-            final Intent intent = new Intent(this , CreateNews.class);
-            intent.putExtra("edit" , "creat");
+                        Intent intent = new Intent(AdminActivity.this , CreateNews.class);
+                        intent.putExtra("edit" , "creat");
+                        startActivityForResult(intent , REQUEST_CODE);
 
-            builder = new CircularReveal.Builder(
-                    AdminActivity.this ,
-                    add_new ,
-                    intent ,
-                    400
-            );
-            builder.setRevealColor(ContextCompat.getColor(getApplicationContext(),R.color.background));
+                  }
+            });
+
 
             add_new.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
-
-
-                        CircularReveal.presentActivity(builder);
-
+                        sheetLayout.expandFab();
                   }
             });
 
@@ -146,7 +147,7 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
       private void loadFragment(Fragment fragment) {
             fragmentTransaction = fragmentManager.beginTransaction();
 
-            fragmentTransaction.replace(R.id.content_frame , fragment);
+            fragmentTransaction.replace(R.id.fragment_container , fragment);
             fragmentTransaction.addToBackStack(null);
 
             getFragmentManager().popBackStack();
@@ -174,7 +175,7 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
                                         .load(adminModel.getImageUri())
                                         .placeholder(R.drawable.ic_user)
                                         .error(R.drawable.ic_user)
-                                        .into(profil_pic);
+                                        .into(profile_pic);
 
                           }
 
@@ -234,13 +235,14 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
       }
 
       @Override
-      public void onPointerCaptureChanged(boolean hasCapture) {
-
+      public void onBackPressed() {
+            moveTaskToBack(false);
       }
 
       @Override
-      public void onBackPressed() {
-            finishAffinity();
+      protected void onActivityResult(int requestCode , int resultCode , @Nullable Intent data) {
+            super.onActivityResult(requestCode , resultCode , data);
+            if (requestCode == REQUEST_CODE) {
+                  sheetLayout.contractFab();}
+            }
       }
-
-}

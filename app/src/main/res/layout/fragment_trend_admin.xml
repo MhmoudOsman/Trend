@@ -24,7 +24,6 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         app:loading_color="@color/background"
-        app:loading_width="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

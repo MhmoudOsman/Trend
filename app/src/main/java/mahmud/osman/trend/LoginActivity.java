@@ -1,16 +1,11 @@
 package mahmud.osman.trend;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,47 +29,54 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Or;
+import com.mobsandgeeks.saripaar.annotation.Order;
+import com.mobsandgeeks.saripaar.annotation.Pattern;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.victor.loading.rotate.RotateLoading;
 
-import java.util.regex.Pattern;
+import java.util.List;
+import java.util.regex.Matcher;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import mahmud.osman.trend.Models.UserModel;
 import mahmud.osman.trend.admin.app.AdminActivity;
+import mahmud.osman.trend.dialog.RegisterDialog;
+import mahmud.osman.trend.presenters.adapter.TextInputLayoutAdapter;
 import mahmud.osman.trend.user.app.UserActivity;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements Validator.ValidationListener {
 
-      private static final Pattern PASSWORD_PATTERN = Pattern.compile("^" +
-              "(?=.*[0-9])" +         //at least 1 digit
-              //"(?=.*[a-z])" +         //at least 1 lower case letter
-              //"(?=.*[A-Z])" +         //at least 1 upper case letter
-              "(?=.*[a-zA-Z])" +      //any letter
-              // "(?=.*[@#$%^&+=])" +    //at least 1 special character
-              "(?=\\S+$)" +           //no white spaces
-              ".{8,}" +               //at least 4 characters
-              "$");
+      @NotEmpty(messageResId = R.string.empty_email)
+      @Pattern(regex ="[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}\\@[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}(\\.[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25})+" ,messageResId = R.string.invalid_email)
+      private TextInputLayout email;
+      @NotEmpty(messageResId = R.string.empty_pass)
+      private TextInputLayout pass;
 
-
-      private TextInputLayout email, pass;
       private Button login_btn, register_ben;
       private TextView join_to_us;
 
-      //Dialog
-      private Button cancel_btn, create_btn;
-      private TextInputLayout name, email_reg, pass_reg, confrem_pass;
-      private CircleImageView profil_pic;
+
+      private String email_text, pass_text, name_text;
+
       private Uri add_pic = null;
 
-      private RotateLoading rotateLoding;
+      private RotateLoading rotateLoading;
       //Firebase
       private FirebaseAuth mAuth;
       private FirebaseDatabase firebaseDatabase;
       private DatabaseReference databaseReference;
       private StorageReference storageReference;
+
+      private Validator validator;
+      private boolean validated = false;
+
+      private RegisterDialog dialog;
 
       @Override
       protected void onCreate(Bundle savedInstanceState) {
@@ -87,19 +89,34 @@ public class LoginActivity extends AppCompatActivity {
             login_btn = findViewById(R.id.login_btn);
             register_ben = findViewById(R.id.regiter_btn);
 
-            rotateLoding = findViewById(R.id.rotateloading);
+            rotateLoading = findViewById(R.id.rotateloading);
 
             mAuth = FirebaseAuth.getInstance();
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference();
             storageReference = FirebaseStorage.getInstance().getReference().child("user");
 
+            validator = new Validator(this);
+            validator.registerAdapter(TextInputLayout.class , new TextInputLayoutAdapter());
+            validator.setViewValidatedAction(new Validator.ViewValidatedAction() {
+                  @Override
+                  public void onAllRulesPassed(View view) {
+                        if (view instanceof TextInputLayout) {
+                              ((TextInputLayout) view).setError("");
+                              ((TextInputLayout) view).setErrorEnabled(false);
+                        }
+                  }
+            });
+            validator.setValidationListener(this);
 
             login_btn.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
-                        mLogin();
-                        rotateLoding.start();
+                        validator.validate();
+                        if (validated) {
+                              rotateLoading.start();
+                              mLogin();
+                        }
                   }
             });
 
@@ -110,72 +127,37 @@ public class LoginActivity extends AppCompatActivity {
                   }
             });
 
-            autoValidate();
-      }
-
-      private void autoValidate() {
-            email.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                  @Override
-                  public void onFocusChange(View v , boolean hasFocus) {
-                        validateEmail(email);
-                  }
-            });
-            pass.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                  @Override
-                  public void onFocusChange(View v , boolean hasFocus) {
-                        validatePassword(pass);
-                  }
-            });
-
             join_to_us.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
-                        Intent i = new Intent(getApplicationContext() , JoinToUsActivity.class);
-                        startActivity(i);
+                        startActivity(new Intent(LoginActivity.this,JoinToUsActivity.class));
                   }
             });
 
       }
 
+
       private void openDialog() {
-
-            final Dialog dialog = new Dialog(LoginActivity.this);
-
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
-            dialog.setContentView(R.layout.register_dialog);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().getAttributes();
-            dialog.setCancelable(true);
-
-            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-            lp.copyFrom(dialog.getWindow().getAttributes());
-            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
-            profil_pic = dialog.findViewById(R.id.pro_pic);
-
-            cancel_btn = dialog.findViewById(R.id.cancel_btn);
-            create_btn = dialog.findViewById(R.id.creat_btn);
-
-            name = dialog.findViewById(R.id.name_filed);
-            email_reg = dialog.findViewById(R.id.email_filed_r);
-            pass_reg = dialog.findViewById(R.id.pass_filed_r);
-            confrem_pass = dialog.findViewById(R.id.confrim_pass_filed_r);
-
-            create_btn.setOnClickListener(new View.OnClickListener() {
+            dialog = new RegisterDialog(this);
+            dialog.create_btn.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
-                        mRegister();
-                        rotateLoding.start();
+                        dialog.getValidator().validate();
+                        if (dialog.isValidated()) {
+                              rotateLoading.start();
+                              mRegister();
+                        }
                   }
             });
-            cancel_btn.setOnClickListener(new View.OnClickListener() {
+
+            dialog.cancel_btn.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
                         dialog.dismiss();
                   }
             });
-            profil_pic.setOnClickListener(new View.OnClickListener() {
+
+            dialog.profile_pic.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
 
@@ -189,21 +171,15 @@ public class LoginActivity extends AppCompatActivity {
             });
 
             dialog.show();
-            dialog.getWindow().setAttributes(lp);
       }
 
       private void mRegister() {
-            rotateLoding.start();
-            if (!validateEmail(email_reg) | !validatePassword(pass_reg) | !validateCPassword() | !validateName()) {
-                  rotateLoding.stop();
-                  return;
-            }
 
-            final String name_text = name.getEditText().getText().toString();
-            final String email_reg_text = email_reg.getEditText().getText().toString();
-            final String pass_reg_text = pass_reg.getEditText().getText().toString();
+            name_text = dialog.getUserName().getEditText().getText().toString();
+            email_text = dialog.getEmail_reg().getEditText().getText().toString();
+            pass_text = dialog.getPass_reg().getEditText().getText().toString();
 
-            mAuth.fetchSignInMethodsForEmail(email_reg_text).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+            mAuth.fetchSignInMethodsForEmail(email_text).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                   @Override
                   public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
 
@@ -211,19 +187,19 @@ public class LoginActivity extends AppCompatActivity {
 
                         if (check) {
 
-                              mAuth.createUserWithEmailAndPassword(email_reg_text , pass_reg_text).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                              mAuth.createUserWithEmailAndPassword(email_text , pass_text).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                           if (task.isSuccessful()) {
 
-                                                addUserPicDB(name_text , email_reg_text);
+                                                addUserPicDB(name_text , email_text);
 
                                           }
                                     }
                               });
 
                         } else {
-                              email_reg.setError(getString(R.string.tacken_email));
+                              dialog.getEmail_reg().setError(getString(R.string.tacked_email));
                         }
 
 
@@ -234,7 +210,7 @@ public class LoginActivity extends AppCompatActivity {
 
       private void addUserPicDB(final String name , final String email) {
 
-            rotateLoding.start();
+            rotateLoading.start();
 
             UploadTask uploadTask;
 
@@ -267,7 +243,7 @@ public class LoginActivity extends AppCompatActivity {
                   @Override
                   public void onFailure(@NonNull Exception e) {
                         Toast.makeText(getApplicationContext() , "Can't Upload Photo" , Toast.LENGTH_SHORT).show();
-                        rotateLoding.stop();
+                        rotateLoading.stop();
                   }
             });
 
@@ -275,32 +251,23 @@ public class LoginActivity extends AppCompatActivity {
 
       private void addUserDB(String user_Pic , String name , String email) {
 
-            rotateLoding.start();
+            rotateLoading.start();
 
             UserModel userModel = new UserModel(user_Pic , name , email);
 
             databaseReference.child("Users").child(getUID()).setValue(userModel);
 
             updateUI(getUID());
-            rotateLoding.stop();
+            rotateLoading.stop();
 
       }
 
       private void mLogin() {
-            if (!validateEmail(email) | !validatePassword(pass)) {
-                  rotateLoding.stop();
-                  return;
-            }
-            String email_text, pass_text;
+
             email_text = email.getEditText().getText().toString();
             pass_text = pass.getEditText().getText().toString();
 
-            userLogin(email_text , pass_text);
-      }
-
-      private void userLogin(final String s_email , final String password) {
-
-            mAuth.fetchSignInMethodsForEmail(s_email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+            mAuth.fetchSignInMethodsForEmail(email_text).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                   @Override
                   public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
 
@@ -308,10 +275,10 @@ public class LoginActivity extends AppCompatActivity {
 
                         if (check) {
                               email.setError(getString(R.string.account_not_found));
-                              rotateLoding.stop();
+                              rotateLoading.stop();
 
                         } else {
-                              mAuth.signInWithEmailAndPassword(s_email , password)
+                              mAuth.signInWithEmailAndPassword(email_text , pass_text)
                                       .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                             @Override
                                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -319,9 +286,9 @@ public class LoginActivity extends AppCompatActivity {
 
                                                         updateUI(getUID());
 
-                                                  }else {
+                                                  } else {
                                                         pass.setError(getString(R.string.wrong_pass));
-                                                        rotateLoding.stop();
+                                                        rotateLoading.stop();
                                                   }
                                             }
                                       });
@@ -331,8 +298,6 @@ public class LoginActivity extends AppCompatActivity {
 
                   }
             });
-
-
       }
 
       private void updateUI(final String id) {
@@ -345,7 +310,7 @@ public class LoginActivity extends AppCompatActivity {
                                       Intent i = new Intent(getApplicationContext() , AdminActivity.class);
                                       startActivity(i);
                                       finish();
-                                      rotateLoding.stop();
+                                      rotateLoading.stop();
                                 } else {
                                       databaseReference.child("Users").addListenerForSingleValueEvent(
                                               new ValueEventListener() {
@@ -355,7 +320,7 @@ public class LoginActivity extends AppCompatActivity {
                                                                 Intent i = new Intent(getApplicationContext() , UserActivity.class);
                                                                 startActivity(i);
                                                                 finish();
-                                                                rotateLoding.stop();
+                                                                rotateLoading.stop();
                                                           }
                                                     }
 
@@ -388,7 +353,7 @@ public class LoginActivity extends AppCompatActivity {
                                       .load(add_pic)
                                       .placeholder(R.drawable.ic_user)
                                       .error(R.drawable.ic_user)
-                                      .into(profil_pic);
+                                      .into(dialog.profile_pic);
 
                         }
                   } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -399,69 +364,6 @@ public class LoginActivity extends AppCompatActivity {
             }
       }
 
-      private boolean validateEmail(TextInputLayout email) {
-
-            String emailtext = email.getEditText().getText().toString();
-
-            if (emailtext.isEmpty()) {
-                  email.setError(getString(R.string.empty_email));
-                  return false;
-            } else if (!Patterns.EMAIL_ADDRESS.matcher(emailtext).matches()) {
-                  email.setError(getString(R.string.valid_email));
-                  return false;
-            } else {
-                  email.setError(null);
-                  return true;
-            }
-      }
-
-      private boolean validatePassword(TextInputLayout pass) {
-
-            String passtext = pass.getEditText().getText().toString();
-
-            if (passtext.isEmpty()) {
-                  pass.setError(getString(R.string.empty_pass));
-                  return false;
-            } else if (passtext.length() < 8) {
-                  pass.setError(getString(R.string.less_than_8));
-                  return false;
-            } else if (!PASSWORD_PATTERN.matcher(passtext).matches()) {
-                  pass.setError(getString(R.string.must_be_mixed));
-                  return false;
-            } else {
-                  pass.setError(null);
-                  return true;
-            }
-      }
-
-      private boolean validateName() {
-
-            String name_text = name.getEditText().getText().toString();
-
-            if (name_text.isEmpty()) {
-                  name.setError(getString(R.string.empty_name));
-                  return false;
-            } else {
-                  name.setError(null);
-                  return true;
-            }
-      }
-
-      private boolean validateCPassword() {
-
-            String pass_text = pass_reg.getEditText().getText().toString();
-            String conf_passtext = confrem_pass.getEditText().getText().toString();
-            if (conf_passtext.isEmpty()) {
-                  confrem_pass.setError(getString(R.string.empty_conf_pass));
-                  return false;
-            } else if (!conf_passtext.equals(pass_text)) {
-                  confrem_pass.setError(getString(R.string.conf_pass_not_matched));
-                  return false;
-            } else {
-                  confrem_pass.setError(null);
-                  return true;
-            }
-      }
 
       private String getUID() {
             String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -470,6 +372,26 @@ public class LoginActivity extends AppCompatActivity {
 
       @Override
       public void onBackPressed() {
-            finishAffinity();
+            finish();
+      }
+
+      @Override
+      public void onValidationSucceeded() {
+            validated = true;
+      }
+
+      @Override
+      public void onValidationFailed(List<ValidationError> errors) {
+
+            for (ValidationError error : errors) {
+                  View view = error.getView();
+                  String message = error.getCollatedErrorMessage(this);
+
+                  if (view instanceof TextInputLayout) {
+                        ((TextInputLayout) view).setError(message);
+                  } else {
+                        Toast.makeText(this , message , Toast.LENGTH_LONG).show();
+                  }
+            }
       }
 }

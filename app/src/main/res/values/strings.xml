@@ -1,61 +1,51 @@
-<resources>
-    <string name="open" translatable="false"></string>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">Trend</string>
     <string name="logo_with_text" translatable="false">Logo with text</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
-    <string name="you_dont_have_accont">Don’t have account</string>
+    <string name="you_dont_have_account">Don’t have account</string>
     <string name="join_to_us">Join To Us</string>
     <string name="or">OR</string>
-    <string name="back">Back</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
-    <string name="confrim_password">Confrim Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="code">Code</string>
     <string name="mobile">Mobile</string>
     <string name="health">كبسوله</string>
     <string name="education">شهادتك</string>
     <string name="art">الروقان</string>
     <string name="prices">أسعار</string>
-    <string name="unemployment">البطاله</string>
     <string name="sport">بتشجع مين</string>
-    <string name="logout">logout</string>
+    <string name="logout">Logout</string>
     <string name="name">Name</string>
     <string name="create_your_account">Create Your Account</string>
     <string name="enter_your_details">Enter your details</string>
     <string name="cancel">cancel</string>
     <string name="photo" translatable="false">photo</string>
-    <string name="adress">Titel</string>
+    <string name="title">Title</string>
     <string name="hint_of_subject">نبذه عن الموضوع</string>
     <string name="writer_name">اسم الكاتب</string>
     <string name="date">Date :</string>
-    <string name="more" translatable="false"></string>
     <string name="subject">Subject</string>
     <string name="share">Publish</string>
-    <string name="image_news" translatable="false" />
-    <string name="month">Month</string>
-    <string name="year">Year</string>
-    <string name="empty_titel">The Titel Is Empty</string>
-    <string name="empty_subject">Please Write The Subject</string>
     <string name="select_type">Select The Type Of News</string>
-    <string name="select_report_type">Select The Type Of Report</string>
     <string name="empty_pass">Please Enter Your Password</string>
-    <string name="less_than_8">Must be at least 8 Characters</string>
-    <string name="must_be_mixed">Must be at least one Letter and one Number</string>
+    <string name="less_than_8">Must be </string>
+    <string name="invalid_pass">Use 8 or more characters with a mix of letters, numbers</string>
     <string name="empty_code">Please Enter Your Code</string>
     <string name="code_not_match">Your Code Not Match</string>
     <string name="empty_conf_pass">Please Enter Your Password Again</string>
     <string name="conf_pass_not_matched">Password not Matched</string>
     <string name="empty_email">Please Enter Your Email</string>
-    <string name="valid_email">Email Not Correct</string>
+    <string name="invalid_email">Invalid Email for Example : Example@email.com</string>
     <string name="empty_first_name">Please Enter Your First Name</string>
     <string name="empty_last_name">Please Enter Your last Name</string>
     <string name="empty_name">Please Enter Your Name</string>
     <string name="empty_mobile">Enter Your Mobile Number</string>
-    <string name="valid_mobile">Mobile Number Not Correct</string>
-    <string name="tacken_email">Email is Already Tacken</string>
+    <string name="invalid_mobile">Invalid Mobile Number</string>
+    <string name="tacked_email">Email is Already Tacked</string>
     <string name="save_edit">Save Edit</string>
     <string name="day_month_year">Day / Month / Year</string>
 
@@ -65,10 +55,11 @@
     <string name="sure">Are you sure to delete this news ?!!</string>
     <string name="trends">ترندات</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="account_not_found">The Email Doesn\'t Match Any Account</string>
-    <string name="wrong_pass">Pasword isWrong</string>
+    <string name="account_not_found" >The Email Doesn\'t Match Any Account</string>
+    <string name="wrong_pass">Password isWrong</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="invalid_name">Use Alphabet Letters Only</string>
+    <string name="join">Join</string>
 
 </resources>

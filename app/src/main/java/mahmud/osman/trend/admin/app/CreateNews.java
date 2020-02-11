@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,11 +31,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-import com.tombayley.activitycircularreveal.CircularReveal;
 import com.victor.loading.rotate.RotateLoading;
 
 import java.util.Calendar;
@@ -49,10 +48,9 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
       String exist_image;
       String writer_name;
       String KEY, TYPE;
-      CircularReveal circularReveal;
       private EditText title, supject;
       private Spinner type_spinner;
-      private RoundedImageView news_image;
+      private ImageView news_image;
       private RotateLoading rotateLoading;
       private Button share_btn, cancel_btn;
       private DatePickerDialog datePickerDialog;
@@ -72,8 +70,6 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
             View view = findViewById(R.id.root);
 
-            circularReveal = new CircularReveal(view);
-            circularReveal.onActivityCreate(getIntent());
             Bundle extra = getIntent().getExtras();
 
             KEY = extra.getString("edit");
@@ -423,8 +419,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
       @Override
       public void onBackPressed() {
-            circularReveal.unRevealActivity(this);
-            return;
+            super.onBackPressed();
       }
 
 }

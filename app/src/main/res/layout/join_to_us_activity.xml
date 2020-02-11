@@ -18,19 +18,21 @@
         android:layout_marginEnd="8dp"
         android:background="@drawable/actionbar_foreground"
         android:backgroundTint="@color/background"
+        android:forceDarkAllowed="false"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread_inside"
+        app:logo="@mipmap/logo_icon"
         app:navigationIcon="@drawable/ic_action_arrow_left"
         app:subtitle="@string/enter_your_details"
         app:subtitleTextAppearance="@style/ToolbarSubTitel"
-        app:subtitleTextColor="@color/dark_whit"
+        app:subtitleTextColor="@color/whit"
+        android:textAlignment="viewStart"
         app:title="@string/join_to_us"
-        app:logo="@mipmap/logo_icon_round"
-        app:titleTextAppearance="@style/ToolbarTitel"
-        app:titleTextColor="@color/gold"/>
+        app:titleMarginStart="50dp"
+        app:titleTextAppearance="@style/ToolbarTitle"
+        app:titleTextColor="@color/gold" />
 
     <ScrollView
         android:id="@+id/scroll"
@@ -210,7 +212,7 @@
                     android:drawableStart="@drawable/ic_password"
                     android:drawablePadding="20dp"
                     android:drawableTint="@color/background"
-                    android:hint="@string/confrim_password"
+                    android:hint="@string/confirm_password"
                     android:inputType="textPassword"
                     android:textAppearance="@style/HintTextRegister"
                     tools:targetApi="m" />
@@ -285,20 +287,16 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card_login"
         android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="32dp"
+        android:layout_height="60dp"
         android:backgroundTint="@color/background"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="3dp"
+        app:cardCornerRadius="10dp"
+        app:cardUseCompatPadding="true"
+        app:cardPreventCornerOverlap="true"
+        app:cardElevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scroll"
-        tools:targetApi="lollipop">
-
+        app:layout_constraintTop_toBottomOf="@+id/scroll">
         <com.balysv.materialripple.MaterialRippleLayout
             style="@style/RippleStyleLight"
             android:layout_width="match_parent"
@@ -309,7 +307,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@color/transparent"
-                android:text="@string/join_to_us"
+                android:text="@string/join"
                 android:textAppearance="@style/HintTextLogin"
                 android:textColor="@color/gold"
                 android:textSize="@dimen/text_size" />
@@ -318,7 +316,7 @@
     </androidx.cardview.widget.CardView>
 
     <com.victor.loading.rotate.RotateLoading
-        android:id="@+id/rl_trend"
+        android:id="@+id/rl_join"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerInParent="true"

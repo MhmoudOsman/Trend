@@ -44,7 +44,7 @@ public class ArtAdminFragment extends Fragment {
                                Bundle savedInstanceState) {
             view = inflater.inflate(R.layout.fragment_art_admin , container , false);
             recyclerView = view.findViewById(R.id.rv_art);
-            rotateLoading = view.findViewById(R.id.rl_aet);
+            rotateLoading = view.findViewById(R.id.rl_art);
             return view;
       }
 
@@ -76,7 +76,7 @@ public class ArtAdminFragment extends Fragment {
                     .child(getString(R.string.Admin_news))
                     .child(getUID())
                     .child(type)
-                    .limitToLast(50);
+                    .limitToLast(10);
 
             FirebaseRecyclerOptions<NewsModel> options =
                     new FirebaseRecyclerOptions.Builder<NewsModel>()

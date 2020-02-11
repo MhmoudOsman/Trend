@@ -41,15 +41,15 @@ public class TrendAdminFragment extends Fragment {
             view = inflater.inflate(R.layout.fragment_trend_admin , container , false);
             recyclerView = view.findViewById(R.id.rv_trend);
             rotateLoading = view.findViewById(R.id.rl_trend);
-
             return view;
       }
-
+      
       @Override
       public void onActivityCreated(@Nullable Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
 
             rotateLoading.start();
+
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference();
             databaseReference.keepSynced(true);
@@ -72,13 +72,15 @@ public class TrendAdminFragment extends Fragment {
                     .child(getString(R.string.Admin_news))
                     .child(getUID())
                     .child(getString(R.string.trends))
-                    .limitToLast(50);
+                    .limitToLast(10);
+
 
             FirebaseRecyclerOptions<NewsModel> options =
                     new FirebaseRecyclerOptions.Builder<NewsModel>()
                             .setQuery(query , NewsModel.class)
                             .build();
 
+            rotateLoading.start();
             newsAdaptor = new NewsAdaptor(options , getContext() , getString(R.string.trends) , getUID());
             recyclerView.setAdapter(newsAdaptor);
             rotateLoading.stop();
@@ -95,12 +97,22 @@ public class TrendAdminFragment extends Fragment {
       }
 
       @Override
+      public void onResume() {
+            super.onResume();
+            if (newsAdaptor != null) {
+                  newsAdaptor.startListening();
+            }
+
+      }
+
+      @Override
       public void onStop() {
             super.onStop();
             if (newsAdaptor != null) {
                   newsAdaptor.startListening();
             }
       }
+
 
       private String getUID() {
             String id = mAuth.getCurrentUser().getUid();

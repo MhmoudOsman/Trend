@@ -33,6 +33,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import mahmud.osman.trend.LoginActivity;
 import mahmud.osman.trend.Models.UserModel;
 import mahmud.osman.trend.R;
+import mahmud.osman.trend.user.app.fragment.ArtUserFragment;
+import mahmud.osman.trend.user.app.fragment.EducationUserFragment;
+import mahmud.osman.trend.user.app.fragment.HealthUserFragment;
+import mahmud.osman.trend.user.app.fragment.SportUserFragment;
 import mahmud.osman.trend.user.app.fragment.TrendUserFragment;
 
 public class UserActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -117,7 +121,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
       private void loadFragment(Fragment fragment) {
             fragmentTransaction = fragmentManager.beginTransaction();
 
-            fragmentTransaction.replace(R.id.content_frame , fragment);
+            fragmentTransaction.replace(R.id.fragment_container , fragment);
             fragmentTransaction.addToBackStack(null);
 
             getFragmentManager().popBackStack();
@@ -193,21 +197,25 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                         return true;
                   case R.id.health:
                         getSupportActionBar().setTitle(getString(R.string.health));
+                        loadFragment(new HealthUserFragment());
 
                         mDrawerLayout.closeDrawer(GravityCompat.START);
                         return true;
                   case R.id.education:
                         getSupportActionBar().setTitle(getString(R.string.education));
+                        loadFragment(new EducationUserFragment());
 
                         mDrawerLayout.closeDrawer(GravityCompat.START);
                         return true;
                   case R.id.sport:
                         getSupportActionBar().setTitle(getString(R.string.sport));
+                        loadFragment(new SportUserFragment());
 
                         mDrawerLayout.closeDrawer(GravityCompat.START);
                         return true;
                   case R.id.art:
                         getSupportActionBar().setTitle(getString(R.string.art));
+                        loadFragment(new ArtUserFragment());
 
                         mDrawerLayout.closeDrawer(GravityCompat.START);
                         return true;

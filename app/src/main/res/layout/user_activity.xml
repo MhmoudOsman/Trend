@@ -27,32 +27,25 @@
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
             android:layout_gravity="bottom"
-            android:background="@color/transparent"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="10dp"
             android:orientation="vertical">
 
             <View
-                android:layout_width="250dp"
-                android:layout_height="2dp"
-                android:background="@color/black" />
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/background" />
 
             <TextView
                 android:id="@+id/logout_btn_user"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_gravity="center_vertical"
+                android:layout_height="match_parent"
+                android:gravity="center"
                 android:text="@string/logout"
                 android:textColor="@color/background"
-                android:textSize="@dimen/item"
+                android:textSize="@dimen/text_size"
                 android:textStyle="bold" />
 
 
