@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -31,10 +30,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-import com.mobsandgeeks.saripaar.annotation.Or;
-import com.mobsandgeeks.saripaar.annotation.Order;
 import com.mobsandgeeks.saripaar.annotation.Pattern;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -42,9 +38,9 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import com.victor.loading.rotate.RotateLoading;
 
 import java.util.List;
-import java.util.regex.Matcher;
 
-import mahmud.osman.trend.Models.UserModel;
+import mahmud.osman.trend.Models.ProfileModel;
+
 import mahmud.osman.trend.admin.app.AdminActivity;
 import mahmud.osman.trend.dialog.RegisterDialog;
 import mahmud.osman.trend.presenters.adapter.TextInputLayoutAdapter;
@@ -253,7 +249,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
             rotateLoading.start();
 
-            UserModel userModel = new UserModel(user_Pic , name , email);
+            ProfileModel userModel = new ProfileModel(user_Pic , name , email);
 
             databaseReference.child("Users").child(getUID()).setValue(userModel);
 
@@ -372,7 +368,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
       @Override
       public void onBackPressed() {
-            finish();
+            moveTaskToBack(true);
       }
 
       @Override

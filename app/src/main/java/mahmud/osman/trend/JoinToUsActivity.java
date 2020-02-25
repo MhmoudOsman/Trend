@@ -29,9 +29,7 @@ import com.google.firebase.storage.UploadTask;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
-import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-import com.mobsandgeeks.saripaar.annotation.Order;
 import com.mobsandgeeks.saripaar.annotation.Password;
 import com.mobsandgeeks.saripaar.annotation.Pattern;
 import com.squareup.picasso.Picasso;
@@ -42,7 +40,7 @@ import com.victor.loading.rotate.RotateLoading;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import mahmud.osman.trend.Models.AdminModel;
+import mahmud.osman.trend.Models.ProfileModel;
 import mahmud.osman.trend.admin.app.AdminActivity;
 import mahmud.osman.trend.presenters.adapter.TextInputLayoutAdapter;
 
@@ -256,9 +254,9 @@ public class JoinToUsActivity extends AppCompatActivity implements Validator.Val
       private void addUserDB(String user_Pic , String name , String email , String mobile) {
             rotateLoading.start();
 
-            AdminModel adminModel = new AdminModel(user_Pic , name , email , mobile);
+            ProfileModel profileModel = new ProfileModel(user_Pic , name , email , mobile);
 
-            databaseReference.child("Admin").child(getUID()).setValue(adminModel);
+            databaseReference.child("Admin").child(getUID()).setValue(profileModel);
 
             rotateLoading.stop();
 

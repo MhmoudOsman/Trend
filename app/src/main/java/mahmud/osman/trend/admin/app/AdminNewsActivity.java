@@ -70,6 +70,13 @@ public class AdminNewsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_arrow_left);
 
+            ex_title.setSelected(true);
+            ex_title.requestFocus();
+            cl_title.setSelected(true);
+            cl_title.requestFocus();
+
+
+
 
       }
 

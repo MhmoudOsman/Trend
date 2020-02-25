@@ -105,10 +105,6 @@ public class RegisterDialog extends Dialog implements Validator.ValidationListen
             return pass_reg;
       }
 
-      public TextInputLayout getConfirm_pass() {
-            return confirm_pass;
-      }
-
       public Validator getValidator() {
             return validator;
       }

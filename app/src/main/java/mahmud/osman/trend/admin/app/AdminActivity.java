@@ -1,7 +1,6 @@
 package mahmud.osman.trend.admin.app;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -29,12 +27,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import mahmud.osman.trend.LoginActivity;
-import mahmud.osman.trend.Models.AdminModel;
+import mahmud.osman.trend.Models.ProfileModel;
+import mahmud.osman.trend.ProfileActivity;
 import mahmud.osman.trend.R;
 import mahmud.osman.trend.admin.app.fragment.ArtAdminFragment;
 import mahmud.osman.trend.admin.app.fragment.EducationAdminFragment;
@@ -62,13 +60,11 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
       FirebaseDatabase firebaseDatabase;
       DatabaseReference databaseReference;
       FirebaseStorage firebaseStorage;
-      StorageReference storageReference;
       FirebaseAuth mAuth;
 
       private static final int REQUEST_CODE = 1;
 
 
-      @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
       @Override
       protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -89,7 +85,6 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
             databaseReference = firebaseDatabase.getReference();
             databaseReference.keepSynced(true);
             firebaseStorage = FirebaseStorage.getInstance();
-            storageReference = firebaseStorage.getReference().child("admin");
 
             mDrawerLayout = findViewById(R.id.drawer);
             navigationView = findViewById(R.id.nev_view);
@@ -100,6 +95,14 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
             name = view.findViewById(R.id.name_filed);
             profile_pic = view.findViewById(R.id.profile_image1);
             email = view.findViewById(R.id.email_filed);
+            view.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                        Intent intent = new Intent(AdminActivity.this , ProfileActivity.class);
+                        intent.putExtra("profile" , "Admin");
+                        startActivity(intent);
+                  }
+            });
 
             add_new = findViewById(R.id.add);
             sheetLayout.setFab(add_new);
@@ -129,12 +132,13 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
                         FirebaseAuth.getInstance().signOut();
 
                         Intent intent = new Intent(AdminActivity.this , LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
 
                   }
             });
 
-            reternData();
+            returnData();
 
             Fragment news_fragment = new TrendAdminFragment();
             loadFragment(news_fragment);
@@ -156,7 +160,7 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
       }
 
 
-      public void reternData() {
+      private void returnData() {
 
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
             mDatabase.keepSynced(true);
@@ -166,13 +170,13 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
                           @Override
                           public void onDataChange(DataSnapshot dataSnapshot) {
                                 // Get user value
-                                AdminModel adminModel = dataSnapshot.getValue(AdminModel.class);
+                                ProfileModel profileModel = dataSnapshot.getValue(ProfileModel.class);
 
-                                name_text = adminModel.getName();
+                                name_text = profileModel.getName();
                                 name.setText(name_text);
-                                email.setText(adminModel.getEmail());
+                                email.setText(profileModel.getEmail());
                                 Picasso.get()
-                                        .load(adminModel.getImageUri())
+                                        .load(profileModel.getImageUri())
                                         .placeholder(R.drawable.ic_user)
                                         .error(R.drawable.ic_user)
                                         .into(profile_pic);
@@ -201,6 +205,18 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
       private String getUID() {
             String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
             return id;
+      }
+
+      @Override
+      protected void onResume() {
+            super.onResume();
+            returnData();
+      }
+
+      @Override
+      protected void onStart() {
+            super.onStart();
+            returnData();
       }
 
 
@@ -243,6 +259,7 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
       protected void onActivityResult(int requestCode , int resultCode , @Nullable Intent data) {
             super.onActivityResult(requestCode , resultCode , data);
             if (requestCode == REQUEST_CODE) {
-                  sheetLayout.contractFab();}
+                  sheetLayout.contractFab();
             }
       }
+}

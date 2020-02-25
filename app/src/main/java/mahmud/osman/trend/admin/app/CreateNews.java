@@ -38,7 +38,7 @@ import com.victor.loading.rotate.RotateLoading;
 
 import java.util.Calendar;
 
-import mahmud.osman.trend.Models.AdminModel;
+import mahmud.osman.trend.Models.ProfileModel;
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 
@@ -48,7 +48,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
       String exist_image;
       String writer_name;
       String KEY, TYPE;
-      private EditText title, supject;
+      private EditText title, subject;
       private Spinner type_spinner;
       private ImageView news_image;
       private RotateLoading rotateLoading;
@@ -68,15 +68,13 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
             super.onCreate(savedInstanceState);
             setContentView(R.layout.create_news_activity);
 
-            View view = findViewById(R.id.root);
-
             Bundle extra = getIntent().getExtras();
 
             KEY = extra.getString("edit");
             TYPE = extra.getString("type");
 
             title = findViewById(R.id.titel_news);
-            supject = findViewById(R.id.subject_filed);
+            subject = findViewById(R.id.subject_filed);
             date = findViewById(R.id.date_pick);
             type_spinner = findViewById(R.id.chose_type);
             news_image = findViewById(R.id.image_news);
@@ -153,7 +151,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                         public void onClick(View v) {
 
                               String title_text = title.getText().toString();
-                              String supject_text = supject.getText().toString();
+                              String supject_text = subject.getText().toString();
                               String date_text = date.getText().toString();
 
                               if (selected_type.isEmpty() | selected_type.equals(getString(R.string.select_type))) {
@@ -181,7 +179,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                         public void onClick(View v) {
 
                               String title_text = title.getText().toString();
-                              String subject_text = supject.getText().toString();
+                              String subject_text = subject.getText().toString();
                               String date_text = date.getText().toString();
 
                               if (selected_type.isEmpty() | selected_type.equals(getString(R.string.select_type))) {
@@ -198,7 +196,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
                               } else {
 
-                                    updateNewaPicDB(title_text , subject_text , date_text , writer_name , selected_type);
+                                    updateNewsPicDB(title_text , subject_text , date_text , writer_name , selected_type);
                                     rotateLoading.start();
                               }
                         }
@@ -208,7 +206,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
       }
 
-      private void updateNewaPicDB(final String title_text , final String supject_text , final String date_text , final String writer_name , final String selected_type) {
+      private void updateNewsPicDB(final String title_text , final String supject_text , final String date_text , final String writer_name , final String selected_type) {
 
             rotateLoading.start();
 
@@ -362,9 +360,9 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                           @Override
                           public void onDataChange(DataSnapshot dataSnapshot) {
                                 // Get user value
-                                AdminModel adminModel = dataSnapshot.getValue(AdminModel.class);
+                                ProfileModel profileModel = dataSnapshot.getValue(ProfileModel.class);
 
-                                writer_name = adminModel.getName();
+                                writer_name = profileModel.getName();
 
                           }
 
@@ -391,7 +389,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                         NewsModel newsModel = dataSnapshot.getValue(NewsModel.class);
 
                         title.setText(newsModel.getTitl());
-                        supject.setText(newsModel.getSubject());
+                        subject.setText(newsModel.getSubject());
                         date.setText(newsModel.getDate());
                         selected_type = newsModel.getType();
                         exist_image = newsModel.getImage_uri();

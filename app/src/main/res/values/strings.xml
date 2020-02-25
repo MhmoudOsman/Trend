@@ -55,7 +55,7 @@
     <string name="sure">Are you sure to delete this news ?!!</string>
     <string name="trends">ترندات</string>
 
-    <string name="account_not_found" >The Email Doesn\'t Match Any Account</string>
+    <string name="account_not_found">The Email Doesn\'t Match Any Account</string>
     <string name="wrong_pass">Password isWrong</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>

@@ -36,8 +36,6 @@ public class UserNewsActivity extends AppCompatActivity {
     private ImageView news_image;
     private TextView subject, ex_title, cl_title;
     private SpeedDialView fab;
-    private DatabaseReference databaseReference;
-    private Menu menu;
     private CardView card_title;
 
 
@@ -68,7 +66,10 @@ public class UserNewsActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_arrow_left);
 
         fab.setVisibility(View.GONE);
-        cl_title.setVisibility(View.GONE);
+        ex_title.setSelected(true);
+        ex_title.requestFocus();
+        cl_title.setSelected(true);
+        cl_title.requestFocus();
 
 
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {

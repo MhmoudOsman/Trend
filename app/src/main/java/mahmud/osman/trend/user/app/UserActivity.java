@@ -26,12 +26,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import mahmud.osman.trend.LoginActivity;
-import mahmud.osman.trend.Models.UserModel;
+import mahmud.osman.trend.Models.ProfileModel;
+import mahmud.osman.trend.ProfileActivity;
 import mahmud.osman.trend.R;
 import mahmud.osman.trend.user.app.fragment.ArtUserFragment;
 import mahmud.osman.trend.user.app.fragment.EducationUserFragment;
@@ -57,7 +57,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
       FirebaseDatabase firebaseDatabase;
       DatabaseReference databaseReference;
       FirebaseStorage firebaseStorage;
-      StorageReference storageReference;
       FirebaseAuth mAuth;
 
       @SuppressLint("RestrictedApi")
@@ -86,7 +85,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             databaseReference = firebaseDatabase.getReference();
             databaseReference.keepSynced(true);
             firebaseStorage = FirebaseStorage.getInstance();
-            storageReference = firebaseStorage.getReference().child("admin");
 
             mDrawerLayout = findViewById(R.id.drawer_user);
             navigationView = findViewById(R.id.nev_veiw_user);
@@ -96,6 +94,14 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             name = view.findViewById(R.id.name_filed);
             profil_pic = view.findViewById(R.id.profile_image1);
             email = view.findViewById(R.id.email_filed);
+            view.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                        Intent intent = new Intent(UserActivity.this , ProfileActivity.class);
+                        intent.putExtra("profile" , "Users");
+                        startActivity(intent);
+                  }
+            });
 
             logout.setOnClickListener(new View.OnClickListener() {
                   @Override
@@ -104,12 +110,13 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                         FirebaseAuth.getInstance().signOut();
 
                         Intent intent = new Intent(getApplicationContext() , LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
 
                   }
             });
 
-            reternData();
+            returnData();
 
 
             Fragment news_fragment = new TrendUserFragment();
@@ -130,7 +137,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
       }
 
 
-      public void reternData() {
+      private void returnData() {
 
 
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -141,7 +148,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                           @Override
                           public void onDataChange(DataSnapshot dataSnapshot) {
                                 // Get user value
-                                UserModel userModel = dataSnapshot.getValue(UserModel.class);
+                                ProfileModel userModel = dataSnapshot.getValue(ProfileModel.class);
 
                                 name_text = userModel.getName();
                                 name.setText(name_text);
@@ -183,7 +190,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
       @Override
       public void onBackPressed() {
-            finishAffinity();
+            moveTaskToBack(false);
       }
 
       @Override
@@ -223,4 +230,18 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
             return onNavigationItemSelected(menuItem);
       }
+
+      @Override
+      protected void onResume() {
+            super.onResume();
+            returnData();
+      }
+
+      @Override
+      protected void onStart() {
+            super.onStart();
+            returnData();
+      }
+
+
 }

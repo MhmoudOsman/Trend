@@ -8,8 +8,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo_icon"
@@ -17,29 +15,27 @@
         android:roundIcon="@mipmap/logo_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <receiver
-            android:name=".ConnectionReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
+        <activity android:name=".ProfileActivity"></activity>
 
         <activity
             android:name=".admin.app.CreateNews"
             android:screenOrientation="portrait"
             android:theme="@style/CircularReveal" />
-        <activity android:name=".admin.app.AdminNewsActivity"
+        <activity
+            android:name=".admin.app.AdminNewsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".user.app.UserNewsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".user.app.UserActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".admin.app.AdminActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".JoinToUsActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".user.app.UserNewsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".user.app.UserActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".admin.app.AdminActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".JoinToUsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
