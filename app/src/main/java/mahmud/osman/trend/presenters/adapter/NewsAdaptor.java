@@ -4,25 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 import mahmud.osman.trend.admin.app.AdminNewsActivity;
-import mahmud.osman.trend.admin.app.CreateNews;
-import mahmud.osman.trend.dialog.DeleteDialog;
 import mahmud.osman.trend.presenters.holders.NewsHolders;
 import mahmud.osman.trend.user.app.UserNewsActivity;
 
@@ -57,8 +51,8 @@ public class NewsAdaptor extends FirebaseRecyclerAdapter<NewsModel, NewsHolders>
 
             Picasso.get()
                     .load(newsModel.getImage_uri())
-                    .placeholder(R.drawable.newspaper)
-                    .error(R.drawable.newspaper)
+                    .placeholder(R.drawable.defult_pic)
+                    .error(R.drawable.defult_pic)
                     .into(newsHolders.item_image);
 
             newsHolders.title.setText(newsModel.getTitl());

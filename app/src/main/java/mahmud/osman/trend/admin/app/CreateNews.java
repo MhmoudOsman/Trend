@@ -395,8 +395,8 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                         exist_image = newsModel.getImage_uri();
                         writer_name = newsModel.getWriter();
                         Picasso.get().load(newsModel.getImage_uri())
-                                .placeholder(R.drawable.newspaper)
-                                .error(R.drawable.newspaper)
+                                .placeholder(R.drawable.defult_pic)
+                                .error(R.drawable.defult_pic)
                                 .into(news_image);
 
                   }

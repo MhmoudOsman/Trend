@@ -1,11 +1,8 @@
 package mahmud.osman.trend.user.app;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,8 +12,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,7 +22,6 @@ import com.squareup.picasso.Picasso;
 
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
-import mahmud.osman.trend.dialog.DeleteDialog;
 
 
 public class UserNewsActivity extends AppCompatActivity {
@@ -130,8 +124,8 @@ public class UserNewsActivity extends AppCompatActivity {
                 subject.setText(newsModel.getSubject());
                 Picasso.get()
                         .load(newsModel.getImage_uri())
-                        .placeholder(R.drawable.newspaper)
-                        .error(R.drawable.newspaper)
+                        .placeholder(R.drawable.defult_pic)
+                        .error(R.drawable.defult_pic)
                         .into(news_image);
 
             }

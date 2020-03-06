@@ -22,16 +22,19 @@
     app:cardUseCompatPadding="true"
     app:cardPreventCornerOverlap="true"
     >
+
     <TextView
         android:id="@+id/subject_scroll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
         android:layout_gravity="top|right"
+        android:layout_margin="@dimen/text_margin"
+        android:autoLink="all"
         android:gravity="right|top"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:autoSizeTextType="uniform" />
 
 </androidx.cardview.widget.CardView>
 

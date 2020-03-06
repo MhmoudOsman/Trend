@@ -20,11 +20,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/background"
-                app:cardUseCompatPadding="true"
-                app:cardPreventCornerOverlap="true"
-                app:contentPadding="10dp"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="10dp">
+                app:cardElevation="10dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="10dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -34,14 +34,14 @@
                         android:id="@+id/tv1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
                         android:text="@string/create_your_account"
                         android:textColor="@color/gold"
                         android:textSize="@dimen/text_size"
                         android:textStyle="bold"
-                        android:layout_marginTop="3dp"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/tv2"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toTopOf="@+id/tv2"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tv2"
@@ -50,23 +50,23 @@
                         android:text="@string/enter_your_details"
                         android:textColor="@color/gold"
                         android:textSize="@dimen/text_size"
-                        app:layout_constraintTop_toBottomOf="@+id/tv1"
+                        app:layout_constraintBottom_toTopOf="@+id/cv2"
                         app:layout_constraintStart_toStartOf="parent"
-                       app:layout_constraintBottom_toTopOf="@+id/cv2" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv1" />
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cv2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardBackgroundColor="@color/gray"
+                        app:cardCornerRadius="10dp"
                         app:cardPreventCornerOverlap="true"
                         app:cardUseCompatPadding="true"
-                        app:cardCornerRadius="10dp"
                         app:contentPadding="5dp"
-                        app:layout_constraintTop_toBottomOf="@+id/tv2"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent">
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv2">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -77,14 +77,13 @@
                                 android:id="@+id/pro_pic"
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:src="@drawable/ic_user"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginBottom="5dp"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
+                                android:src="@drawable/ic_user"
                                 app:layout_constraintBottom_toTopOf="@+id/name_filed"
-                                />
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/name_filed"
@@ -97,17 +96,17 @@
                                 app:hintAnimationEnabled="true"
                                 app:hintEnabled="true"
                                 app:hintTextAppearance="@style/HintTextRegister"
-                                app:layout_constraintStart_toStartOf="@+id/pro_pic"
-                                app:layout_constraintTop_toBottomOf="@+id/pro_pic"
+                                app:layout_constraintBottom_toTopOf="@id/email_filed_r"
                                 app:layout_constraintEnd_toEndOf="@+id/pro_pic"
-                                app:layout_constraintBottom_toTopOf="@id/email_filed_r">
+                                app:layout_constraintStart_toStartOf="@+id/pro_pic"
+                                app:layout_constraintTop_toBottomOf="@+id/pro_pic">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     style="@style/HintTextRegister"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:drawableStart="@drawable/ic_name"
-                                    android:drawableLeft="@drawable/ic_name"
+                                    android:drawableEnd="@drawable/ic_name"
+                                    android:drawableTint="@color/background"
                                     android:drawablePadding="20dp"
                                     android:hint="@string/name"
                                     android:inputType="textEmailAddress|textNoSuggestions"
@@ -125,21 +124,21 @@
                                 app:hintAnimationEnabled="true"
                                 app:hintEnabled="true"
                                 app:hintTextAppearance="@style/HintTextRegister"
-                                app:layout_constraintStart_toStartOf="@+id/name_filed"
-                                app:layout_constraintTop_toBottomOf="@+id/name_filed"
+                                app:layout_constraintBottom_toTopOf="@id/pass_filed_r"
                                 app:layout_constraintEnd_toEndOf="@+id/name_filed"
-                                app:layout_constraintBottom_toTopOf="@id/pass_filed_r">
+                                app:layout_constraintStart_toStartOf="@+id/name_filed"
+                                app:layout_constraintTop_toBottomOf="@+id/name_filed">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     style="@style/HintTextRegister"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:drawableStart="@drawable/ic_user_email"
+                                    android:drawableEnd="@drawable/ic_email"
                                     android:drawablePadding="20dp"
                                     android:drawableTint="@color/background"
                                     android:hint="@string/email"
                                     android:inputType="textEmailAddress|textNoSuggestions"
-                                    android:textAppearance="@style/HintTextLogin"/>
+                                    android:textAppearance="@style/HintTextLogin" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
@@ -153,20 +152,18 @@
                                 app:hintAnimationEnabled="true"
                                 app:hintEnabled="true"
                                 app:hintTextAppearance="@style/HintTextRegister"
-                                app:passwordToggleEnabled="true"
-                                app:passwordToggleTint="@color/background"
+                                app:layout_constraintBottom_toTopOf="@id/confrim_pass_filed_r"
+                                app:layout_constraintEnd_toEndOf="@+id/email_filed_r"
                                 app:layout_constraintStart_toStartOf="@+id/email_filed_r"
                                 app:layout_constraintTop_toBottomOf="@+id/email_filed_r"
-                                app:layout_constraintEnd_toEndOf="@+id/email_filed_r"
-                                app:layout_constraintBottom_toTopOf="@id/confrim_pass_filed_r">
+                                app:passwordToggleEnabled="true"
+                                app:passwordToggleTint="@color/background">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     style="@style/HintTextRegister"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:drawableStart="@drawable/ic_password"
                                     android:drawablePadding="20dp"
-                                    android:drawableTint="@color/background"
                                     android:hint="@string/password"
                                     android:inputType="textPassword"
                                     android:textAppearance="@style/HintTextRegister" />
@@ -183,22 +180,19 @@
                                 app:hintAnimationEnabled="true"
                                 app:hintEnabled="true"
                                 app:hintTextAppearance="@style/HintTextRegister"
-                                app:passwordToggleEnabled="true"
-                                app:passwordToggleTint="@color/background"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="@+id/pass_filed_r"
                                 app:layout_constraintStart_toStartOf="@+id/pass_filed_r"
                                 app:layout_constraintTop_toBottomOf="@+id/pass_filed_r"
-                                app:layout_constraintEnd_toEndOf="@+id/pass_filed_r"
-                                app:layout_constraintBottom_toBottomOf="parent">
+                                app:passwordToggleEnabled="true"
+                                app:passwordToggleTint="@color/background">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     style="@style/HintTextRegister"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:drawableStart="@drawable/ic_password"
-                                    android:drawableLeft="@drawable/ic_password"
                                     android:layout_marginBottom="5dp"
                                     android:drawablePadding="20dp"
-                                    android:drawableTint="@color/background"
                                     android:hint="@string/confirm_password"
                                     android:inputType="textPassword"
                                     android:textAppearance="@style/HintTextRegister"
@@ -219,11 +213,11 @@
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardUseCompatPadding="true"
                 app:cardBackgroundColor="@color/background"
-                app:cardPreventCornerOverlap="true"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="5dp">
+                app:cardElevation="5dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"

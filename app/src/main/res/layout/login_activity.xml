@@ -38,6 +38,7 @@
             app:errorTextAppearance="@style/ErrorText"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
+            app:boxStrokeColor="@color/gold"
             app:hintTextAppearance="@style/HintTextLogin"
             app:layout_constraintBottom_toTopOf="@+id/pass_filed"
             app:layout_constraintEnd_toEndOf="@+id/logo"
@@ -48,7 +49,8 @@
                 style="@style/HintTextLogin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableStart="@drawable/ic_email"
+                android:drawableRight="@drawable/ic_email"
+                android:drawableTint="@color/gold"
                 android:drawablePadding="20dp"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress|textNoSuggestions"
@@ -62,6 +64,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="24dp"
+            app:boxStrokeColor="@color/gold"
             android:layout_marginBottom="8dp"
             android:textColorHint="@color/gold"
             app:errorEnabled="true"
@@ -80,7 +83,6 @@
                 style="@style/HintTextLogin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableStart="@drawable/ic_password"
                 android:drawablePadding="20dp"
                 android:hint="@string/password"
                 android:inputType="textPassword"
@@ -132,7 +134,7 @@
             android:layout_marginBottom="8dp"
             android:gravity="center"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/text_creat"
+            app:layout_constraintBottom_toTopOf="@+id/text_create"
             app:layout_constraintEnd_toEndOf="@id/card_login"
             app:layout_constraintStart_toStartOf="@id/card_login"
             app:layout_constraintTop_toBottomOf="@+id/card_login">
@@ -147,9 +149,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/or"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:text="@string/or"
                 android:textColor="@color/gold"
                 android:textSize="@dimen/title_size" />
 
@@ -164,7 +166,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/text_creat"
+            android:id="@+id/text_create"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -191,9 +193,9 @@
             app:cardCornerRadius="10dp"
             app:cardElevation="3dp"
             app:layout_constraintBottom_toTopOf="@+id/join_to_us"
-            app:layout_constraintEnd_toEndOf="@id/text_creat"
-            app:layout_constraintStart_toStartOf="@id/text_creat"
-            app:layout_constraintTop_toBottomOf="@+id/text_creat"
+            app:layout_constraintEnd_toEndOf="@id/text_create"
+            app:layout_constraintStart_toStartOf="@id/text_create"
+            app:layout_constraintTop_toBottomOf="@+id/text_create"
             tools:targetApi="lollipop">
 
             <com.balysv.materialripple.MaterialRippleLayout
@@ -220,9 +222,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="25dp"
+            android:background="@color/transparent"
             android:gravity="center"
             android:text="@string/join_to_us"
-            android:background="@color/transparent"
             android:textColor="@color/background"
             android:textSize="@dimen/title_size"
             app:layout_constraintBottom_toBottomOf="parent"
