@@ -1,6 +1,7 @@
 package mahmud.osman.trend.user.app;
 
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -46,6 +47,8 @@ public class UserNewsActivity extends AppCompatActivity {
         cl_title = findViewById(R.id.tb_title);
         fab = findViewById(R.id.fab);
         card_title = findViewById(R.id.cv_title);
+
+        subject.setMovementMethod(LinkMovementMethod.getInstance());
 
         AppBarLayout appBarLayout = findViewById(R.id.c_app_bar);
 

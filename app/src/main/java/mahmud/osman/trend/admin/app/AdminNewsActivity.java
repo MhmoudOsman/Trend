@@ -2,6 +2,7 @@ package mahmud.osman.trend.admin.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,6 +58,8 @@ public class AdminNewsActivity extends AppCompatActivity {
             card_title = findViewById(R.id.cv_title);
 
              appBarLayout = findViewById(R.id.c_app_bar);
+
+             subject.setMovementMethod(LinkMovementMethod.getInstance());
 
 
 

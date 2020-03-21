@@ -198,7 +198,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                   case R.id.civ_profile_pic:
                         CropImage.activity()
                                 .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-                                .setAspectRatio(1080 , 1080)
                                 .setAutoZoomEnabled(true)
                                 .start(this);
                         break;
@@ -287,6 +286,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                   }
 
             }
+      }
+
+      @Override
+      protected void onStart() {
+            super.onStart();
+            returnData();
+      }
+
+      @Override
+      protected void onResume() {
+            super.onResume();
+            returnData();
       }
 
       private String getUID() {

@@ -70,6 +70,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
             Bundle extra = getIntent().getExtras();
 
+            assert extra != null;
             KEY = extra.getString("edit");
             TYPE = extra.getString("type");
 
@@ -112,7 +113,6 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                   case R.id.image_news:
                         CropImage.activity()
                                 .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-                                .setAspectRatio(1920 , 1080)
                                 .setAutoZoomEnabled(true)
                                 .start(CreateNews.this);
                         break;
@@ -145,13 +145,13 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
 
             if (KEY.equals("creat")) {
-                  reternData();
+                  returnData();
                   share_btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
                               String title_text = title.getText().toString();
-                              String supject_text = subject.getText().toString();
+                              String subject_text = subject.getText().toString();
                               String date_text = date.getText().toString();
 
                               if (selected_type.isEmpty() | selected_type.equals(getString(R.string.select_type))) {
@@ -164,7 +164,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                                     Toast.makeText(getApplicationContext() , "pleas add News Photo...!" , Toast.LENGTH_SHORT).show();
                                     return;
                               } else {
-                                    addNewaPicDB(title_text , supject_text , date_text , writer_name , selected_type);
+                                    addNewsPicDB(title_text , subject_text , date_text , writer_name , selected_type);
                                     rotateLoading.start();
                               }
 
@@ -173,7 +173,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
             } else {
                   share_btn.setText(getString(R.string.save_edit));
-                  reternData(KEY , TYPE);
+                  returnData(KEY , TYPE);
                   share_btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -192,12 +192,10 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
                                     updateNewsDB(exist_image , title_text , subject_text , date_text , writer_name , selected_type);
 
-                                    rotateLoading.start();
 
                               } else {
 
                                     updateNewsPicDB(title_text , subject_text , date_text , writer_name , selected_type);
-                                    rotateLoading.start();
                               }
                         }
                   });
@@ -206,7 +204,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
       }
 
-      private void updateNewsPicDB(final String title_text , final String supject_text , final String date_text , final String writer_name , final String selected_type) {
+      private void updateNewsPicDB(final String title_text , final String subject_text , final String date_text , final String writer_name , final String selected_type) {
 
             rotateLoading.start();
 
@@ -230,7 +228,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                         Uri downloadUri = task.getResult();
                         String news_Pic = downloadUri.toString();
 
-                        addNewsDB(news_Pic , title_text , supject_text , date_text , writer_name , selected_type);
+                        addNewsDB(news_Pic , title_text , subject_text , date_text , writer_name , selected_type);
 
                   }
             }).addOnFailureListener(new OnFailureListener() {
@@ -244,18 +242,20 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
       }
 
-      private void updateNewsDB(String exist_image , String title_text , String supject_text , String date_text , String writer_name , String selected_type) {
+      private void updateNewsDB(String exist_image , String title_text , String subject_text , String date_text , String writer_name , String selected_type) {
+            rotateLoading.start();
 
-            NewsModel newsModel = new NewsModel(exist_image , title_text , supject_text , date_text , writer_name , selected_type);
+            NewsModel newsModel = new NewsModel(exist_image , title_text , subject_text , date_text , writer_name , selected_type);
 
             databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(selected_type).child(KEY).setValue(newsModel);
             databaseReference.child(getString(R.string.User_news)).child(selected_type).child(KEY).setValue(newsModel);
 
+            rotateLoading.stop();
             onBackPressed();
 
       }
 
-      private void addNewaPicDB(final String titel , final String subject , final String date , final String writer , final String selected_type) {
+      private void addNewsPicDB(final String title , final String subject , final String date , final String writer , final String selected_type) {
 
             rotateLoading.start();
 
@@ -279,7 +279,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                         Uri downloadUri = task.getResult();
                         String news_Pic = downloadUri.toString();
 
-                        addNewsDB(news_Pic , titel , subject , date , writer , selected_type);
+                        addNewsDB(news_Pic , title , subject , date , writer , selected_type);
 
                   }
             }).addOnFailureListener(new OnFailureListener() {
@@ -293,13 +293,15 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
       }
 
-      private void addNewsDB(String news_pic , String titel , String subject , String date , String writer , String selected_type) {
+      private void addNewsDB(String news_pic , String title , String subject , String date , String writer , String selected_type) {
+            rotateLoading.start();
 
-            NewsModel newsModel = new NewsModel(news_pic , titel , subject , date , writer , selected_type);
+            NewsModel newsModel = new NewsModel(news_pic , title , subject , date , writer , selected_type);
             String key = databaseReference.child(getString(R.string.Admin_news)).push().getKey();
 
             databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(selected_type).child(key).setValue(newsModel);
             databaseReference.child(getString(R.string.User_news)).child(selected_type).child(key).setValue(newsModel);
+            rotateLoading.stop();
 
             onBackPressed();
 
@@ -350,7 +352,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
       }
 
 
-      public void reternData() {
+      public void returnData() {
 
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
             mDatabase.keepSynced(true);
@@ -375,7 +377,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                     });
       }
 
-      private void reternData(String key , String type) {
+      private void returnData(String key , String type) {
 
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
             mDatabase.keepSynced(true);

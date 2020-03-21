@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="@layout/app_bar_main">
 
@@ -9,6 +10,8 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg" />
+        android:background="@drawable/bg"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/navigation_graph"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

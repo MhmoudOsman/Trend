@@ -140,8 +140,7 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
 
             returnData();
 
-            Fragment news_fragment = new TrendAdminFragment();
-            loadFragment(news_fragment);
+            loadFragment(new TrendAdminFragment());
             getSupportActionBar().setTitle(getString(R.string.trends));
             navigationView.getMenu().getItem(0).setChecked(true);
 

@@ -323,7 +323,7 @@ public class JoinToUsActivity extends AppCompatActivity implements Validator.Val
 
       @Override
       public void onValidationFailed(List<ValidationError> errors) {
-
+            validated = false;
             for (ValidationError error : errors){
                   View view = error.getView();
                   String message = error.getCollatedErrorMessage(this);
