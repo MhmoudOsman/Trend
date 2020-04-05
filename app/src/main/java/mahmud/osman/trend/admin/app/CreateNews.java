@@ -31,24 +31,27 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.victor.loading.rotate.RotateLoading;
 
 import java.util.Calendar;
+import java.util.List;
 
-import mahmud.osman.trend.Models.ProfileModel;
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 
-public class CreateNews extends AppCompatActivity implements View.OnClickListener {
+public class CreateNews extends AppCompatActivity implements View.OnClickListener, Validator.ValidationListener {
 
       String selected_type;
       String exist_image;
-      String writer_name;
       String KEY, TYPE;
-      private EditText title, subject;
+      @NotEmpty
+      private EditText title, subject, writer;
       private Spinner type_spinner;
       private ImageView news_image;
       private RotateLoading rotateLoading;
@@ -60,9 +63,11 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
       private DatabaseReference databaseReference;
       private StorageReference storageReference;
       private Uri add_pic = null;
+      @NotEmpty
       private TextView date;
 
-
+      private Validator validator;
+      private Boolean isValid = false;
       @Override
       protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -76,6 +81,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
             title = findViewById(R.id.titel_news);
             subject = findViewById(R.id.subject_filed);
+            writer = findViewById(R.id.ed_writer);
             date = findViewById(R.id.date_pick);
             type_spinner = findViewById(R.id.chose_type);
             news_image = findViewById(R.id.image_news);
@@ -89,6 +95,8 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
             databaseReference = firebaseDatabase.getReference();
             storageReference = FirebaseStorage.getInstance().getReference().child("NewsPic");
 
+            validator = new Validator(this);
+            validator.setValidationListener(this);
             cancel_btn.setOnClickListener(this);
 
             news_image.setOnClickListener(this);
@@ -144,29 +152,30 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
       private void publishPost() {
 
 
-            if (KEY.equals("creat")) {
-                  returnData();
+            if (KEY.equals("create")) {
                   share_btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                              rotateLoading.start();
                               String title_text = title.getText().toString();
                               String subject_text = subject.getText().toString();
                               String date_text = date.getText().toString();
-
+                              String writer_name = writer.getText().toString();
+                              validator.validate();
+                              if (!isValid) {
+                                    return;
+                              }
                               if (selected_type.isEmpty() | selected_type.equals(getString(R.string.select_type))) {
                                     Toast.makeText(getApplicationContext() , getString(R.string.select_type) , Toast.LENGTH_SHORT).show();
-                                    rotateLoading.stop();
                                     return;
-
                               }
                               if (add_pic == null) {
                                     Toast.makeText(getApplicationContext() , "pleas add News Photo...!" , Toast.LENGTH_SHORT).show();
                                     return;
-                              } else {
-                                    addNewsPicDB(title_text , subject_text , date_text , writer_name , selected_type);
-                                    rotateLoading.start();
                               }
+                              rotateLoading.start();
+                              addNewsPicDB(title_text , subject_text , date_text , writer_name , selected_type);
+
 
                         }
                   });
@@ -181,14 +190,17 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                               String title_text = title.getText().toString();
                               String subject_text = subject.getText().toString();
                               String date_text = date.getText().toString();
-
+                              String writer_name = writer.getText().toString();
+                              validator.validate();
+                              if (!isValid) {
+                                    return;
+                              }
                               if (selected_type.isEmpty() | selected_type.equals(getString(R.string.select_type))) {
                                     Toast.makeText(getApplicationContext() , getString(R.string.select_type) , Toast.LENGTH_SHORT).show();
                                     return;
 
                               }
                               if (add_pic == null) {
-                                    Toast.makeText(getApplicationContext() , "pleas add News Photo...!" , Toast.LENGTH_SHORT).show();
 
                                     updateNewsDB(exist_image , title_text , subject_text , date_text , writer_name , selected_type);
 
@@ -228,7 +240,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                         Uri downloadUri = task.getResult();
                         String news_Pic = downloadUri.toString();
 
-                        addNewsDB(news_Pic , title_text , subject_text , date_text , writer_name , selected_type);
+                        updateNewsDB(news_Pic , title_text , subject_text , date_text , writer_name , selected_type);
 
                   }
             }).addOnFailureListener(new OnFailureListener() {
@@ -352,30 +364,6 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
       }
 
 
-      public void returnData() {
-
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-            mDatabase.keepSynced(true);
-
-            mDatabase.child("Admin").child(getUID()).addListenerForSingleValueEvent(
-                    new ValueEventListener() {
-                          @Override
-                          public void onDataChange(DataSnapshot dataSnapshot) {
-                                // Get user value
-                                ProfileModel profileModel = dataSnapshot.getValue(ProfileModel.class);
-
-                                writer_name = profileModel.getName();
-
-                          }
-
-                          @Override
-                          public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                Toast.makeText(getApplicationContext() , "can\'t fetch data" , Toast.LENGTH_SHORT).show();
-
-                          }
-                    });
-      }
 
       private void returnData(String key , String type) {
 
@@ -393,9 +381,10 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                         title.setText(newsModel.getTitl());
                         subject.setText(newsModel.getSubject());
                         date.setText(newsModel.getDate());
+                        writer.setText(newsModel.getWriter());
                         selected_type = newsModel.getType();
                         exist_image = newsModel.getImage_uri();
-                        writer_name = newsModel.getWriter();
+
                         Picasso.get().load(newsModel.getImage_uri())
                                 .placeholder(R.drawable.defult_pic)
                                 .error(R.drawable.defult_pic)
@@ -418,8 +407,25 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
       }
 
       @Override
-      public void onBackPressed() {
-            super.onBackPressed();
+      public void onValidationSucceeded() {
+            isValid = true;
       }
 
+      @Override
+      public void onValidationFailed(List<ValidationError> errors) {
+            isValid = false;
+            for (ValidationError error : errors) {
+                  View view = error.getView();
+                  String message = error.getCollatedErrorMessage(this);
+
+                  // Display error messages ;)
+                  if (view instanceof EditText) {
+                        ((EditText) view).setError(message);
+                  } else if (view instanceof TextView) {
+                        ((TextView) view).setError(message);
+                  }else {
+                        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                  }
+            }
+      }
 }

@@ -26,13 +26,11 @@
     <string name="photo" translatable="false">photo</string>
     <string name="title">Title</string>
     <string name="hint_of_subject">نبذه عن الموضوع</string>
-    <string name="writer_name">اسم الكاتب</string>
-    <string name="date">Date :</string>
+    <string name="writer_name">Writer Name</string>
     <string name="subject">Subject</string>
     <string name="share">Publish</string>
     <string name="select_type">Select The Type Of News</string>
     <string name="empty_pass">Please Enter Your Password</string>
-    <string name="less_than_8">Must be </string>
     <string name="invalid_pass">Use 8 or more characters with a mix of letters, numbers</string>
     <string name="empty_code">Please Enter Your Code</string>
     <string name="code_not_match">Your Code Not Match</string>

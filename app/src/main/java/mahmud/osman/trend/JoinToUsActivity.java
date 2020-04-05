@@ -182,9 +182,14 @@ public class JoinToUsActivity extends AppCompatActivity implements Validator.Val
                   @Override
                   public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
 
-                        boolean check = task.getResult().getSignInMethods().isEmpty();
-
-                        if (check) {
+                        boolean check = false;
+                        try {
+                              check = task.getResult().getSignInMethods().isEmpty();
+                        }catch (Exception e){
+                              Toast.makeText(JoinToUsActivity.this, "Check Internet Connection", Toast.LENGTH_LONG).show();
+                              rotateLoading.stop();
+                              return;
+                        }                        if (check) {
 
                               mAuth.createUserWithEmailAndPassword(email_text , pass_text).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                     @Override

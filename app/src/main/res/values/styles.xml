@@ -41,12 +41,6 @@
         <item name="android:fontFamily">@font/lemonada</item>
     </style>
 
-    <style name="ToolbarSubTitel" parent="TextAppearance.AppCompat.Title">
-        <item name="android:textSize">9sp</item>
-        <item name="android:textColor">@color/dark_whit</item>
-        <item name="android:fontFamily">@font/lemonada</item>
-    </style>
-
     <style name="HintTextRegister" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">@dimen/item</item>
         <item name="android:textColorHint">@color/dark_whit</item>

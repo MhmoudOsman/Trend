@@ -111,7 +111,7 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
                   public void onFabAnimationEnd() {
 
                         Intent intent = new Intent(AdminActivity.this , CreateNews.class);
-                        intent.putExtra("edit" , "creat");
+                        intent.putExtra("edit" , "create");
                         startActivityForResult(intent , REQUEST_CODE);
 
                   }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="date">التاريخ :</string>
     <string name="title">العنوان</string>
     <string name="cancel">ألغاء</string>
     <string name="enter_your_details">أدخل التفاصيل الخاصه بك</string>
@@ -29,7 +28,6 @@
     <string name="create_your_account">أنشئ حسابك</string>
     <string name="code">الرمز</string>
     <string name="empty_pass">الرجاء ادخال كلمة المرور</string>
-    <string name="less_than_8">يجب ان يكون علي الاقل 8 رموز</string>
     <string name="or">أو</string>
     <string name="invalid_pass">استخدام 8 أحرف أو أكثر باستعمال مزيج من الأحرف والأرقام</string>
     <string name="code_not_match">الرمز الخاص بك غير صحيح</string>

@@ -260,6 +260,18 @@ public class AdminNewsActivity extends AppCompatActivity {
       }
 
       @Override
+      protected void onStart() {
+            super.onStart();
+            returnData(KAY , TYPE);
+      }
+
+      @Override
+      protected void onResume() {
+            super.onResume();
+            returnData(KAY , TYPE);
+      }
+
+      @Override
       public void onBackPressed() {
             AdminNewsActivity.super.onBackPressed();
       }

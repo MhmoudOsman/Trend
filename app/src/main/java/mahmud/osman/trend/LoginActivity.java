@@ -30,6 +30,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Pattern;
 import com.squareup.picasso.Picasso;
@@ -37,6 +38,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.victor.loading.rotate.RotateLoading;
 
+import java.net.InetAddress;
 import java.util.List;
 
 import mahmud.osman.trend.Models.ProfileModel;
@@ -49,7 +51,7 @@ import mahmud.osman.trend.user.app.UserActivity;
 public class LoginActivity extends AppCompatActivity implements Validator.ValidationListener {
 
       @NotEmpty(messageResId = R.string.empty_email)
-      @Pattern(regex ="[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}\\@[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}(\\.[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25})+" ,messageResId = R.string.invalid_email)
+      @Email(messageResId = R.string.invalid_email)
       private TextInputLayout email;
       @NotEmpty(messageResId = R.string.empty_pass)
       private TextInputLayout pass;
@@ -111,7 +113,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
                         validator.validate();
                         if (validated) {
                               rotateLoading.start();
-                              mLogin();
+                                    mLogin();
                         }
                   }
             });
@@ -179,8 +181,14 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
                   @Override
                   public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
 
-                        boolean check = task.getResult().getSignInMethods().isEmpty();
-
+                        boolean check = false;
+                        try {
+                              check = task.getResult().getSignInMethods().isEmpty();
+                        }catch (Exception e){
+                              Toast.makeText(LoginActivity.this, "Check Internet Connection", Toast.LENGTH_LONG).show();
+                              rotateLoading.stop();
+                              return;
+                        }
                         if (check) {
 
                               mAuth.createUserWithEmailAndPassword(email_text , pass_text).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -263,37 +271,43 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
             email_text = email.getEditText().getText().toString();
             pass_text = pass.getEditText().getText().toString();
 
-            mAuth.fetchSignInMethodsForEmail(email_text).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                  @Override
-                  public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
 
-                        boolean check = task.getResult().getSignInMethods().isEmpty();
+                  mAuth.fetchSignInMethodsForEmail(email_text).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                              boolean check = false;
+                              try {
+                               check = task.getResult().getSignInMethods().isEmpty();
+                              }catch (Exception e) {
+                                    Toast.makeText(LoginActivity.this, "Check Internet Connection", Toast.LENGTH_LONG).show();
+                                    rotateLoading.stop();
+                                    return;
+                              }
+                              if (check) {
+                                    email.setError(getString(R.string.account_not_found));
+                                    rotateLoading.stop();
 
-                        if (check) {
-                              email.setError(getString(R.string.account_not_found));
-                              rotateLoading.stop();
+                              } else {
+                                    mAuth.signInWithEmailAndPassword(email_text , pass_text)
+                                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                  @Override
+                                                  public void onComplete(@NonNull Task<AuthResult> task) {
+                                                        if (task.isSuccessful()) {
 
-                        } else {
-                              mAuth.signInWithEmailAndPassword(email_text , pass_text)
-                                      .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                                  if (task.isSuccessful()) {
+                                                              updateUI(getUID());
 
-                                                        updateUI(getUID());
-
-                                                  } else {
-                                                        pass.setError(getString(R.string.wrong_pass));
-                                                        rotateLoading.stop();
+                                                        } else {
+                                                              pass.setError(getString(R.string.wrong_pass));
+                                                              rotateLoading.stop();
+                                                        }
                                                   }
-                                            }
-                                      });
+                                            });
+
+                              }
+
 
                         }
-
-
-                  }
-            });
+                  });
       }
 
       private void updateUI(final String id) {
@@ -388,6 +402,16 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
                   } else {
                         Toast.makeText(this , message , Toast.LENGTH_LONG).show();
                   }
+            }
+      }
+      public boolean isInternetAvailable() {
+            try {
+                  InetAddress ipAddr = InetAddress.getByName("google.com");
+                  //You can replace it with your name
+                  return !ipAddr.equals("Nma");
+
+            } catch (Exception e) {
+                  return false;
             }
       }
 }
