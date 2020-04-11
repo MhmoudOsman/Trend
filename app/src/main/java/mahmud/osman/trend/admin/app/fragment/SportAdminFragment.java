@@ -73,6 +73,7 @@ public class SportAdminFragment extends Fragment {
                     .child(getString(R.string.Admin_news))
                     .child(getUID())
                     .child(type)
+                    .orderByChild("date")
                     .limitToLast(10);
 
             FirebaseRecyclerOptions<NewsModel> options =

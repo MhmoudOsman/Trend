@@ -1,14 +1,15 @@
 package mahmud.osman.trend.Models;
 
 public class NewsModel {
-    private String image_uri, titl, subject, writer, date,type;
+    private String image_uri, title, subject, writer,type;
+    private Object date;
 
     public NewsModel() {
     }
 
-    public NewsModel(String image_uri, String titl, String subject, String date, String writer, String type) {
+    public NewsModel(String image_uri, String title, String subject, Object date, String writer, String type) {
         this.image_uri = image_uri;
-        this.titl = titl;
+        this.title = title;
         this.subject = subject;
         this.writer = writer;
         this.date = date;
@@ -23,12 +24,12 @@ public class NewsModel {
         this.image_uri = image_uri;
     }
 
-    public String getTitl() {
-        return titl;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitl(String titl) {
-        this.titl = titl;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getSubject() {
@@ -47,7 +48,7 @@ public class NewsModel {
         this.writer = writer;
     }
 
-    public String getDate() {
+    public Object getDate() {
         return date;
     }
 
@@ -59,7 +60,7 @@ public class NewsModel {
         this.type = type;
     }
 
-    public void setDate(String date) {
+    public void setDate(long date) {
         this.date = date;
     }
 }

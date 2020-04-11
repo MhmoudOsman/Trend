@@ -71,6 +71,7 @@ public class HealthUserFragment extends Fragment {
             Query query = databaseReference
                     .child(getString(R.string.User_news))
                     .child(getString(R.string.health))
+                    .orderByChild("date")
                     .limitToLast(10);
 
             FirebaseRecyclerOptions<NewsModel> options =

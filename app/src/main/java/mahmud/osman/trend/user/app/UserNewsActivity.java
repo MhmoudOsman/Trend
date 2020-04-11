@@ -122,8 +122,8 @@ public class UserNewsActivity extends AppCompatActivity {
 
                 NewsModel newsModel = dataSnapshot.getValue(NewsModel.class);
 
-                cl_title.setText(newsModel.getTitl());
-                ex_title.setText(newsModel.getTitl());
+                cl_title.setText(newsModel.getTitle());
+                ex_title.setText(newsModel.getTitle());
                 subject.setText(newsModel.getSubject());
                 Picasso.get()
                         .load(newsModel.getImage_uri())

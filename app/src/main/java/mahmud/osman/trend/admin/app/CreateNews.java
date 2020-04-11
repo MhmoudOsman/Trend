@@ -39,7 +39,9 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.victor.loading.rotate.RotateLoading;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import mahmud.osman.trend.Models.NewsModel;
@@ -47,9 +49,9 @@ import mahmud.osman.trend.R;
 
 public class CreateNews extends AppCompatActivity implements View.OnClickListener, Validator.ValidationListener {
 
-      String selected_type;
-      String exist_image;
-      String KEY, TYPE;
+      private String selected_type;
+      private String exist_image;
+      private String KEY, TYPE;
       @NotEmpty
       private EditText title, subject, writer;
       private Spinner type_spinner;
@@ -65,7 +67,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
       private Uri add_pic = null;
       @NotEmpty
       private TextView date;
-
+      private Object selected_date;
       private Validator validator;
       private Boolean isValid = false;
       @Override
@@ -139,12 +141,13 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                     new DatePickerDialog.OnDateSetListener() {
                           @Override
                           public void onDateSet(DatePicker view , int year , int month , int dayOfMonth) {
-                                month = month + 1;
-                                date.setText(dayOfMonth + " / " + month + " / " + year);
 
+                                selected_date = fieldToTimestamp(year,month,dayOfMonth);
+                                date.setText(timestampToDateString((long) selected_date));
 
                           }
                     } , year , month , day);
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
             datePickerDialog.show();
       }
 
@@ -174,7 +177,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                                     return;
                               }
                               rotateLoading.start();
-                              addNewsPicDB(title_text , subject_text , date_text , writer_name , selected_type);
+                              addNewsPicDB(title_text , subject_text , selected_date , writer_name , selected_type);
 
 
                         }
@@ -189,7 +192,6 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
                               String title_text = title.getText().toString();
                               String subject_text = subject.getText().toString();
-                              String date_text = date.getText().toString();
                               String writer_name = writer.getText().toString();
                               validator.validate();
                               if (!isValid) {
@@ -202,12 +204,12 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                               }
                               if (add_pic == null) {
 
-                                    updateNewsDB(exist_image , title_text , subject_text , date_text , writer_name , selected_type);
+                                    updateNewsDB(exist_image , title_text , subject_text , selected_date , writer_name , selected_type);
 
 
                               } else {
 
-                                    updateNewsPicDB(title_text , subject_text , date_text , writer_name , selected_type);
+                                    updateNewsPicDB(title_text , subject_text , selected_date , writer_name , selected_type);
                               }
                         }
                   });
@@ -216,7 +218,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
       }
 
-      private void updateNewsPicDB(final String title_text , final String subject_text , final String date_text , final String writer_name , final String selected_type) {
+      private void updateNewsPicDB(final String title_text , final String subject_text , final Object date_text , final String writer_name , final String selected_type) {
 
             rotateLoading.start();
 
@@ -254,7 +256,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
       }
 
-      private void updateNewsDB(String exist_image , String title_text , String subject_text , String date_text , String writer_name , String selected_type) {
+      private void updateNewsDB(String exist_image , String title_text , String subject_text , Object date_text , String writer_name , String selected_type) {
             rotateLoading.start();
 
             NewsModel newsModel = new NewsModel(exist_image , title_text , subject_text , date_text , writer_name , selected_type);
@@ -267,7 +269,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
       }
 
-      private void addNewsPicDB(final String title , final String subject , final String date , final String writer , final String selected_type) {
+      private void addNewsPicDB(final String title , final String subject , final Object date , final String writer , final String selected_type) {
 
             rotateLoading.start();
 
@@ -305,7 +307,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
       }
 
-      private void addNewsDB(String news_pic , String title , String subject , String date , String writer , String selected_type) {
+      private void addNewsDB(String news_pic , String title , String subject , Object date , String writer , String selected_type) {
             rotateLoading.start();
 
             NewsModel newsModel = new NewsModel(news_pic , title , subject , date , writer , selected_type);
@@ -378,9 +380,10 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
                         NewsModel newsModel = dataSnapshot.getValue(NewsModel.class);
 
-                        title.setText(newsModel.getTitl());
+                        title.setText(newsModel.getTitle());
                         subject.setText(newsModel.getSubject());
-                        date.setText(newsModel.getDate());
+                        selected_date = newsModel.getDate();
+                        date.setText(timestampToDateString((long)newsModel.getDate()));
                         writer.setText(newsModel.getWriter());
                         selected_type = newsModel.getType();
                         exist_image = newsModel.getImage_uri();
@@ -428,4 +431,17 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                   }
             }
       }
+      private long fieldToTimestamp(int year, int month, int day) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+            return  (calendar.getTimeInMillis() -1000);
+      }
+      public static String timestampToDateString(long timestamp){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Date date = new Date(timestamp);
+            return dateFormat.format(date);
+      }
+
 }

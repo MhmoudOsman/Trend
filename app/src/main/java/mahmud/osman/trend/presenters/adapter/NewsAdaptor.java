@@ -14,6 +14,9 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 import mahmud.osman.trend.admin.app.AdminNewsActivity;
@@ -55,10 +58,10 @@ public class NewsAdaptor extends FirebaseRecyclerAdapter<NewsModel, NewsHolders>
                     .error(R.drawable.defult_pic)
                     .into(newsHolders.item_image);
 
-            newsHolders.title.setText(newsModel.getTitl());
+            newsHolders.title.setText(newsModel.getTitle());
             newsHolders.subject.setText(newsModel.getSubject());
             newsHolders.writer.setText(newsModel.getWriter());
-            newsHolders.date.setText(newsModel.getDate());
+            newsHolders.date.setText(timestampToDateString((long)newsModel.getDate()));
 
             newsHolders.card_item.setOnClickListener(new View.OnClickListener() {
                   @Override
@@ -80,7 +83,11 @@ public class NewsAdaptor extends FirebaseRecyclerAdapter<NewsModel, NewsHolders>
             });
 
       }
-
+      public static String timestampToDateString(long timestamp){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Date date = new Date(timestamp);
+            return dateFormat.format(date);
+      }
       @NonNull
       @Override
       public NewsHolders onCreateViewHolder(@NonNull ViewGroup parent , int viewType) {

@@ -72,6 +72,7 @@ public class TrendAdminFragment extends Fragment {
                     .child(getString(R.string.Admin_news))
                     .child(getUID())
                     .child(getString(R.string.trends))
+                    .orderByChild("date")
                     .limitToLast(10);
 
 

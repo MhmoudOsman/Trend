@@ -69,6 +69,7 @@ public class SportUserFragment extends Fragment {
             Query query = databaseReference
                     .child(getString(R.string.User_news))
                     .child(getString(R.string.sport))
+                    .orderByChild("date")
                     .limitToLast(10);
 
             FirebaseRecyclerOptions<NewsModel> options =

@@ -70,6 +70,7 @@ public class ArtUserFragment extends Fragment {
             Query query = databaseReference
                     .child(getString(R.string.User_news))
                     .child(getString(R.string.art))
+                    .orderByChild("date")
                     .limitToLast(10);
 
             FirebaseRecyclerOptions<NewsModel> options =
