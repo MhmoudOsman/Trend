@@ -32,7 +32,6 @@ import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-import com.mobsandgeeks.saripaar.annotation.Pattern;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -41,8 +40,7 @@ import com.victor.loading.rotate.RotateLoading;
 import java.net.InetAddress;
 import java.util.List;
 
-import mahmud.osman.trend.Models.ProfileModel;
-
+import mahmud.osman.trend.Models.UserProfileModel;
 import mahmud.osman.trend.admin.app.AdminActivity;
 import mahmud.osman.trend.dialog.RegisterDialog;
 import mahmud.osman.trend.presenters.adapter.TextInputLayoutAdapter;
@@ -215,41 +213,51 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
       private void addUserPicDB(final String name , final String email) {
 
             rotateLoading.start();
-
-            UploadTask uploadTask;
-
-
             if (add_pic == null) {
-                  add_pic = Uri.parse("android.resource://mahmud.osman.trend/drawable/ic_user");
-            }
-            final StorageReference rf = storageReference.child("/UserPic" + add_pic.getLastPathSegment());
+                  addUserDB(name, email);
+            } else {
+                  UploadTask uploadTask;
+                  final StorageReference rf = storageReference.child("/UserPic" + add_pic.getLastPathSegment());
 
-            uploadTask = rf.putFile(add_pic);
+                  uploadTask = rf.putFile(add_pic);
 
-            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                  @Override
-                  public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (!task.isSuccessful()) {
-                              throw task.getException();
+                  Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                              if (!task.isSuccessful()) {
+                                    throw task.getException();
+                              }
+                              return rf.getDownloadUrl();
                         }
-                        return rf.getDownloadUrl();
-                  }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                  @Override
-                  public void onComplete(@NonNull Task<Uri> task) {
-                        Uri downloadUri = task.getResult();
-                        String user_Pic = downloadUri.toString();
+                  }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                              Uri downloadUri = task.getResult();
+                              String user_Pic = downloadUri.toString();
 
-                        addUserDB(user_Pic , name , email);
+                              addUserDB(user_Pic , name , email);
 
-                  }
-            }).addOnFailureListener(new OnFailureListener() {
-                  @Override
-                  public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext() , "Can't Upload Photo" , Toast.LENGTH_SHORT).show();
-                        rotateLoading.stop();
-                  }
-            });
+                        }
+                  }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                              Toast.makeText(getApplicationContext() , "Can't Upload Photo" , Toast.LENGTH_SHORT).show();
+                              rotateLoading.stop();
+                        }
+                  });
+
+            }
+      }
+
+      private void addUserDB(String name, String email) {
+            rotateLoading.start();
+
+            UserProfileModel userModel = new UserProfileModel(name, email);
+
+            databaseReference.child("Users").child(getUID()).setValue(userModel);
+
+            updateUI(getUID());
+            rotateLoading.stop();
 
       }
 
@@ -257,7 +265,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
             rotateLoading.start();
 
-            ProfileModel userModel = new ProfileModel(user_Pic , name , email);
+            UserProfileModel userModel = new UserProfileModel(user_Pic, name, email);
 
             databaseReference.child("Users").child(getUID()).setValue(userModel);
 

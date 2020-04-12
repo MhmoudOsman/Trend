@@ -218,41 +218,55 @@ public class JoinToUsActivity extends AppCompatActivity implements Validator.Val
 
             rotateLoading.start();
 
-            UploadTask uploadTask;
-
             if (add_pic == null) {
-                  add_pic = Uri.parse("android.resource://mahmud.osman.trend/drawable/ic_user");
-            }
+                  addUserDB(name, email, mobile);
+            } else {
+                  UploadTask uploadTask;
 
-            final StorageReference rf = storageReference.child("/AdminPic" + add_pic.getLastPathSegment());
+                  final StorageReference rf = storageReference.child("/AdminPic" + add_pic.getLastPathSegment());
 
-            uploadTask = rf.putFile(add_pic);
+                  uploadTask = rf.putFile(add_pic);
 
-            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                  @Override
-                  public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (!task.isSuccessful()) {
-                              throw task.getException();
+                  Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                              if (!task.isSuccessful()) {
+                                    throw task.getException();
+                              }
+                              return rf.getDownloadUrl();
                         }
-                        return rf.getDownloadUrl();
-                  }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                  @Override
-                  public void onComplete(@NonNull Task<Uri> task) {
-                        Uri downloadUri = task.getResult();
-                        String user_Pic = downloadUri.toString();
+                  }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                              Uri downloadUri = task.getResult();
+                              String user_Pic = downloadUri.toString();
 
-                        addUserDB(user_Pic , name , email , mobile);
+                              addUserDB(user_Pic, name, email, mobile);
 
-                  }
-            }).addOnFailureListener(new OnFailureListener() {
-                  @Override
-                  public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext() , "Can't Upload Photo" , Toast.LENGTH_SHORT).show();
-                        rotateLoading.stop();
+                        }
+                  }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                              Toast.makeText(getApplicationContext(), "Can't Upload Photo", Toast.LENGTH_SHORT).show();
+                              rotateLoading.stop();
 
-                  }
-            });
+                        }
+                  });
+
+            }
+      }
+
+      private void addUserDB(String name, String email, String mobile) {
+            rotateLoading.start();
+
+            ProfileModel profileModel = new ProfileModel(name, email, mobile);
+
+            databaseReference.child("Admin").child(getUID()).setValue(profileModel);
+
+            rotateLoading.stop();
+
+            Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+            startActivity(intent);
 
       }
 

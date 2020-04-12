@@ -8,7 +8,6 @@ public class ProfileModel {
     }
 
     public ProfileModel(String ImageUri, String Name, String Email, String Mobile) {
-
         this.imageUri = ImageUri;
         this.name = Name;
         this.email = Email;
@@ -16,10 +15,10 @@ public class ProfileModel {
 
     }
 
-    public ProfileModel(String imageUri , String name , String email) {
-        this.imageUri = imageUri;
+    public ProfileModel(String name, String email, String mobile) {
         this.name = name;
         this.email = email;
+        this.mobile = mobile;
     }
 
     public String getMobile() {

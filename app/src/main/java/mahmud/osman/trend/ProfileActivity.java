@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +32,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import mahmud.osman.trend.Models.ProfileModel;
+import mahmud.osman.trend.Models.UserProfileModel;
 import mahmud.osman.trend.dialog.EditDialog;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
@@ -63,7 +63,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             mAuth = FirebaseAuth.getInstance();
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference();
-            storageReference = FirebaseStorage.getInstance().getReference();
             databaseReference.keepSynced(true);
 
             tv_email = findViewById(R.id.tv_email);
@@ -210,12 +209,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             UploadTask uploadTask;
 
             if (add_pic == null) {
-                  add_pic = Uri.parse("android.resource://mahmud.osman.trend/drawable/ic_user");
+                  saveInfoDB(name,email,mobile);
             }
             if (profile.equals("Users")) {
+                  storageReference = FirebaseStorage.getInstance().getReference().child("user");
                   rf = storageReference.child("/UserPic" + add_pic.getLastPathSegment());
 
             } else {
+                  storageReference = FirebaseStorage.getInstance().getReference().child("admin");
                   rf = storageReference.child("/AdminPic" + add_pic.getLastPathSegment());
             }
             uploadTask = rf.putFile(add_pic);
@@ -250,13 +251,29 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
       private void saveInfoDB(String user_pic , String name , String email , String mobile) {
             if (profile.equals("Users")) {
 
-                  ProfileModel userModel = new ProfileModel(user_pic , name , email);
+                  UserProfileModel userModel = new UserProfileModel(user_pic, name, email);
 
                   databaseReference.child("Users").child(getUID()).setValue(userModel);
 
             } else {
 
                   ProfileModel profileModel = new ProfileModel(user_pic , name , email , mobile);
+
+                  databaseReference.child("Admin").child(getUID()).setValue(profileModel);
+
+            }
+      }
+
+      private void saveInfoDB(String name, String email, String mobile) {
+            if (profile.equals("Users")) {
+
+                  UserProfileModel userModel = new UserProfileModel(name, email);
+
+                  databaseReference.child("Users").child(getUID()).setValue(userModel);
+
+            } else {
+
+                  ProfileModel profileModel = new ProfileModel(name, email, mobile);
 
                   databaseReference.child("Admin").child(getUID()).setValue(profileModel);
 
