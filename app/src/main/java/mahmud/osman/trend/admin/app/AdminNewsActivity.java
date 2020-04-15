@@ -50,6 +50,9 @@ public class AdminNewsActivity extends AppCompatActivity {
 
             Bundle extra = getIntent().getExtras();
             Toolbar toolbar = findViewById(R.id.toolbar_collapsing);
+            databaseReference = FirebaseDatabase.getInstance().getReference();
+            databaseReference.keepSynced(true);
+
             news_image = findViewById(R.id.expand_image);
             subject = findViewById(R.id.subject_scroll);
             ex_title = findViewById(R.id.tv_title);
@@ -199,6 +202,8 @@ public class AdminNewsActivity extends AppCompatActivity {
                               public void onClick(View v) {
                                     databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(TYPE).child(KAY).removeValue();
                                     databaseReference.child(getString(R.string.User_news)).child(TYPE).child(KAY).removeValue();
+                                    databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(getString(R.string.trends)).child(KAY).removeValue();
+                                    databaseReference.child(getString(R.string.User_news)).child(getString(R.string.trends)).child(KAY).removeValue();
                                     deleteDialog.dismiss();
                                     onBackPressed();
                                     finish();
@@ -221,8 +226,6 @@ public class AdminNewsActivity extends AppCompatActivity {
 
       private void returnData(String key , String type) {
 
-            databaseReference = FirebaseDatabase.getInstance().getReference();
-            databaseReference.keepSynced(true);
             databaseReference.child(getString(R.string.Admin_news))
                     .child(getUID())
                     .child(type)
