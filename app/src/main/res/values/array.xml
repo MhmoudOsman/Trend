@@ -2,11 +2,9 @@
 <resources>
     <string-array name="type_of_news">
         <item>@string/select_type</item>
-        <item>@string/trends</item>
         <item>@string/health</item>
         <item>@string/education</item>
         <item>@string/sport</item>
-        <item>@string/prices</item>
         <item>@string/art</item>
     </string-array>
 </resources>

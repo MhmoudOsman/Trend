@@ -138,8 +138,18 @@ public class UserNewsActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        returnData(KAY, TYPE);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        returnData(KAY, TYPE);
     }
 
     @Override

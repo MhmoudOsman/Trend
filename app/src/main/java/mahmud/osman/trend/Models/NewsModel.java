@@ -1,13 +1,14 @@
 package mahmud.osman.trend.Models;
 
 public class NewsModel {
-    private String image_uri, title, subject, writer,type;
+    private String image_uri, title, subject, writer;
+    private int type;
     private Object date;
 
     public NewsModel() {
     }
 
-    public NewsModel(String image_uri, String title, String subject, Object date, String writer, String type) {
+    public NewsModel(String image_uri, String title, String subject, Object date, String writer, int type) {
         this.image_uri = image_uri;
         this.title = title;
         this.subject = subject;
@@ -52,11 +53,11 @@ public class NewsModel {
         return date;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 

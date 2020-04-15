@@ -50,6 +50,7 @@ import mahmud.osman.trend.R;
 public class CreateNews extends AppCompatActivity implements View.OnClickListener, Validator.ValidationListener {
 
       private String selected_type;
+      private int type_id;
       private String exist_image;
       private String KEY, TYPE;
       @NotEmpty
@@ -162,7 +163,6 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                               rotateLoading.start();
                               String title_text = title.getText().toString();
                               String subject_text = subject.getText().toString();
-                              String date_text = date.getText().toString();
                               String writer_name = writer.getText().toString();
                               validator.validate();
                               if (!isValid) {
@@ -177,7 +177,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                                     return;
                               }
                               rotateLoading.start();
-                              addNewsPicDB(title_text , subject_text , selected_date , writer_name , selected_type);
+                              addNewsPicDB(title_text , subject_text , selected_date , writer_name , selected_type,type_id);
 
 
                         }
@@ -204,12 +204,12 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                               }
                               if (add_pic == null) {
 
-                                    updateNewsDB(exist_image , title_text , subject_text , selected_date , writer_name , selected_type);
+                                    updateNewsDB(exist_image , title_text , subject_text , selected_date , writer_name , selected_type,type_id);
 
 
                               } else {
 
-                                    updateNewsPicDB(title_text , subject_text , selected_date , writer_name , selected_type);
+                                    updateNewsPicDB(title_text , subject_text , selected_date , writer_name , selected_type,type_id);
                               }
                         }
                   });
@@ -218,7 +218,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
       }
 
-      private void updateNewsPicDB(final String title_text , final String subject_text , final Object date_text , final String writer_name , final String selected_type) {
+      private void updateNewsPicDB(final String title_text, final String subject_text, final Object date_text, final String writer_name, final String selected_type, final int type_id) {
 
             rotateLoading.start();
 
@@ -242,7 +242,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                         Uri downloadUri = task.getResult();
                         String news_Pic = downloadUri.toString();
 
-                        updateNewsDB(news_Pic , title_text , subject_text , date_text , writer_name , selected_type);
+                        updateNewsDB(news_Pic , title_text , subject_text , date_text , writer_name , selected_type, type_id);
 
                   }
             }).addOnFailureListener(new OnFailureListener() {
@@ -256,20 +256,22 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
       }
 
-      private void updateNewsDB(String exist_image , String title_text , String subject_text , Object date_text , String writer_name , String selected_type) {
+      private void updateNewsDB(String exist_image, String title_text, String subject_text, Object date_text, String writer_name, String selected_type, int type_id) {
             rotateLoading.start();
 
-            NewsModel newsModel = new NewsModel(exist_image , title_text , subject_text , date_text , writer_name , selected_type);
+            NewsModel newsModel = new NewsModel(exist_image , title_text , subject_text , date_text , writer_name , type_id);
 
             databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(selected_type).child(KEY).setValue(newsModel);
             databaseReference.child(getString(R.string.User_news)).child(selected_type).child(KEY).setValue(newsModel);
+            databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child("ترندات").child(KEY).setValue(newsModel);
+            databaseReference.child(getString(R.string.User_news)).child("ترندات").child(KEY).setValue(newsModel);
 
             rotateLoading.stop();
             onBackPressed();
 
       }
 
-      private void addNewsPicDB(final String title , final String subject , final Object date , final String writer , final String selected_type) {
+      private void addNewsPicDB(final String title, final String subject, final Object date, final String writer, final String selected_type, final int type_id) {
 
             rotateLoading.start();
 
@@ -293,7 +295,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                         Uri downloadUri = task.getResult();
                         String news_Pic = downloadUri.toString();
 
-                        addNewsDB(news_Pic , title , subject , date , writer , selected_type);
+                        addNewsDB(news_Pic , title , subject , date , writer , selected_type,type_id);
 
                   }
             }).addOnFailureListener(new OnFailureListener() {
@@ -307,14 +309,17 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
       }
 
-      private void addNewsDB(String news_pic , String title , String subject , Object date , String writer , String selected_type) {
+      private void addNewsDB(String news_pic, String title, String subject, Object date, String writer, String selected_type, int type_id) {
             rotateLoading.start();
 
-            NewsModel newsModel = new NewsModel(news_pic , title , subject , date , writer , selected_type);
+            NewsModel newsModel = new NewsModel(news_pic , title , subject , date , writer , type_id);
             String key = databaseReference.child(getString(R.string.Admin_news)).push().getKey();
 
             databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(selected_type).child(key).setValue(newsModel);
             databaseReference.child(getString(R.string.User_news)).child(selected_type).child(key).setValue(newsModel);
+            databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child("ترندات").child(key).setValue(newsModel);
+            databaseReference.child(getString(R.string.User_news)).child("ترندات").child(key).setValue(newsModel);
+
             rotateLoading.stop();
 
             onBackPressed();
@@ -330,7 +335,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                   public void onItemSelected(AdapterView<?> parent , View view , int position , long id) {
 
                         selected_type = type_spinner.getSelectedItem().toString();
-
+                        type_id = type_spinner.getSelectedItemPosition();
 
                   }
 
@@ -385,7 +390,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                         selected_date = newsModel.getDate();
                         date.setText(timestampToDateString((long)newsModel.getDate()));
                         writer.setText(newsModel.getWriter());
-                        selected_type = newsModel.getType();
+                        type_spinner.setSelection(newsModel.getType());
                         exist_image = newsModel.getImage_uri();
 
                         Picasso.get().load(newsModel.getImage_uri())
