@@ -7,45 +7,45 @@
         <item name="colorAccent">@color/gold</item>
         <item name="actionMenuTextColor">@color/gold</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:fontFamily">@font/lemonada</item>
+        <item name="android:fontFamily">@font/calibri</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:statusBarColor">@color/transparent</item>
-        <item name="android:fontFamily">@font/lemonada</item>
+        <item name="android:fontFamily">@font/calibri</item>
     </style>
 
     <style name="CircularReveal" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:fontFamily">@font/lemonada</item>
+        <item name="android:fontFamily">@font/calibri</item>
     </style>
 
 
     <style name="ErrorText" parent="TextAppearance.Design.Error">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/red</item>
-        <item name="android:fontFamily">@font/lemonada</item>
+        <item name="android:fontFamily">@font/calibri</item>
     </style>
 
     <style name="HintTextLogin" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">@dimen/item</item>
         <item name="android:textColorHint">@color/dark_whit</item>
         <item name="android:textColor">@color/gold</item>
-        <item name="android:fontFamily">@font/lemonada</item>
+        <item name="android:fontFamily">@font/calibri</item>
     </style>
 
     <style name="ToolbarTitle" parent="TextAppearance.AppCompat.Title">
         <item name="android:textSize">@dimen/title_size</item>
         <item name="android:textColor">@color/gold</item>
-        <item name="android:fontFamily">@font/lemonada</item>
+        <item name="android:fontFamily">@font/calibri</item>
     </style>
 
     <style name="HintTextRegister" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">@dimen/item</item>
         <item name="android:textColorHint">@color/dark_whit</item>
         <item name="android:textColor">@color/background</item>
-        <item name="android:fontFamily">@font/lemonada</item>
+        <item name="android:fontFamily">@font/calibri</item>
     </style>
 
     <style name="collapsing_title" parent="@android:style/TextAppearance.Medium">
@@ -59,7 +59,7 @@
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:singleLine">true</item>
         <item name="android:marqueeRepeatLimit">marquee_forever</item>
-        <item name="android:fontFamily">@font/lemonada</item>
+        <item name="android:fontFamily">@font/calibri</item>
     </style>
 
     <style name="RippleStyleLight">

@@ -9,7 +9,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_pp"
-        android:layout_width="260dp"
+        android:layout_width="300dp"
         android:layout_height="190dp"
         android:layout_marginTop="150dp"
         app:cardCornerRadius="10dp"
@@ -44,7 +44,8 @@
             <TextView
                 android:id="@+id/tv_email"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
+                android:minHeight="30dp"
                 android:gravity="center"
                 android:textColor="@color/background"
                 android:textSize="@dimen/text_size"
@@ -100,6 +101,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginBottom="10dp"
+                android:gravity="start"
+                android:textAlignment="viewStart"
                 android:textColor="@color/background"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -173,6 +176,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="15dp"
                 android:layout_marginBottom="10dp"
+                android:gravity="start"
+                android:textAlignment="viewStart"
                 android:textColor="@color/background"
                 android:textSize="15sp"
                 android:textStyle="bold"

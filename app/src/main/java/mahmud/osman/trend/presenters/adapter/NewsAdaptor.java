@@ -60,7 +60,7 @@ public class NewsAdaptor extends FirebaseRecyclerAdapter<NewsModel, NewsHolders>
 
             newsHolders.title.setText(newsModel.getTitle());
             newsHolders.subject.setText(newsModel.getSubject());
-            newsHolders.writer.setText(newsModel.getWriter());
+            newsHolders.writer.setText("كتب : " + newsModel.getWriter());
             newsHolders.date.setText(timestampToDateString((long)newsModel.getDate()));
 
             newsHolders.card_item.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +84,7 @@ public class NewsAdaptor extends FirebaseRecyclerAdapter<NewsModel, NewsHolders>
 
       }
       public static String timestampToDateString(long timestamp){
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Date date = new Date(timestamp);
             return dateFormat.format(date);
       }

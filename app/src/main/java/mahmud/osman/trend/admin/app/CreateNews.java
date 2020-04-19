@@ -444,7 +444,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
             return  (calendar.getTimeInMillis() -1000);
       }
       public static String timestampToDateString(long timestamp){
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Date date = new Date(timestamp);
             return dateFormat.format(date);
       }

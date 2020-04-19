@@ -26,6 +26,9 @@ import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 import mahmud.osman.trend.dialog.DeleteDialog;
@@ -36,7 +39,7 @@ public class AdminNewsActivity extends AppCompatActivity {
       String KAY, TYPE;
       DeleteDialog deleteDialog;
       private ImageView news_image;
-      private TextView subject, ex_title, cl_title;
+      private TextView subject, ex_title, cl_title, writer, date;
       private SpeedDialView fab;
       private DatabaseReference databaseReference;
       private CardView card_title;
@@ -55,8 +58,11 @@ public class AdminNewsActivity extends AppCompatActivity {
 
             news_image = findViewById(R.id.expand_image);
             subject = findViewById(R.id.subject_scroll);
+            writer = findViewById(R.id.tv_writer);
+            date = findViewById(R.id.tv_date);
             ex_title = findViewById(R.id.tv_title);
             cl_title = findViewById(R.id.tb_title);
+
             fab = findViewById(R.id.fab);
             card_title = findViewById(R.id.cv_title);
 
@@ -239,6 +245,8 @@ public class AdminNewsActivity extends AppCompatActivity {
                                 ex_title.setText(newsModel.getTitle());
                                 cl_title.setText(newsModel.getTitle());
                                 subject.setText(newsModel.getSubject());
+                                writer.setText("كتب : "+newsModel.getWriter());
+                                date.setText(timestampToDateString((long)newsModel.getDate()));
                                 Picasso.get()
                                         .load(newsModel.getImage_uri())
                                         .placeholder(R.drawable.defult_pic)
@@ -272,6 +280,11 @@ public class AdminNewsActivity extends AppCompatActivity {
       protected void onResume() {
             super.onResume();
             returnData(KAY , TYPE);
+      }
+      public static String timestampToDateString(long timestamp){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = new Date(timestamp);
+            return dateFormat.format(date);
       }
 
       @Override
