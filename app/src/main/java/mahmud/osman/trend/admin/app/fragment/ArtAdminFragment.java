@@ -10,13 +10,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.victor.loading.rotate.RotateLoading;
 
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
@@ -25,7 +25,7 @@ import mahmud.osman.trend.presenters.adapter.NewsAdaptor;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ArtAdminFragment extends Fragment {
+public class ArtAdminFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
 
       View view;
@@ -35,8 +35,7 @@ public class ArtAdminFragment extends Fragment {
       private FirebaseAuth mAuth = FirebaseAuth.getInstance();
       private NewsAdaptor newsAdaptor;
       private RecyclerView recyclerView;
-      private LinearLayoutManager layoutManager;
-      private RotateLoading rotateLoading;
+      private SwipeRefreshLayout refreshLayout;
 
 
       @Override
@@ -44,7 +43,7 @@ public class ArtAdminFragment extends Fragment {
                                Bundle savedInstanceState) {
             view = inflater.inflate(R.layout.fragment_art_admin , container , false);
             recyclerView = view.findViewById(R.id.rv_art);
-            rotateLoading = view.findViewById(R.id.rl_art);
+            refreshLayout = view.findViewById(R.id.srl_art_admin);
             return view;
       }
 
@@ -53,24 +52,26 @@ public class ArtAdminFragment extends Fragment {
       public void onActivityCreated(@Nullable Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
 
-            rotateLoading.start();
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference();
             databaseReference.keepSynced(true);
 
+            recyclerView.setHasFixedSize(false);
 
-            layoutManager = new LinearLayoutManager(getContext() , LinearLayoutManager.VERTICAL , true);
-            layoutManager.setStackFromEnd(true);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(layoutManager);
+            refreshLayout.setColorSchemeResources(R.color.gold);
+            refreshLayout.setProgressBackgroundColorSchemeResource(R.color.background);
+            refreshLayout.setOnRefreshListener(this);
 
 
-            displayInterviewNews();
+            displayNews();
 
 
       }
 
-      private void displayInterviewNews() {
+      private void displayNews() {
+
+            refreshLayout.setRefreshing(true);
+
             String type = getString(R.string.art);
             Query query = databaseReference
                     .child(getString(R.string.Admin_news))
@@ -81,13 +82,15 @@ public class ArtAdminFragment extends Fragment {
 
             FirebaseRecyclerOptions<NewsModel> options =
                     new FirebaseRecyclerOptions.Builder<NewsModel>()
-                            .setQuery(query , NewsModel.class)
+                            .setQuery(query, NewsModel.class)
                             .build();
 
-            newsAdaptor = new NewsAdaptor(options , getContext() , type , getUID());
+            newsAdaptor = new NewsAdaptor(options, getContext(), type, getUID());
             recyclerView.setAdapter(newsAdaptor);
-            rotateLoading.stop();
 
+            refreshLayout.setRefreshing(false);
+
+            onLoadingSwipeRefresh();
 
       }
 
@@ -95,18 +98,20 @@ public class ArtAdminFragment extends Fragment {
       public void onStart() {
             super.onStart();
             if (newsAdaptor != null) {
+                  refreshLayout.setRefreshing(true);
                   newsAdaptor.startListening();
-
             }
+            refreshLayout.setRefreshing(false);
       }
 
       @Override
-      public void onStop() {
-            super.onStop();
+      public void onResume() {
+            super.onResume();
             if (newsAdaptor != null) {
+                  refreshLayout.setRefreshing(true);
                   newsAdaptor.startListening();
             }
-
+            refreshLayout.setRefreshing(false);
       }
 
       private String getUID() {
@@ -114,5 +119,20 @@ public class ArtAdminFragment extends Fragment {
             return id;
       }
 
+      private void onLoadingSwipeRefresh() {
+            refreshLayout.post(() -> {
+                  if (newsAdaptor != null) {
+                        newsAdaptor.startListening();
+                  }
+            });
+      }
 
+      @Override
+      public void onRefresh() {
+            if (newsAdaptor != null) {
+                  newsAdaptor.startListening();
+            }
+            refreshLayout.setRefreshing(false);
+
+      }
 }

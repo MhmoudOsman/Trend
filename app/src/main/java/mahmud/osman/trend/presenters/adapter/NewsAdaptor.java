@@ -19,6 +19,7 @@ import java.util.Date;
 
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
+import mahmud.osman.trend.Utils;
 import mahmud.osman.trend.admin.app.AdminNewsActivity;
 import mahmud.osman.trend.presenters.holders.NewsHolders;
 import mahmud.osman.trend.user.app.UserNewsActivity;
@@ -61,7 +62,7 @@ public class NewsAdaptor extends FirebaseRecyclerAdapter<NewsModel, NewsHolders>
             newsHolders.title.setText(newsModel.getTitle());
             newsHolders.subject.setText(newsModel.getSubject());
             newsHolders.writer.setText("كتب : " + newsModel.getWriter());
-            newsHolders.date.setText(timestampToDateString((long)newsModel.getDate()));
+            newsHolders.date.setText(Utils.timestampToDateString((long)newsModel.getDate()));
 
             newsHolders.card_item.setOnClickListener(new View.OnClickListener() {
                   @Override
@@ -82,11 +83,6 @@ public class NewsAdaptor extends FirebaseRecyclerAdapter<NewsModel, NewsHolders>
                   }
             });
 
-      }
-      public static String timestampToDateString(long timestamp){
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Date date = new Date(timestamp);
-            return dateFormat.format(date);
       }
       @NonNull
       @Override

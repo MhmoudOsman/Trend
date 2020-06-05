@@ -5,8 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +16,6 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.victor.loading.rotate.RotateLoading;
 
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
@@ -25,7 +24,7 @@ import mahmud.osman.trend.presenters.adapter.NewsAdaptor;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ArtUserFragment extends Fragment {
+public class ArtUserFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
       View view;
 
@@ -33,20 +32,15 @@ public class ArtUserFragment extends Fragment {
       private DatabaseReference databaseReference;
 
       private RecyclerView recyclerView;
-      private LinearLayoutManager layoutManager;
       private NewsAdaptor newsAdaptor;
-
-      RotateLoading rotateLoading;
+      private SwipeRefreshLayout refreshLayout;
 
       @Override
       public View onCreateView(LayoutInflater inflater , ViewGroup container ,
                                Bundle savedInstanceState) {
             view = inflater.inflate(R.layout.fragment_art_user , container , false);
             recyclerView = view.findViewById(R.id.rv_art_user);
-            rotateLoading = view.findViewById(R.id.rl_art_user);
-
-            rotateLoading.start();
-
+            refreshLayout = view.findViewById(R.id.srl_art_user);
             return view;
       }
 
@@ -57,16 +51,19 @@ public class ArtUserFragment extends Fragment {
             databaseReference = firebaseDatabase.getReference();
             databaseReference.keepSynced(true);
 
-            layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
-            layoutManager.setStackFromEnd(true);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setHasFixedSize(false);
 
-            displayInterviewNews();
+            refreshLayout.setColorSchemeResources(R.color.gold);
+            refreshLayout.setProgressBackgroundColorSchemeResource(R.color.background);
+            refreshLayout.setOnRefreshListener(this);
+
+            displayNews();
 
       }
 
-      private void displayInterviewNews() {
+      private void displayNews() {
+            refreshLayout.setRefreshing(true);
+
             Query query = databaseReference
                     .child(getString(R.string.User_news))
                     .child(getString(R.string.art))
@@ -81,7 +78,9 @@ public class ArtUserFragment extends Fragment {
             newsAdaptor = new NewsAdaptor(options,getContext(),getString(R.string.art));
 
             recyclerView.setAdapter(newsAdaptor);
-            rotateLoading.stop();
+            refreshLayout.setRefreshing(false);
+
+            onLoadingSwipeRefresh();
 
       }
 
@@ -94,12 +93,25 @@ public class ArtUserFragment extends Fragment {
       }
 
       @Override
-      public void onStop() {
-            super.onStop();
+      public void onResume() {
+            super.onResume();
             if (newsAdaptor != null) {
                   newsAdaptor.startListening();
             }
       }
 
+      private void onLoadingSwipeRefresh() {
+            refreshLayout.post(() -> {
+                  if (newsAdaptor != null) {
+                        newsAdaptor.startListening();
+                  }
+            });
+      }
 
-}
+      @Override
+      public void onRefresh() {
+            if (newsAdaptor != null) {
+                  newsAdaptor.startListening();
+            }
+            refreshLayout.setRefreshing(false);
+      }}

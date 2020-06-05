@@ -2,6 +2,7 @@ package mahmud.osman.trend.admin.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -29,16 +31,28 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import mahmud.osman.trend.LoginActivity;
+import mahmud.osman.trend.Models.CountryModel;
 import mahmud.osman.trend.Models.ProfileModel;
 import mahmud.osman.trend.ProfileActivity;
 import mahmud.osman.trend.R;
+import mahmud.osman.trend.Utils;
 import mahmud.osman.trend.admin.app.fragment.ArtAdminFragment;
 import mahmud.osman.trend.admin.app.fragment.EducationAdminFragment;
 import mahmud.osman.trend.admin.app.fragment.HealthAdminFragment;
 import mahmud.osman.trend.admin.app.fragment.SportAdminFragment;
 import mahmud.osman.trend.admin.app.fragment.TrendAdminFragment;
+import mahmud.osman.trend.api.ApiClient;
+import mahmud.osman.trend.api.Covid19ApiInterface;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class AdminActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -54,14 +68,12 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
       private FragmentTransaction fragmentTransaction;
       private SheetLayout sheetLayout;
 
-//      CircularReveal.Builder builder;
 
       //firebase
       FirebaseDatabase firebaseDatabase;
       DatabaseReference databaseReference;
       FirebaseStorage firebaseStorage;
       FirebaseAuth mAuth;
-
       private static final int REQUEST_CODE = 1;
 
 
@@ -80,6 +92,7 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_menu);
 
+
             mAuth = FirebaseAuth.getInstance();
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference();
@@ -95,49 +108,34 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
             name = view.findViewById(R.id.name_filed);
             profile_pic = view.findViewById(R.id.profile_image1);
             email = view.findViewById(R.id.email_filed);
-            view.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                        Intent intent = new Intent(AdminActivity.this , ProfileActivity.class);
-                        intent.putExtra("profile" , "Admin");
-                        startActivity(intent);
-                  }
+            view.setOnClickListener(v -> {
+                  Intent intent = new Intent(AdminActivity.this, ProfileActivity.class);
+                  intent.putExtra("profile", "Admin");
+                  startActivity(intent);
             });
 
             add_new = findViewById(R.id.add);
             sheetLayout.setFab(add_new);
-            sheetLayout.setFabAnimationEndListener(new SheetLayout.OnFabAnimationEndListener() {
-                  @Override
-                  public void onFabAnimationEnd() {
+            sheetLayout.setFabAnimationEndListener(() -> {
 
-                        Intent intent = new Intent(AdminActivity.this , CreateNews.class);
-                        intent.putExtra("edit" , "create");
-                        startActivityForResult(intent , REQUEST_CODE);
+                  Intent intent = new Intent(AdminActivity.this, CreateNews.class);
+                  intent.putExtra("edit", "create");
+                  startActivityForResult(intent, REQUEST_CODE);
 
-                  }
             });
 
 
-            add_new.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                        sheetLayout.expandFab();
-                  }
+            add_new.setOnClickListener(v -> sheetLayout.expandFab());
+
+            logout.setOnClickListener(v -> {
+
+                  FirebaseAuth.getInstance().signOut();
+
+                  Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
+                  intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                  startActivity(intent);
+
             });
-
-            logout.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-
-                        FirebaseAuth.getInstance().signOut();
-
-                        Intent intent = new Intent(AdminActivity.this , LoginActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-
-                  }
-            });
-
             returnData();
 
             loadFragment(new TrendAdminFragment());
@@ -145,6 +143,7 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
             navigationView.getMenu().getItem(0).setChecked(true);
 
       }
+
 
 
       private void loadFragment(Fragment fragment) {
@@ -261,4 +260,6 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
                   sheetLayout.contractFab();
             }
       }
+
+
 }

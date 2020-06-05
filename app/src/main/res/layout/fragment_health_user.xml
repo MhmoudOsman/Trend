@@ -1,38 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/srl_health_user"
     tools:context=".user.app.fragment.HealthUserFragment">
 
-
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_health_user"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/item" />
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_covid19_health_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                app:cardBackgroundColor="@android:color/background_dark"
+                app:cardCornerRadius="15dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="10dp">
 
 
-    <com.victor.loading.rotate.RotateLoading
-        android:id="@+id/rl_health_user"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:loading_color="@color/background"
-        app:loading_width="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/cases_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/deaths_layout"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="إجمالي الإصابات"
+                            android:textColor="@color/whit"
+                            android:textSize="@dimen/item" />
+
+                        <TextView
+                            android:id="@+id/tv_all_cases_health_user"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/covid_19_state_bar"
+                            android:backgroundTint="@color/red"
+                            android:backgroundTintMode="add"
+                            android:gravity="center"
+                            android:textColor="@color/red"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/deaths_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="@id/cases_layout"
+                        app:layout_constraintEnd_toStartOf="@id/reco_layout"
+                        app:layout_constraintStart_toEndOf="@id/cases_layout"
+                        app:layout_constraintTop_toTopOf="@id/cases_layout">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="إجمالي الوفيات"
+                            android:textColor="@color/whit"
+                            android:textSize="@dimen/item" />
+
+                        <TextView
+                            android:id="@+id/tv_all_deaths_health_user"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/covid_19_state_bar"
+                            android:backgroundTint="@android:color/holo_purple"
+                            android:backgroundTintMode="add"
+                            android:gravity="center"
+                            android:textColor="@android:color/holo_purple"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/reco_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="@id/deaths_layout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/deaths_layout"
+                        app:layout_constraintTop_toTopOf="@id/deaths_layout">
 
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="إجمالي المتعافين"
+                            android:textColor="@color/whit"
+                            android:textSize="@dimen/item" />
+
+                        <TextView
+                            android:id="@+id/tv_all_recovered_health_user"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/covid_19_state_bar"
+                            android:backgroundTint="@android:color/holo_green_light"
+                            android:backgroundTintMode="add"
+                            android:gravity="center"
+                            android:textColor="@android:color/holo_green_light"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_health_user"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:reverseLayout="true"
+                app:stackFromEnd="true"
+                tools:listitem="@layout/item" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

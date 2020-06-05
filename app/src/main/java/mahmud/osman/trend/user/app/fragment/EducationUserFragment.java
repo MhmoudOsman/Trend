@@ -10,41 +10,36 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.victor.loading.rotate.RotateLoading;
 
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 import mahmud.osman.trend.presenters.adapter.NewsAdaptor;
 
 
-public class EducationUserFragment extends Fragment {
+public class EducationUserFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
       View view;
 
       private FirebaseDatabase firebaseDatabase;
       private DatabaseReference databaseReference;
-
-      private RecyclerView recyclerView;
-      private LinearLayoutManager layoutManager;
       private NewsAdaptor newsAdaptor;
+      private RecyclerView recyclerView;
+      private SwipeRefreshLayout refreshLayout;
 
-      RotateLoading rotateLoading;
 
       @Nullable
       @Override
       public View onCreateView(@NonNull LayoutInflater inflater , @Nullable ViewGroup container , @Nullable Bundle savedInstanceState) {
             view = inflater.inflate(R.layout.fragment_education_user , container , false);
-
             recyclerView = view.findViewById(R.id.rv_edu_user);
-            rotateLoading = view.findViewById(R.id.rl_edu_user);
-
-            rotateLoading.start();
-
+            refreshLayout = view.findViewById(R.id.srl_edu_user);
             return view;
       }
 
@@ -55,16 +50,19 @@ public class EducationUserFragment extends Fragment {
             databaseReference = firebaseDatabase.getReference();
             databaseReference.keepSynced(true);
 
-            layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
-            layoutManager.setStackFromEnd(true);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setHasFixedSize(false);
 
-            displayInterviewNews();
+            refreshLayout.setColorSchemeResources(R.color.gold);
+            refreshLayout.setProgressBackgroundColorSchemeResource(R.color.background);
+            refreshLayout.setOnRefreshListener(this);
+
+            displayNews();
 
       }
 
-      private void displayInterviewNews() {
+      private void displayNews() {
+            refreshLayout.setRefreshing(true);
+
             Query query = databaseReference
                     .child(getString(R.string.User_news))
                     .child(getString(R.string.education))
@@ -79,7 +77,8 @@ public class EducationUserFragment extends Fragment {
             newsAdaptor = new NewsAdaptor(options,getContext(),getString(R.string.education));
 
             recyclerView.setAdapter(newsAdaptor);
-            rotateLoading.stop();
+            refreshLayout.setRefreshing(false);
+            onLoadingSwipeRefresh();
 
       }
 
@@ -92,12 +91,26 @@ public class EducationUserFragment extends Fragment {
       }
 
       @Override
-      public void onStop() {
-            super.onStop();
+      public void onResume() {
+            super.onResume();
             if (newsAdaptor != null) {
                   newsAdaptor.startListening();
             }
       }
 
 
-}
+      private void onLoadingSwipeRefresh() {
+            refreshLayout.post(() -> {
+                  if (newsAdaptor != null) {
+                        newsAdaptor.startListening();
+                  }
+            });
+      }
+
+      @Override
+      public void onRefresh() {
+            if (newsAdaptor != null) {
+                  newsAdaptor.startListening();
+            }
+            refreshLayout.setRefreshing(false);
+      }}
