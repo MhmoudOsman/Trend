@@ -51,7 +51,7 @@ public class ArtUserFragment extends Fragment implements SwipeRefreshLayout.OnRe
             databaseReference = firebaseDatabase.getReference();
             databaseReference.keepSynced(true);
 
-            recyclerView.setHasFixedSize(false);
+            recyclerView.setNestedScrollingEnabled(false);
 
             refreshLayout.setColorSchemeResources(R.color.gold);
             refreshLayout.setProgressBackgroundColorSchemeResource(R.color.background);
@@ -67,8 +67,7 @@ public class ArtUserFragment extends Fragment implements SwipeRefreshLayout.OnRe
             Query query = databaseReference
                     .child(getString(R.string.User_news))
                     .child(getString(R.string.art))
-                    .orderByChild("date")
-                    .limitToLast(10);
+                    .orderByChild("date");
 
             FirebaseRecyclerOptions<NewsModel> options =
                     new FirebaseRecyclerOptions.Builder<NewsModel>()

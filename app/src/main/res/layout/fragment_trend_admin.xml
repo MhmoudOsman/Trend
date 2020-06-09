@@ -9,10 +9,11 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:fillViewport="true"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <LinearLayout
+            android:id="@+id/ll_nested"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -21,6 +22,7 @@
                 android:id="@+id/cv_covid19_trend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="true"
                 android:focusableInTouchMode="true"
                 app:cardBackgroundColor="@android:color/background_dark"
                 app:cardCornerRadius="15dp"
@@ -53,8 +55,8 @@
 
                         <TextView
                             android:id="@+id/tv_all_cases_trend"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:background="@drawable/covid_19_state_bar"
                             android:backgroundTint="@color/red"
@@ -85,8 +87,8 @@
 
                         <TextView
                             android:id="@+id/tv_all_deaths_trend"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:background="@drawable/covid_19_state_bar"
                             android:backgroundTint="@android:color/holo_purple"
@@ -118,8 +120,8 @@
 
                         <TextView
                             android:id="@+id/tv_all_recovered_trend"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:background="@drawable/covid_19_state_bar"
                             android:backgroundTint="@android:color/holo_green_light"
@@ -137,10 +139,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_trend"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:reverseLayout="true"
-                app:stackFromEnd="true"
+                app:stackFromEnd="false"
                 tools:listitem="@layout/item" />
 
         </LinearLayout>

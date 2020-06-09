@@ -12,7 +12,7 @@
 <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="5dp"
     android:layout_marginTop="40dp"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
@@ -32,9 +32,9 @@
             android:id="@+id/tv_writer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="@dimen/text_margin"
+            android:layout_marginTop="@dimen/text_margin"
+            android:layout_marginEnd="@dimen/text_margin"
             android:layout_marginBottom="5dp"
             android:gravity="center"
             android:minHeight="20dp"
@@ -47,8 +47,8 @@
             android:id="@+id/tv_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="@dimen/text_margin"
+            android:layout_marginEnd="@dimen/text_margin"
             android:gravity="center"
             android:minHeight="20dp"
             android:textAlignment="viewEnd"
@@ -70,6 +70,14 @@
             android:textStyle="bold"
             app:autoSizeTextType="uniform"
             tools:ignore="RtlCompat" />
+
+        <fragment
+            android:id="@+id/youtube_player"
+            android:name="com.google.android.youtube.player.YouTubePlayerFragment"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="@dimen/text_margin" />
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

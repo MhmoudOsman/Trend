@@ -14,6 +14,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.victor.loading.rotate.RotateLoading;
 
 import java.security.Key;
 
@@ -26,6 +27,7 @@ public class NewsHolders extends RecyclerView.ViewHolder  {
     public ImageView item_image;
     public TextView title, subject, writer,date;
     public MaterialRippleLayout card_item;
+    public RotateLoading loading;
 
     public NewsHolders(@NonNull View itemView) {
         super(itemView);
@@ -37,5 +39,6 @@ public class NewsHolders extends RecyclerView.ViewHolder  {
         writer = itemView.findViewById(R.id.item_writer);
         date = itemView.findViewById(R.id.item_date);
         card_item = itemView.findViewById(R.id.item_click);
+        loading = itemView.findViewById(R.id.loading_image);
     }
 }

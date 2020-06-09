@@ -50,7 +50,7 @@ public class EducationUserFragment extends Fragment implements SwipeRefreshLayou
             databaseReference = firebaseDatabase.getReference();
             databaseReference.keepSynced(true);
 
-            recyclerView.setHasFixedSize(false);
+            recyclerView.setNestedScrollingEnabled(false);
 
             refreshLayout.setColorSchemeResources(R.color.gold);
             refreshLayout.setProgressBackgroundColorSchemeResource(R.color.background);
@@ -66,8 +66,7 @@ public class EducationUserFragment extends Fragment implements SwipeRefreshLayou
             Query query = databaseReference
                     .child(getString(R.string.User_news))
                     .child(getString(R.string.education))
-                    .orderByChild("date")
-                    .limitToLast(10);
+                    .orderByChild("date");
 
             FirebaseRecyclerOptions<NewsModel> options =
                     new FirebaseRecyclerOptions.Builder<NewsModel>()

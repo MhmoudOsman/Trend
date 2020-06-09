@@ -57,13 +57,10 @@ public class RegisterDialog extends Dialog implements Validator.ValidationListen
 
             validator = new Validator(this);
             validator.registerAdapter(TextInputLayout.class , new TextInputLayoutAdapter());
-            validator.setViewValidatedAction(new Validator.ViewValidatedAction() {
-                  @Override
-                  public void onAllRulesPassed(View view) {
-                        if (view instanceof TextInputLayout) {
-                              ((TextInputLayout) view).setError("");
-                              ((TextInputLayout) view).setErrorEnabled(false);
-                        }
+            validator.setViewValidatedAction(view -> {
+                  if (view instanceof TextInputLayout) {
+                        ((TextInputLayout) view).setError("");
+                        ((TextInputLayout) view).setErrorEnabled(false);
                   }
             });
             validator.setValidationListener(this);

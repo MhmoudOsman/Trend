@@ -46,6 +46,8 @@ import mahmud.osman.trend.dialog.RegisterDialog;
 import mahmud.osman.trend.presenters.adapter.TextInputLayoutAdapter;
 import mahmud.osman.trend.user.app.UserActivity;
 
+import static mahmud.osman.trend.Utils.getUID;
+
 public class LoginActivity extends AppCompatActivity implements Validator.ValidationListener {
 
       @NotEmpty(messageResId = R.string.empty_email)
@@ -105,66 +107,38 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
             });
             validator.setValidationListener(this);
 
-            login_btn.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                        validator.validate();
-                        if (validated) {
-                              rotateLoading.start();
-                                    mLogin();
-                        }
+            login_btn.setOnClickListener(v -> {
+                  validator.validate();
+                  if (validated) {
+                        rotateLoading.start();
+                              mLogin();
                   }
             });
 
-            register_ben.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                        openDialog();
-                  }
-            });
+            register_ben.setOnClickListener(v -> openDialog());
 
-            join_to_us.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                        startActivity(new Intent(LoginActivity.this,JoinToUsActivity.class));
-                  }
-            });
+            join_to_us.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this,JoinToUsActivity.class)));
 
       }
 
 
       private void openDialog() {
             dialog = new RegisterDialog(this);
-            dialog.create_btn.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                        dialog.getValidator().validate();
-                        if (dialog.isValidated()) {
-                              rotateLoading.start();
-                              mRegister();
-                        }
+            dialog.create_btn.setOnClickListener(v -> {
+                  dialog.getValidator().validate();
+                  if (dialog.isValidated()) {
+                        rotateLoading.start();
+                        mRegister();
                   }
             });
 
-            dialog.cancel_btn.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                        dialog.dismiss();
-                  }
-            });
+            dialog.cancel_btn.setOnClickListener(v -> dialog.dismiss());
 
-            dialog.profile_pic.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-
-                        CropImage.activity()
-                                .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-                                .setAspectRatio(1080 , 1080)
-                                .setAutoZoomEnabled(true)
-                                .start(LoginActivity.this);
-
-                  }
-            });
+            dialog.profile_pic.setOnClickListener(v -> CropImage.activity()
+                    .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
+                    .setAspectRatio(1080 , 1080)
+                    .setAutoZoomEnabled(true)
+                    .start(LoginActivity.this));
 
             dialog.show();
       }
@@ -175,37 +149,31 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
             email_text = dialog.getEmail_reg().getEditText().getText().toString();
             pass_text = dialog.getPass_reg().getEditText().getText().toString();
 
-            mAuth.fetchSignInMethodsForEmail(email_text).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                  @Override
-                  public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+            mAuth.fetchSignInMethodsForEmail(email_text).addOnCompleteListener(task -> {
 
-                        boolean check = false;
-                        try {
-                              check = task.getResult().getSignInMethods().isEmpty();
-                        }catch (Exception e){
-                              Toast.makeText(LoginActivity.this, "Check Internet Connection", Toast.LENGTH_LONG).show();
-                              rotateLoading.stop();
-                              return;
-                        }
-                        if (check) {
-
-                              mAuth.createUserWithEmailAndPassword(email_text , pass_text).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                          if (task.isSuccessful()) {
-
-                                                addUserPicDB(name_text , email_text);
-
-                                          }
-                                    }
-                              });
-
-                        } else {
-                              dialog.getEmail_reg().setError(getString(R.string.tacked_email));
-                        }
-
-
+                  boolean check = false;
+                  try {
+                        check = task.getResult().getSignInMethods().isEmpty();
+                  }catch (Exception e){
+                        Toast.makeText(LoginActivity.this, "Check Internet Connection", Toast.LENGTH_LONG).show();
+                        rotateLoading.stop();
+                        return;
                   }
+                  if (check) {
+
+                        mAuth.createUserWithEmailAndPassword(email_text , pass_text).addOnCompleteListener(task1 -> {
+                              if (task1.isSuccessful()) {
+
+                                    addUserPicDB(name_text , email_text);
+
+                              }
+                        });
+
+                  } else {
+                        dialog.getEmail_reg().setError(getString(R.string.tacked_email));
+                  }
+
+
             });
 
       }
@@ -214,39 +182,37 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
             rotateLoading.start();
             if (add_pic == null) {
-                  addUserDB(name, email);
+                  addUserDB(new UserProfileModel(name, email));
             } else {
                   UploadTask uploadTask;
                   final StorageReference rf = storageReference.child("/UserPic" + add_pic.getLastPathSegment());
 
                   uploadTask = rf.putFile(add_pic);
 
-                  Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                        @Override
-                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                              if (!task.isSuccessful()) {
-                                    throw task.getException();
-                              }
-                              return rf.getDownloadUrl();
+                  uploadTask.continueWithTask(task -> {
+                        if (!task.isSuccessful()) {
+                              throw task.getException();
                         }
-                  }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                              Uri downloadUri = task.getResult();
-                              String user_Pic = downloadUri.toString();
+                        return rf.getDownloadUrl();
+                  }).addOnCompleteListener(task -> {
+                        Uri downloadUri = task.getResult();
+                        String user_Pic = downloadUri.toString();
 
-                              addUserDB(user_Pic , name , email);
+                        addUserDB( new UserProfileModel(user_Pic, name, email));
 
-                        }
-                  }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                              Toast.makeText(getApplicationContext() , "Can't Upload Photo" , Toast.LENGTH_SHORT).show();
-                              rotateLoading.stop();
-                        }
+                  }).addOnFailureListener(e -> {
+                        Toast.makeText(getApplicationContext(), "Can't Upload Photo", Toast.LENGTH_SHORT).show();
+                        rotateLoading.stop();
                   });
 
             }
+      }
+
+      private void addUserDB(UserProfileModel userProfileModel) {
+
+            databaseReference.child("Users").child(getUID()).setValue(userProfileModel);
+            updateUI(getUID());
+            rotateLoading.stop();
       }
 
       private void addUserDB(String name, String email) {
@@ -261,18 +227,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
       }
 
-      private void addUserDB(String user_Pic , String name , String email) {
-
-            rotateLoading.start();
-
-            UserProfileModel userModel = new UserProfileModel(user_Pic, name, email);
-
-            databaseReference.child("Users").child(getUID()).setValue(userModel);
-
-            updateUI(getUID());
-            rotateLoading.stop();
-
-      }
 
       private void mLogin() {
 
@@ -280,41 +234,35 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
             pass_text = pass.getEditText().getText().toString();
 
 
-                  mAuth.fetchSignInMethodsForEmail(email_text).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                              boolean check = false;
-                              try {
-                               check = task.getResult().getSignInMethods().isEmpty();
-                              }catch (Exception e) {
-                                    Toast.makeText(LoginActivity.this, "Check Internet Connection", Toast.LENGTH_LONG).show();
-                                    rotateLoading.stop();
-                                    return;
-                              }
-                              if (check) {
-                                    email.setError(getString(R.string.account_not_found));
-                                    rotateLoading.stop();
+                  mAuth.fetchSignInMethodsForEmail(email_text).addOnCompleteListener(task -> {
+                        boolean check = false;
+                        try {
+                         check = task.getResult().getSignInMethods().isEmpty();
+                        }catch (Exception e) {
+                              Toast.makeText(LoginActivity.this, "Check Internet Connection", Toast.LENGTH_LONG).show();
+                              rotateLoading.stop();
+                              return;
+                        }
+                        if (check) {
+                              email.setError(getString(R.string.account_not_found));
+                              rotateLoading.stop();
 
-                              } else {
-                                    mAuth.signInWithEmailAndPassword(email_text , pass_text)
-                                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                  @Override
-                                                  public void onComplete(@NonNull Task<AuthResult> task) {
-                                                        if (task.isSuccessful()) {
+                        } else {
+                              mAuth.signInWithEmailAndPassword(email_text , pass_text)
+                                      .addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()) {
 
-                                                              updateUI(getUID());
+                                                  updateUI(getUID());
 
-                                                        } else {
-                                                              pass.setError(getString(R.string.wrong_pass));
-                                                              rotateLoading.stop();
-                                                        }
-                                                  }
-                                            });
-
-                              }
-
+                                            } else {
+                                                  pass.setError(getString(R.string.wrong_pass));
+                                                  rotateLoading.stop();
+                                            }
+                                      });
 
                         }
+
+
                   });
       }
 
@@ -383,10 +331,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
       }
 
 
-      private String getUID() {
-            String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            return id;
-      }
 
       @Override
       public void onBackPressed() {
@@ -410,16 +354,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
                   } else {
                         Toast.makeText(this , message , Toast.LENGTH_LONG).show();
                   }
-            }
-      }
-      public boolean isInternetAvailable() {
-            try {
-                  InetAddress ipAddr = InetAddress.getByName("google.com");
-                  //You can replace it with your name
-                  return !ipAddr.equals("Nma");
-
-            } catch (Exception e) {
-                  return false;
             }
       }
 }

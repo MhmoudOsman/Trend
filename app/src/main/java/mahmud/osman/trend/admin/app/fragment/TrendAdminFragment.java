@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -26,6 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import mahmud.osman.trend.Covid19Fragment;
 import mahmud.osman.trend.Models.CountryModel;
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
@@ -35,6 +38,8 @@ import mahmud.osman.trend.presenters.adapter.NewsAdaptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static mahmud.osman.trend.Utils.getUID;
 
 
 public class TrendAdminFragment extends Fragment implements Callback<CountryModel>, SwipeRefreshLayout.OnRefreshListener {
@@ -76,7 +81,11 @@ public class TrendAdminFragment extends Fragment implements Callback<CountryMode
         refreshLayout.setProgressBackgroundColorSchemeResource(R.color.background);
         refreshLayout.setOnRefreshListener(this);
         covid19_card.setOnClickListener(v -> {
-
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, new Covid19Fragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
         displayNews();
 
@@ -89,6 +98,7 @@ public class TrendAdminFragment extends Fragment implements Callback<CountryMode
             }
             loudCovid(false);
         });
+        refreshLayout.setRefreshing(false);
     }
 
     private void loudCovid(boolean b) {
@@ -102,9 +112,7 @@ public class TrendAdminFragment extends Fragment implements Callback<CountryMode
                 .child(getString(R.string.Admin_news))
                 .child(getUID())
                 .child(getString(R.string.trends))
-                .orderByChild("date")
-                .limitToLast(10);
-
+                .orderByChild("date");
 
         FirebaseRecyclerOptions<NewsModel> options =
                 new FirebaseRecyclerOptions.Builder<NewsModel>()
@@ -113,7 +121,6 @@ public class TrendAdminFragment extends Fragment implements Callback<CountryMode
 
         newsAdaptor = new NewsAdaptor(options, getContext(), getString(R.string.trends), getUID());
         recyclerView.setAdapter(newsAdaptor);
-        refreshLayout.setRefreshing(false);
 
         onLoadingSwipeRefresh();
     }
@@ -143,28 +150,14 @@ public class TrendAdminFragment extends Fragment implements Callback<CountryMode
     }
 
 
-    private String getUID() {
-        String id = mAuth.getCurrentUser().getUid();
-        return id;
-    }
-
     @Override
     public void onResponse(Call<CountryModel> call, Response<CountryModel> response) {
         if (response.isSuccessful() && response.body().getTodayCases() != 0) {
             CountryModel model = response.body();
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("E, dd-MMM-yyyy ", new Locale("ar"));
-            Date date = new Date(model.getUpdated());
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-            calendar.add(Calendar.DATE, -1);
-//                  updated_at.setText("اخر تحديث : " +dateFormat.format(calendar.getTime()) );
-//                  new_cases.setText(String.valueOf(model.getTodayCases()));
             all_cases.setText(String.valueOf(model.getCases()));
-//                  new_deaths.setText(String.valueOf(model.getTodayDeaths()));
             all_deaths.setText(String.valueOf(model.getDeaths()));
-//                  active_cases.setText(String.valueOf(model.getActive()));
             all_recovered.setText(String.valueOf(model.getRecovered()));
+
         } else {
             loudCovid(true);
         }

@@ -58,5 +58,6 @@
     <string name="delete">Delete</string>
     <string name="invalid_name">Use Alphabet Letters Only</string>
     <string name="join">Join</string>
+    <string name="add_youtube_video_link">Add YouTube Video Link ?</string>
 
 </resources>

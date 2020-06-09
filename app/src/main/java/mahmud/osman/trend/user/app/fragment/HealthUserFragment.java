@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -20,11 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
+import mahmud.osman.trend.Covid19Fragment;
 import mahmud.osman.trend.Models.CountryModel;
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
@@ -81,7 +79,11 @@ public class HealthUserFragment extends Fragment implements SwipeRefreshLayout.O
             refreshLayout.setOnRefreshListener(this);
 
             covid19_card.setOnClickListener(v -> {
-
+                  FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                  FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                  fragmentTransaction.replace(R.id.fragment_container, new Covid19Fragment());
+                  fragmentTransaction.addToBackStack(null);
+                  fragmentTransaction.commit();
             });
 
             displayNews();
@@ -95,6 +97,7 @@ public class HealthUserFragment extends Fragment implements SwipeRefreshLayout.O
                   }
                   loudCovid(false);
             });
+            refreshLayout.setRefreshing(false);
       }
 
       private void loudCovid(boolean b) {
@@ -108,8 +111,7 @@ public class HealthUserFragment extends Fragment implements SwipeRefreshLayout.O
             Query query = databaseReference
                     .child(getString(R.string.User_news))
                     .child(getString(R.string.health))
-                    .orderByChild("date")
-                    .limitToLast(10);
+                    .orderByChild("date");
 
             FirebaseRecyclerOptions<NewsModel> options =
                     new FirebaseRecyclerOptions.Builder<NewsModel>()
@@ -117,8 +119,6 @@ public class HealthUserFragment extends Fragment implements SwipeRefreshLayout.O
                             .build();
             newsAdaptor = new NewsAdaptor(options, getContext(), getString(R.string.health));
             recyclerView.setAdapter(newsAdaptor);
-
-            refreshLayout.setRefreshing(false);
 
             onLoadingSwipeRefresh();
       }
@@ -143,18 +143,8 @@ public class HealthUserFragment extends Fragment implements SwipeRefreshLayout.O
       public void onResponse(Call<CountryModel> call, Response<CountryModel> response) {
             if (response.isSuccessful() && response.body().getTodayCases() != 0) {
                   CountryModel model = response.body();
-
-                  SimpleDateFormat dateFormat = new SimpleDateFormat("E, dd-MMM-yyyy ", new Locale("ar"));
-                  Date date = new Date(model.getUpdated());
-                  Calendar calendar = Calendar.getInstance();
-                  calendar.setTime(date);
-                  calendar.add(Calendar.DATE, -1);
-//                  updated_at.setText("اخر تحديث : " +dateFormat.format(calendar.getTime()) );
-//                  new_cases.setText(String.valueOf(model.getTodayCases()));
                   all_cases.setText(String.valueOf(model.getCases()));
-//                  new_deaths.setText(String.valueOf(model.getTodayDeaths()));
                   all_deaths.setText(String.valueOf(model.getDeaths()));
-//                  active_cases.setText(String.valueOf(model.getActive()));
                   all_recovered.setText(String.valueOf(model.getRecovered()));
             } else {
                   loudCovid(true);

@@ -7,15 +7,18 @@
     android:id="@+id/srl_sport_admin"
     tools:context=".admin.app.fragment.SportAdminFragment">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_sport"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:reverseLayout="true"
-        app:stackFromEnd="true"
+        app:stackFromEnd="false"
         tools:listitem="@layout/item" />
 
-
+    </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

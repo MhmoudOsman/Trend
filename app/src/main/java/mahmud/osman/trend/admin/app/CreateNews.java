@@ -5,10 +5,11 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.DatePicker;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -17,10 +18,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -39,14 +38,15 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.victor.loading.rotate.RotateLoading;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
-import mahmud.osman.trend.Utils;
+
+import static mahmud.osman.trend.Utils.fieldToTimestamp;
+import static mahmud.osman.trend.Utils.getUID;
+import static mahmud.osman.trend.Utils.timestampToDateString;
 
 public class CreateNews extends AppCompatActivity implements View.OnClickListener, Validator.ValidationListener {
 
@@ -55,7 +55,12 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
       private String exist_image;
       private String KEY, TYPE;
       @NotEmpty
-      private EditText title, subject, writer;
+      private EditText title, writer;
+      private EditText subject;
+      private EditText youtube_link;
+
+      private CardView link_card;
+      private CheckBox yt_cb;
       private Spinner type_spinner;
       private ImageView news_image;
       private RotateLoading rotateLoading;
@@ -92,7 +97,9 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
             share_btn = findViewById(R.id.add_btn);
             cancel_btn = findViewById(R.id.cancel_btn);
             rotateLoading = findViewById(R.id.rl_trend);
-
+            youtube_link = findViewById(R.id.ed_youtube_link);
+            yt_cb = findViewById(R.id.cb_video_link);
+            link_card = findViewById(R.id.cv_youtube_link);
             //firebase
             mAuth = FirebaseAuth.getInstance();
             firebaseDatabase = FirebaseDatabase.getInstance();
@@ -101,37 +108,26 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
             validator = new Validator(this);
             validator.setValidationListener(this);
+
             cancel_btn.setOnClickListener(this);
-
             news_image.setOnClickListener(this);
-
             date.setOnClickListener(this);
 
-
             publishPost();
-
             selectSpinner();
-
-
+            linkYoutubeActive();
       }
 
-
-      @Override
-      public void onClick(View v) {
-            switch (v.getId()) {
-                  case R.id.cancel_btn:
-                        onBackPressed();
-                        break;
-                  case R.id.image_news:
-                        CropImage.activity()
-                                .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-                                .setAutoZoomEnabled(true)
-                                .start(CreateNews.this);
-                        break;
-                  case R.id.date_pick:
-                        openDateDialog();
-
-            }
+      private void linkYoutubeActive() {
+            yt_cb.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                  if (isChecked) {
+                        link_card.setVisibility(View.VISIBLE);
+                        youtube_link.setEnabled(true);
+                  } else {
+                        link_card.setVisibility(View.GONE);
+                        youtube_link.setEnabled(false);
+                  }
+            });
       }
 
       private void openDateDialog() {
@@ -142,17 +138,15 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
             datePickerDialog = new DatePickerDialog(CreateNews.this ,
                     (view, year1, month1, dayOfMonth) -> {
 
-                          selected_date = fieldToTimestamp(year1, month1,dayOfMonth);
-                          date.setText(Utils.timestampToDateString((long) selected_date));
+                          selected_date = fieldToTimestamp(year1, month1, dayOfMonth);
+                          date.setText(timestampToDateString((long) selected_date));
 
                     }, year , month , day);
             datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
             datePickerDialog.show();
       }
 
-
       private void publishPost() {
-
 
             if (KEY.equals("create")) {
                   share_btn.setOnClickListener(v -> {
@@ -160,6 +154,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                         String title_text = title.getText().toString();
                         String subject_text = subject.getText().toString();
                         String writer_name = writer.getText().toString();
+                        String youtube_link_text = youtube_link.getText().toString();
                         validator.validate();
                         if (!isValid) {
                               return;
@@ -173,7 +168,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                               return;
                         }
                         rotateLoading.start();
-                        addNewsPicDB(title_text , subject_text , selected_date , writer_name , selected_type,type_id);
+                        addNewsPicDB(title_text, subject_text, selected_date, writer_name, selected_type, type_id, youtube_link_text);
 
 
                   });
@@ -186,23 +181,42 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                         String title_text = title.getText().toString();
                         String subject_text = subject.getText().toString();
                         String writer_name = writer.getText().toString();
+                        String youtube_link_text = youtube_link.getText().toString();
                         validator.validate();
                         if (!isValid) {
                               return;
                         }
                         if (selected_type.isEmpty() | selected_type.equals(getString(R.string.select_type))) {
-                              Toast.makeText(getApplicationContext() , getString(R.string.select_type) , Toast.LENGTH_SHORT).show();
+                              Toast.makeText(getApplicationContext(), getString(R.string.select_type), Toast.LENGTH_SHORT).show();
                               return;
 
                         }
                         if (add_pic == null) {
 
-                              updateNewsDB(exist_image , title_text , subject_text , selected_date , writer_name , selected_type,type_id);
-
+                              if (yt_cb.isChecked()) {
+                                    if (TextUtils.isEmpty(youtube_link_text)) {
+                                          youtube_link.setError("Most Add Link");
+                                    } else {
+                                          if (TextUtils.isEmpty(subject_text)) {
+                                                NewsModel newsModel = new NewsModel(exist_image, title_text, writer_name, type_id, selected_date, youtube_link_text, yt_cb.isChecked());
+                                                updateNewsDB(newsModel, selected_type);
+                                          } else {
+                                                NewsModel newsModel = new NewsModel(exist_image, title_text, subject_text, writer_name, type_id, selected_date, youtube_link_text, yt_cb.isChecked());
+                                                updateNewsDB(newsModel, selected_type);
+                                          }
+                                    }
+                              } else {
+                                    if (TextUtils.isEmpty(subject_text)) {
+                                          this.subject.setError("Most Add Subject");
+                                    } else {
+                                          NewsModel newsModel = new NewsModel(exist_image, title_text, subject_text, writer_name, type_id, selected_date, yt_cb.isChecked());
+                                          updateNewsDB(newsModel, selected_type);
+                                    }
+                              }
+                              rotateLoading.stop();
 
                         } else {
-
-                              updateNewsPicDB(title_text , subject_text , selected_date , writer_name , selected_type,type_id);
+                              updateNewsPicDB(title_text, subject_text, selected_date, writer_name, selected_type, type_id, youtube_link_text);
                         }
                   });
 
@@ -210,7 +224,8 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
       }
 
-      private void updateNewsPicDB(final String title_text, final String subject_text, final Object date_text, final String writer_name, final String selected_type, final int type_id) {
+      private void addNewsPicDB(final String title, final String subject, final Object date, final String writer
+              , final String selected_type, final int type_id, String youtube_link_text) {
 
             rotateLoading.start();
 
@@ -228,33 +243,38 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
             }).addOnCompleteListener(task -> {
                   Uri downloadUri = task.getResult();
                   String news_Pic = downloadUri.toString();
-
-                  updateNewsDB(news_Pic , title_text , subject_text , date_text , writer_name , selected_type, type_id);
+                  if (yt_cb.isChecked()) {
+                        if (TextUtils.isEmpty(youtube_link_text)) {
+                              youtube_link.setError("Most Add Link");
+                        } else {
+                              if (TextUtils.isEmpty(subject)) {
+                                    NewsModel newsModel = new NewsModel(news_Pic, title, writer, type_id, date, youtube_link_text, yt_cb.isChecked());
+                                    addNewsDB(newsModel, selected_type);
+                              } else {
+                                    NewsModel newsModel = new NewsModel(news_Pic, title, subject, writer, type_id, date, youtube_link_text, yt_cb.isChecked());
+                                    addNewsDB(newsModel, selected_type);
+                              }
+                        }
+                  } else {
+                        if (TextUtils.isEmpty(subject)) {
+                              this.subject.setError("Most Add Link");
+                        } else {
+                              NewsModel newsModel = new NewsModel(news_Pic, title, subject, writer, type_id, date, yt_cb.isChecked());
+                              addNewsDB(newsModel, selected_type);
+                        }
+                  }
+                  rotateLoading.stop();
 
             }).addOnFailureListener(e -> {
-                  Toast.makeText(getApplicationContext() , "Can't Upload Photo" , Toast.LENGTH_SHORT).show();
+                  Toast.makeText(getApplicationContext(), "Can't Upload Photo", Toast.LENGTH_SHORT).show();
                   rotateLoading.stop();
 
             });
 
       }
 
-      private void updateNewsDB(String exist_image, String title_text, String subject_text, Object date_text, String writer_name, String selected_type, int type_id) {
-            rotateLoading.start();
-
-            NewsModel newsModel = new NewsModel(exist_image , title_text , subject_text , date_text , writer_name , type_id);
-
-            databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(selected_type).child(KEY).setValue(newsModel);
-            databaseReference.child(getString(R.string.User_news)).child(selected_type).child(KEY).setValue(newsModel);
-            databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child("ترندات").child(KEY).setValue(newsModel);
-            databaseReference.child(getString(R.string.User_news)).child("ترندات").child(KEY).setValue(newsModel);
-
-            rotateLoading.stop();
-            onBackPressed();
-
-      }
-
-      private void addNewsPicDB(final String title, final String subject, final Object date, final String writer, final String selected_type, final int type_id) {
+      private void updateNewsPicDB(final String title_text, final String subject_text, final Object date_text, final String writer_name
+              , final String selected_type, final int type_id, String youtube_link_text) {
 
             rotateLoading.start();
 
@@ -264,35 +284,45 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
             uploadTask = rf.putFile(add_pic);
 
-            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                  @Override
-                  public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (!task.isSuccessful()) {
-                              throw task.getException();
-                        }
-                        return rf.getDownloadUrl();
+            Task<Uri> uriTask = uploadTask.continueWithTask(task -> {
+                  if (!task.isSuccessful()) {
+                        throw task.getException();
                   }
+                  return rf.getDownloadUrl();
             }).addOnCompleteListener(task -> {
                   Uri downloadUri = task.getResult();
                   String news_Pic = downloadUri.toString();
-
-                  addNewsDB(news_Pic , title , subject , date , writer , selected_type,type_id);
-
-            }).addOnFailureListener(new OnFailureListener() {
-                  @Override
-                  public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext() , "Can't Upload Photo" , Toast.LENGTH_SHORT).show();
-                        rotateLoading.stop();
-
+                  if (yt_cb.isChecked()) {
+                        if (TextUtils.isEmpty(youtube_link_text)) {
+                              youtube_link.setError("Most Add Link");
+                        } else {
+                              if (TextUtils.isEmpty(subject_text)) {
+                                    NewsModel newsModel = new NewsModel(news_Pic, title_text, writer_name, type_id, date_text, youtube_link_text, yt_cb.isChecked());
+                                    updateNewsDB(newsModel, selected_type);
+                              } else {
+                                    NewsModel newsModel = new NewsModel(news_Pic, title_text, subject_text, writer_name, type_id, date_text, youtube_link_text, yt_cb.isChecked());
+                                    updateNewsDB(newsModel, selected_type);
+                              }
+                        }
+                  } else {
+                        if (TextUtils.isEmpty(subject_text)) {
+                              this.subject.setError("Most Add Subject");
+                        } else {
+                              NewsModel newsModel = new NewsModel(news_Pic, title_text, subject_text, writer_name, type_id, date_text, yt_cb.isChecked());
+                              updateNewsDB(newsModel, selected_type);
+                        }
                   }
+                  rotateLoading.stop();
+
+            }).addOnFailureListener(e -> {
+                  Toast.makeText(getApplicationContext(), "Can't Upload Photo", Toast.LENGTH_SHORT).show();
+                  rotateLoading.stop();
+
             });
 
       }
 
-      private void addNewsDB(String news_pic, String title, String subject, Object date, String writer, String selected_type, int type_id) {
-            rotateLoading.start();
-
-            NewsModel newsModel = new NewsModel(news_pic , title , subject , date , writer , type_id);
+      private void addNewsDB(NewsModel newsModel, String selected_type) {
             String key = databaseReference.child(getString(R.string.Admin_news)).push().getKey();
 
             databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(selected_type).child(key).setValue(newsModel);
@@ -300,12 +330,21 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
             databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child("ترندات").child(key).setValue(newsModel);
             databaseReference.child(getString(R.string.User_news)).child("ترندات").child(key).setValue(newsModel);
 
-            rotateLoading.stop();
 
             onBackPressed();
 
       }
 
+      private void updateNewsDB(NewsModel newsModel, String selected_type) {
+
+            databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(selected_type).child(KEY).setValue(newsModel);
+            databaseReference.child(getString(R.string.User_news)).child(selected_type).child(KEY).setValue(newsModel);
+            databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child("ترندات").child(KEY).setValue(newsModel);
+            databaseReference.child(getString(R.string.User_news)).child("ترندات").child(KEY).setValue(newsModel);
+
+            onBackPressed();
+
+      }
 
       public void selectSpinner() {
 
@@ -344,13 +383,12 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                         }
                   } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                         Exception error = result.getError();
+                        Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();
 
                   }
 
             }
       }
-
-
 
       private void returnData(String key , String type) {
 
@@ -364,11 +402,18 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                   public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                         NewsModel newsModel = dataSnapshot.getValue(NewsModel.class);
-
+                        if (newsModel != null) {
+                              if (!TextUtils.isEmpty(newsModel.getSubject())) {
+                                    subject.setText(newsModel.getSubject());
+                              }
+                              if (!TextUtils.isEmpty(newsModel.getVideo_url())) {
+                                    youtube_link.setText(newsModel.getVideo_url());
+                              }
+                        }
+                        yt_cb.setChecked(newsModel.isBox_checked());
                         title.setText(newsModel.getTitle());
-                        subject.setText(newsModel.getSubject());
                         selected_date = newsModel.getDate();
-                        date.setText(Utils.timestampToDateString((long)newsModel.getDate()));
+                        date.setText(timestampToDateString((long) newsModel.getDate()));
                         writer.setText(newsModel.getWriter());
                         type_spinner.setSelection(newsModel.getType());
                         exist_image = newsModel.getImage_uri();
@@ -389,9 +434,22 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
       }
 
-      private String getUID() {
-            String id = mAuth.getCurrentUser().getUid();
-            return id;
+      @Override
+      public void onClick(View v) {
+            switch (v.getId()) {
+                  case R.id.cancel_btn:
+                        onBackPressed();
+                        break;
+                  case R.id.image_news:
+                        CropImage.activity()
+                                .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
+                                .setAutoZoomEnabled(true)
+                                .start(CreateNews.this);
+                        break;
+                  case R.id.date_pick:
+                        openDateDialog();
+
+            }
       }
 
       @Override
@@ -415,13 +473,6 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
                         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
                   }
             }
-      }
-      private long fieldToTimestamp(int year, int month, int day) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.YEAR, year);
-            calendar.set(Calendar.MONTH, month);
-            calendar.set(Calendar.DAY_OF_MONTH, day);
-            return  (calendar.getTimeInMillis() -1000);
       }
 
 }

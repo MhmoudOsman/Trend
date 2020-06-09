@@ -51,7 +51,7 @@ public class EditDialog extends Dialog {
 
       }
 
-      public boolean isNameValied() {
+      public boolean isNameValid() {
             String text = d_edit.getText().toString();
             if (text.isEmpty()) {
                   d_edit.setError(getContext().getString(R.string.empty_name));
@@ -64,7 +64,8 @@ public class EditDialog extends Dialog {
             }
 
       }
-      public boolean isMobileValied() {
+
+      public boolean isMobileValid() {
             String text = d_edit.getText().toString();
             if (text.isEmpty()) {
                   d_edit.setError(getContext().getString(R.string.empty_mobile));

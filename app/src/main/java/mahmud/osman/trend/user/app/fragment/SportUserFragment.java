@@ -45,7 +45,7 @@ public class SportUserFragment extends Fragment implements SwipeRefreshLayout.On
             databaseReference = firebaseDatabase.getReference();
             databaseReference.keepSynced(true);
 
-            recyclerView.setHasFixedSize(false);
+            recyclerView.setNestedScrollingEnabled(false);
 
             refreshLayout.setColorSchemeResources(R.color.gold);
             refreshLayout.setProgressBackgroundColorSchemeResource(R.color.background);
@@ -61,8 +61,7 @@ public class SportUserFragment extends Fragment implements SwipeRefreshLayout.On
             Query query = databaseReference
                     .child(getString(R.string.User_news))
                     .child(getString(R.string.sport))
-                    .orderByChild("date")
-                    .limitToLast(10);
+                    .orderByChild("date");
 
             FirebaseRecyclerOptions<NewsModel> options =
                     new FirebaseRecyclerOptions.Builder<NewsModel>()

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/srl_covid19"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_whit"
+    tools:context=".Covid19Fragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:fillViewport="true"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_covid_cases"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="5dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/covid19_cards"
+                    android:backgroundTint="@android:color/holo_red_dark"
+                    android:backgroundTintMode="multiply"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="عدد الحالات"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="@dimen/title_size" />
+
+                    <com.daasuu.cat.CountAnimationTextView
+                        android:id="@+id/cov_all_cases"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="40sp" />
+
+                    <TextView
+                        android:id="@+id/cov_new_cases"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="+0"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="@dimen/text_size" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_covid_deaths"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="5dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="@id/cv_covid_cases"
+                app:layout_constraintStart_toStartOf="@id/cv_covid_cases"
+                app:layout_constraintTop_toBottomOf="@id/cv_covid_cases">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/covid19_cards"
+                    android:backgroundTint="@android:color/holo_purple"
+                    android:backgroundTintMode="multiply"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="عدد الوفيات"
+                        android:textColor="@android:color/holo_purple"
+                        android:textSize="@dimen/title_size" />
+
+                    <com.daasuu.cat.CountAnimationTextView
+                        android:id="@+id/cov_all_deaths"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@android:color/holo_purple"
+                        android:textSize="40sp" />
+
+                    <TextView
+                        android:id="@+id/cov_new_deaths"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="+0"
+                        android:textColor="@android:color/holo_purple"
+                        android:textSize="@dimen/text_size" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_covid_recovered"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="5dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toStartOf="@id/cv_covid_active"
+                app:layout_constraintStart_toStartOf="@id/cv_covid_deaths"
+                app:layout_constraintTop_toBottomOf="@id/cv_covid_deaths">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/covid19_cards"
+                    android:backgroundTint="@android:color/holo_green_light"
+                    android:backgroundTintMode="multiply"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="عدد المتعافين"
+                        android:textColor="@android:color/holo_green_light"
+                        android:textSize="@dimen/title_size" />
+
+                    <com.daasuu.cat.CountAnimationTextView
+                        android:id="@+id/cov_recovered"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@android:color/holo_green_light"
+                        android:textSize="30sp" />
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_covid_active"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="5dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="@id/cv_covid_deaths"
+                app:layout_constraintStart_toEndOf="@id/cv_covid_recovered"
+                app:layout_constraintTop_toBottomOf="@id/cv_covid_deaths"
+                app:layout_constraintBottom_toBottomOf="@id/cv_covid_recovered">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/covid19_cards"
+                    android:backgroundTint="@android:color/holo_blue_dark"
+                    android:backgroundTintMode="multiply"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text=" الحالات الايجابيه"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:textSize="@dimen/title_size" />
+
+                    <com.daasuu.cat.CountAnimationTextView
+                        android:id="@+id/cov_active"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:textSize="30sp" />
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/cov_last_update"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/covid_19_state_bar"
+                android:textColor="@color/background"
+                android:backgroundTint="@color/background"
+                android:backgroundTintMode="add"
+                android:textSize="@dimen/title_size"
+                android:gravity="center"
+                android:text="اخر تحديث"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintEnd_toEndOf="@id/cv_covid_active"
+                app:layout_constraintStart_toStartOf="@id/cv_covid_recovered"
+                app:layout_constraintTop_toBottomOf="@id/cv_covid_recovered"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/cov_last_update"
+                app:layout_constraintStart_toStartOf="@id/cov_last_update"
+                app:layout_constraintTop_toBottomOf="@id/cov_last_update" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

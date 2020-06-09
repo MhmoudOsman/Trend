@@ -2,7 +2,6 @@ package mahmud.osman.trend.admin.app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -12,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -31,34 +30,24 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
 import de.hdodenhof.circleimageview.CircleImageView;
+import mahmud.osman.trend.Covid19Fragment;
 import mahmud.osman.trend.LoginActivity;
-import mahmud.osman.trend.Models.CountryModel;
 import mahmud.osman.trend.Models.ProfileModel;
 import mahmud.osman.trend.ProfileActivity;
 import mahmud.osman.trend.R;
-import mahmud.osman.trend.Utils;
 import mahmud.osman.trend.admin.app.fragment.ArtAdminFragment;
 import mahmud.osman.trend.admin.app.fragment.EducationAdminFragment;
 import mahmud.osman.trend.admin.app.fragment.HealthAdminFragment;
 import mahmud.osman.trend.admin.app.fragment.SportAdminFragment;
 import mahmud.osman.trend.admin.app.fragment.TrendAdminFragment;
-import mahmud.osman.trend.api.ApiClient;
-import mahmud.osman.trend.api.Covid19ApiInterface;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
+import static mahmud.osman.trend.Utils.getUID;
 
 public class AdminActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
       private DrawerLayout mDrawerLayout;
-      private NavigationView navigationView;
+      public NavigationView navigationView;
       private TextView name, email, logout;
       private CircleImageView profile_pic;
       private String name_text;
@@ -67,7 +56,7 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
       private FragmentManager fragmentManager;
       private FragmentTransaction fragmentTransaction;
       private SheetLayout sheetLayout;
-
+      private Toolbar toolbar;
 
       //firebase
       FirebaseDatabase firebaseDatabase;
@@ -87,7 +76,7 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
             logout = findViewById(R.id.logout_btn);
             sheetLayout = findViewById(R.id.expand_fab);
 
-            Toolbar toolbar = findViewById(R.id.toolbar_main);
+            toolbar = findViewById(R.id.toolbar_main);
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_menu);
@@ -184,7 +173,7 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
                           @Override
                           public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                Toast.makeText(getApplicationContext() , "can\'t fetch data" , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext() , "can't fetch data", Toast.LENGTH_SHORT).show();
 
                           }
                     });
@@ -200,10 +189,6 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
             return super.onOptionsItemSelected(item);
       }
 
-      private String getUID() {
-            String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            return id;
-      }
 
       @Override
       protected void onResume() {
@@ -241,6 +226,10 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
                   case R.id.art:
                         getSupportActionBar().setTitle(getString(R.string.art));
                         loadFragment(new ArtAdminFragment());
+                        break;
+                  case R.id.cov19:
+                        getSupportActionBar().setTitle("احصائيات كرونا");
+                        loadFragment(new Covid19Fragment());
                         break;
             }
             mDrawerLayout.closeDrawer(GravityCompat.START);

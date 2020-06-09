@@ -52,4 +52,5 @@
     <string name="edit">تعديل</string>
     <string name="invalid_name">استخدم الاحرف فقط</string>
     <string name="join">انضمام</string>
+    <string name="add_youtube_video_link">اضافة لينك فيديو يوتيوب</string>
 </resources>

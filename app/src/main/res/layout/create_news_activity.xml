@@ -43,7 +43,6 @@
             app:cardElevation="5dp"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true"
-            app:layout_constraintBottom_toTopOf="@+id/cv_chose_type"
             app:layout_constraintEnd_toEndOf="@+id/tb_create_news"
             app:layout_constraintStart_toStartOf="@id/tb_create_news"
             app:layout_constraintTop_toBottomOf="@id/tb_create_news">
@@ -63,11 +62,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/whit"
-            app:cardCornerRadius="10dp"
+            app:cardCornerRadius="4dp"
             app:cardElevation="5dp"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true"
-            app:layout_constraintBottom_toTopOf="@+id/cv_titel_news"
             app:layout_constraintEnd_toEndOf="@+id/cv_image"
             app:layout_constraintStart_toStartOf="@+id/cv_image"
             app:layout_constraintTop_toBottomOf="@+id/cv_image">
@@ -87,11 +85,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/whit"
-            app:cardCornerRadius="10dp"
+            app:cardCornerRadius="4dp"
             app:cardElevation="5dp"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true"
-            app:layout_constraintBottom_toTopOf="@+id/cv_subject_filed"
             app:layout_constraintEnd_toEndOf="@+id/cv_chose_type"
             app:layout_constraintStart_toStartOf="@id/cv_chose_type"
             app:layout_constraintTop_toBottomOf="@id/cv_chose_type">
@@ -115,11 +112,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/whit"
-            app:cardCornerRadius="10dp"
+            app:cardCornerRadius="4dp"
             app:cardElevation="5dp"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true"
-            app:layout_constraintBottom_toTopOf="@+id/date_pick"
             app:layout_constraintEnd_toEndOf="@+id/cv_titel_news"
             app:layout_constraintStart_toStartOf="@+id/cv_titel_news"
             app:layout_constraintTop_toBottomOf="@+id/cv_titel_news">
@@ -138,14 +134,55 @@
 
         </androidx.cardview.widget.CardView>
 
+        <LinearLayout
+            android:id="@+id/video_link_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="@id/cv_subject_filed"
+            app:layout_constraintStart_toStartOf="@id/cv_subject_filed"
+            app:layout_constraintTop_toBottomOf="@+id/cv_subject_filed">
+
+            <CheckBox
+                android:id="@+id/cb_video_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/add_youtube_video_link"
+                android:textColor="@color/gold"
+                android:textColorHint="@color/gray"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:textSize="@dimen/text_size"
+                android:textStyle="bold" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_youtube_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/whit"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="5dp"
+                android:visibility="gone"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+                <EditText
+                    android:id="@+id/ed_youtube_link"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:minHeight="50dp"
+                    android:hint="www.youtube.com/example"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:textSize="@dimen/text_size"/>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/date_pick"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:drawableStart="@drawable/ic_date_range_black_24dp"
             android:drawableTint="@color/gold"
             android:gravity="center"
@@ -154,18 +191,17 @@
             android:textAlignment="center"
             android:textColor="@color/gold"
             android:textColorHint="@color/gray"
-            android:textSize="@dimen/text_size"
+            android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/button_layout"
             app:layout_constraintEnd_toStartOf="@id/ed_writer"
-            app:layout_constraintStart_toStartOf="@id/cv_subject_filed"
-            app:layout_constraintTop_toBottomOf="@+id/cv_subject_filed" />
+            app:layout_constraintStart_toStartOf="@id/video_link_layout"
+            app:layout_constraintTop_toBottomOf="@+id/video_link_layout" />
 
         <EditText
             android:id="@+id/ed_writer"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
             android:background="@color/transparent"
             android:drawableStart="@drawable/ic_name"
             android:drawableTint="@color/gold"

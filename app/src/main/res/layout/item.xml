@@ -35,6 +35,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/item_title"/>
 
+            <com.victor.loading.rotate.RotateLoading
+                android:id="@+id/loading_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:loading_color="@color/background"
+                app:layout_constraintBottom_toBottomOf="@id/item_image"
+                app:layout_constraintEnd_toEndOf="@id/item_image"
+                app:layout_constraintStart_toStartOf="@id/item_image"
+                app:layout_constraintTop_toTopOf="@id/item_image" />
+
             <TextView
                 android:id="@+id/item_title"
                 android:layout_width="match_parent"

@@ -35,6 +35,8 @@ import mahmud.osman.trend.Models.ProfileModel;
 import mahmud.osman.trend.Models.UserProfileModel;
 import mahmud.osman.trend.dialog.EditDialog;
 
+import static mahmud.osman.trend.Utils.getUID;
+
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
       private TextView tv_email, tv_name, tv_mobile;
@@ -150,24 +152,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         final EditDialog nameDialog = new EditDialog(this , "Enter your name");
                         nameDialog.setCancelable(true);
                         nameDialog.d_edit.setText(name);
-                        nameDialog.d_ok.setOnClickListener(new View.OnClickListener() {
-                              @Override
-                              public void onClick(View v) {
-                                    if (!nameDialog.isNameValied()) {
-                                          return;
-                                    }
-                                    name = nameDialog.d_edit.getText().toString();
-                                    saveInfoDB(exist_pic,name,email,mobile);
-                                    returnData();
-                                    nameDialog.dismiss();
+
+                        nameDialog.d_ok.setOnClickListener(v -> {
+                              if (!nameDialog.isNameValid()) {
+                                    return;
                               }
+                              name = nameDialog.d_edit.getText().toString();
+                              saveInfoDB(exist_pic,name,email,mobile);
+                              returnData();
+                              nameDialog.dismiss();
                         });
-                        nameDialog.d_cancel.setOnClickListener(new View.OnClickListener() {
-                              @Override
-                              public void onClick(View v) {
-                                    nameDialog.dismiss();
-                              }
-                        });
+
+                        nameDialog.d_cancel.setOnClickListener(v -> nameDialog.dismiss());
                         nameDialog.show();
                         break;
                   case R.id.edit_mobile_btn:
@@ -177,7 +173,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         mobileDialog.d_ok.setOnClickListener(new View.OnClickListener() {
                               @Override
                               public void onClick(View v) {
-                                    if (!mobileDialog.isMobileValied()) {
+                                    if (!mobileDialog.isMobileValid()) {
                                           return;
                                     }
                                     mobile = mobileDialog.d_edit.getText().toString();
@@ -221,29 +217,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
             uploadTask = rf.putFile(add_pic);
 
-            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                  @Override
-                  public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (!task.isSuccessful()) {
-                              throw task.getException();
-                        }
-                        return rf.getDownloadUrl();
+            uploadTask.continueWithTask(task -> {
+                  if (!task.isSuccessful()) {
+                        throw task.getException();
                   }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                  @Override
-                  public void onComplete(@NonNull Task<Uri> task) {
-                        Uri downloadUri = task.getResult();
-                        String user_Pic = downloadUri.toString();
+                  return rf.getDownloadUrl();
+            }).addOnCompleteListener(task -> {
+                  Uri downloadUri = task.getResult();
+                  String user_Pic = downloadUri.toString();
 
-                        saveInfoDB(user_Pic , name , email , mobile);
+                  saveInfoDB(user_Pic, name, email, mobile);
 
-                  }
-            }).addOnFailureListener(new OnFailureListener() {
-                  @Override
-                  public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext() , "Can't Upload Photo" , Toast.LENGTH_SHORT).show();
-                  }
-            });
+            }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Can't Upload Photo", Toast.LENGTH_SHORT).show());
 
 
       }
@@ -317,8 +302,5 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             returnData();
       }
 
-      private String getUID() {
-            return mAuth.getCurrentUser().getUid();
-      }
 
 }

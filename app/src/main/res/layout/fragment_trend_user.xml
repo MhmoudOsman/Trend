@@ -49,12 +49,13 @@
                             android:layout_gravity="center"
                             android:text="إجمالي الإصابات"
                             android:textColor="@color/whit"
-                            android:textSize="@dimen/item" />
+                            android:padding="3dp"
+                            android:textSize="@dimen/text_size" />
 
                         <TextView
                             android:id="@+id/tv_all_cases_trend_user"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:background="@drawable/covid_19_state_bar"
                             android:backgroundTint="@color/red"
@@ -81,12 +82,13 @@
                             android:layout_gravity="center"
                             android:text="إجمالي الوفيات"
                             android:textColor="@color/whit"
-                            android:textSize="@dimen/item" />
+                            android:padding="3dp"
+                            android:textSize="@dimen/text_size" />
 
                         <TextView
                             android:id="@+id/tv_all_deaths_trend_user"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:background="@drawable/covid_19_state_bar"
                             android:backgroundTint="@android:color/holo_purple"
@@ -113,13 +115,14 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="إجمالي المتعافين"
+                            android:padding="3dp"
                             android:textColor="@color/whit"
-                            android:textSize="@dimen/item" />
+                            android:textSize="@dimen/text_size" />
 
                         <TextView
                             android:id="@+id/tv_all_recovered_trend_user"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:background="@drawable/covid_19_state_bar"
                             android:backgroundTint="@android:color/holo_green_light"
@@ -137,10 +140,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_trend_user"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:reverseLayout="true"
-                app:stackFromEnd="true"
+                app:stackFromEnd="false"
                 tools:listitem="@layout/item" />
 
         </LinearLayout>

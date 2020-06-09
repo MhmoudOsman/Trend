@@ -2,6 +2,7 @@ package mahmud.osman.trend.admin.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +17,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,12 +27,13 @@ import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 import mahmud.osman.trend.dialog.DeleteDialog;
+
+import static mahmud.osman.trend.Utils.getUID;
+import static mahmud.osman.trend.Utils.initialYouTubeVideo;
+import static mahmud.osman.trend.Utils.timestampToDateString;
 
 
 public class AdminNewsActivity extends AppCompatActivity {
@@ -44,18 +46,20 @@ public class AdminNewsActivity extends AppCompatActivity {
       private DatabaseReference databaseReference;
       private CardView card_title;
       private AppBarLayout appBarLayout;
-
+      private YouTubePlayerFragment youtubeFragment;
 
       @Override
       protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.news_item_activity);
 
+
             Bundle extra = getIntent().getExtras();
             Toolbar toolbar = findViewById(R.id.toolbar_collapsing);
             databaseReference = FirebaseDatabase.getInstance().getReference();
             databaseReference.keepSynced(true);
 
+            youtubeFragment = (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_player);
             news_image = findViewById(R.id.expand_image);
             subject = findViewById(R.id.subject_scroll);
             writer = findViewById(R.id.tv_writer);
@@ -66,10 +70,9 @@ public class AdminNewsActivity extends AppCompatActivity {
             fab = findViewById(R.id.fab);
             card_title = findViewById(R.id.cv_title);
 
-             appBarLayout = findViewById(R.id.c_app_bar);
+            appBarLayout = findViewById(R.id.c_app_bar);
 
-             subject.setMovementMethod(LinkMovementMethod.getInstance());
-
+            subject.setMovementMethod(LinkMovementMethod.getInstance());
 
 
             KAY = extra.getString("open");
@@ -87,61 +90,48 @@ public class AdminNewsActivity extends AppCompatActivity {
             cl_title.setSelected(true);
             cl_title.requestFocus();
 
-
-
-
       }
 
+
       private void fabMenu() {
-            fab.addActionItem(new SpeedDialActionItem.Builder(R.id.edit , R.drawable.ic_action_edit)
-                    .setFabBackgroundColor(ResourcesCompat.getColor(getResources() , R.color.background , getTheme()))
+            fab.addActionItem(new SpeedDialActionItem.Builder(R.id.edit, R.drawable.ic_action_edit)
+                    .setFabBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.background, getTheme()))
                     .setLabel(R.string.edit)
-                    .setLabelColor(ResourcesCompat.getColor(getResources() , R.color.gold , getTheme()))
-                    .setLabelBackgroundColor(ResourcesCompat.getColor(getResources() , R.color.background , getTheme()))
+                    .setLabelColor(ResourcesCompat.getColor(getResources(), R.color.gold, getTheme()))
+                    .setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.background, getTheme()))
                     .setLabelClickable(false)
                     .create());
-            fab.addActionItem(new SpeedDialActionItem.Builder(R.id.delete , R.drawable.ic_action_delete)
-                    .setFabBackgroundColor(ResourcesCompat.getColor(getResources() , R.color.background , getTheme()))
+            fab.addActionItem(new SpeedDialActionItem.Builder(R.id.delete, R.drawable.ic_action_delete)
+                    .setFabBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.background, getTheme()))
                     .setLabel(R.string.delete)
-                    .setLabelColor(ResourcesCompat.getColor(getResources() , R.color.gold , getTheme()))
-                    .setLabelBackgroundColor(ResourcesCompat.getColor(getResources() , R.color.background , getTheme()))
+                    .setLabelColor(ResourcesCompat.getColor(getResources(), R.color.gold, getTheme()))
+                    .setLabelBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.background, getTheme()))
                     .setLabelClickable(false)
                     .create());
 
-            fab.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
-                  @Override
-                  public boolean onActionSelected(SpeedDialActionItem actionItem) {
-                        switch (actionItem.getId()) {
-                              case R.id.edit:
-                                    Intent intent = new Intent(AdminNewsActivity.this , CreateNews.class);
-                                    intent.putExtra("edit" , KAY);
-                                    intent.putExtra("type" , TYPE);
+            fab.setOnActionSelectedListener(actionItem -> {
+                  switch (actionItem.getId()) {
+                        case R.id.edit:
+                              Intent intent = new Intent(AdminNewsActivity.this, CreateNews.class);
+                              intent.putExtra("edit", KAY);
+                              intent.putExtra("type", TYPE);
 
-                                    startActivity(intent);
-                                    return true;
-                              case R.id.delete:
-                                    deleteDialog = new DeleteDialog(AdminNewsActivity.this);
-                                    deleteDialog.d_ok.setOnClickListener(new View.OnClickListener() {
-                                          @Override
-                                          public void onClick(View v) {
-                                                databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(TYPE).child(KAY).removeValue();
-                                                databaseReference.child(getString(R.string.User_news)).child(TYPE).child(KAY).removeValue();
-                                                deleteDialog.dismiss();
-                                                onBackPressed();
-                                                finish();
-                                          }
-                                    });
-                                    deleteDialog.d_cancel.setOnClickListener(new View.OnClickListener() {
-                                          @Override
-                                          public void onClick(View v) {
-                                                deleteDialog.dismiss();
-                                          }
-                                    });
-                                    deleteDialog.show();
-                                    return true;
-                        }
-                        return false;
+                              startActivity(intent);
+                              return true;
+                        case R.id.delete:
+                              deleteDialog = new DeleteDialog(AdminNewsActivity.this);
+                              deleteDialog.d_ok.setOnClickListener(v -> {
+                                    databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(TYPE).child(KAY).removeValue();
+                                    databaseReference.child(getString(R.string.User_news)).child(TYPE).child(KAY).removeValue();
+                                    deleteDialog.dismiss();
+                                    onBackPressed();
+                                    finish();
+                              });
+                              deleteDialog.d_cancel.setOnClickListener(v -> deleteDialog.dismiss());
+                              deleteDialog.show();
+                              return true;
                   }
+                  return false;
             });
 
 
@@ -195,32 +185,24 @@ public class AdminNewsActivity extends AppCompatActivity {
                         return true;
 
                   case R.id.edit:
-                        Intent intent = new Intent(AdminNewsActivity.this , CreateNews.class);
-                        intent.putExtra("edit" , KAY);
-                        intent.putExtra("type" , TYPE);
+                        Intent intent = new Intent(AdminNewsActivity.this, CreateNews.class);
+                        intent.putExtra("edit", KAY);
+                        intent.putExtra("type", TYPE);
                         startActivity(intent);
                         return true;
 
                   case R.id.delete:
                         deleteDialog = new DeleteDialog(this);
-                        deleteDialog.d_ok.setOnClickListener(new View.OnClickListener() {
-                              @Override
-                              public void onClick(View v) {
-                                    databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(TYPE).child(KAY).removeValue();
-                                    databaseReference.child(getString(R.string.User_news)).child(TYPE).child(KAY).removeValue();
-                                    databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(getString(R.string.trends)).child(KAY).removeValue();
-                                    databaseReference.child(getString(R.string.User_news)).child(getString(R.string.trends)).child(KAY).removeValue();
-                                    deleteDialog.dismiss();
-                                    onBackPressed();
-                                    finish();
-                              }
+                        deleteDialog.d_ok.setOnClickListener(v -> {
+                              databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(TYPE).child(KAY).removeValue();
+                              databaseReference.child(getString(R.string.User_news)).child(TYPE).child(KAY).removeValue();
+                              databaseReference.child(getString(R.string.Admin_news)).child(getUID()).child(getString(R.string.trends)).child(KAY).removeValue();
+                              databaseReference.child(getString(R.string.User_news)).child(getString(R.string.trends)).child(KAY).removeValue();
+                              deleteDialog.dismiss();
+                              onBackPressed();
+                              finish();
                         });
-                        deleteDialog.d_cancel.setOnClickListener(new View.OnClickListener() {
-                              @Override
-                              public void onClick(View v) {
-                                    deleteDialog.dismiss();
-                              }
-                        });
+                        deleteDialog.d_cancel.setOnClickListener(v -> deleteDialog.dismiss());
                         deleteDialog.show();
                         return true;
 
@@ -241,18 +223,33 @@ public class AdminNewsActivity extends AppCompatActivity {
                           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                                 NewsModel newsModel = dataSnapshot.getValue(NewsModel.class);
+                                String[] youtube_link;
+                                String video_link;
+                                if (newsModel != null) {
+                                      if (!TextUtils.isEmpty(newsModel.getSubject())) {
+                                            subject.setText(newsModel.getSubject());
+                                      } else {
+                                            subject.setVisibility(View.GONE);
+                                      }
+                                      if (!TextUtils.isEmpty(newsModel.getVideo_url())) {
+                                            youtube_link = newsModel.getVideo_url().split("/");
+                                            video_link = youtube_link[youtube_link.length - 1];
+                                            initialYouTubeVideo(youtubeFragment, video_link, getString(R.string.google_api_key));
+                                            youtubeFragment.getView().setVisibility(View.VISIBLE);
+                                      } else {
+                                            youtubeFragment.getView().setVisibility(View.GONE);
+                                      }
 
-                                ex_title.setText(newsModel.getTitle());
-                                cl_title.setText(newsModel.getTitle());
-                                subject.setText(newsModel.getSubject());
-                                writer.setText("كتب : "+newsModel.getWriter());
-                                date.setText(timestampToDateString((long)newsModel.getDate()));
-                                Picasso.get()
-                                        .load(newsModel.getImage_uri())
-                                        .placeholder(R.drawable.defult_pic)
-                                        .error(R.drawable.defult_pic)
-                                        .into(news_image);
-
+                                      ex_title.setText(newsModel.getTitle());
+                                      cl_title.setText(newsModel.getTitle());
+                                      writer.setText("إعداد : " + newsModel.getWriter());
+                                      date.setText(timestampToDateString((long) newsModel.getDate()));
+                                      Picasso.get()
+                                              .load(newsModel.getImage_uri())
+                                              .placeholder(R.drawable.defult_pic)
+                                              .error(R.drawable.defult_pic)
+                                              .into(news_image);
+                                }
                           }
 
                           @Override
@@ -265,10 +262,6 @@ public class AdminNewsActivity extends AppCompatActivity {
       }
 
 
-      private String getUID() {
-            String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            return id;
-      }
 
       @Override
       protected void onStart() {
@@ -280,11 +273,6 @@ public class AdminNewsActivity extends AppCompatActivity {
       protected void onResume() {
             super.onResume();
             returnData(KAY , TYPE);
-      }
-      public static String timestampToDateString(long timestamp){
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Date date = new Date(timestamp);
-            return dateFormat.format(date);
       }
 
       @Override

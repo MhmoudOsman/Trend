@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import java.util.TimerTask;
 
 import mahmud.osman.trend.admin.app.AdminActivity;
 import mahmud.osman.trend.user.app.UserActivity;
+
+import static mahmud.osman.trend.Utils.getUID;
 
 
 public class Splash extends AppCompatActivity {
@@ -75,14 +78,14 @@ public class Splash extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.hasChild(id)) {
-                            updateAdminUI();
+                            updateUI(AdminActivity.class);
                         } else {
                             databaseReference.child("Users").addListenerForSingleValueEvent(
                                     new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             if (dataSnapshot.hasChild(id)) {
-                                                updateUserUI();
+                                                updateUI(UserActivity.class);
                                             }
                                         }
 
@@ -101,12 +104,12 @@ public class Splash extends AppCompatActivity {
                     }
                 });
     }
-    public void updateAdminUI() {
+    public void updateUI(Class aClass) {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 // go to the main activity
-                Intent i = new Intent(getApplicationContext(), AdminActivity.class);
+                Intent i = new Intent(Splash.this,aClass );
                 startActivity(i);
                 // kill current activity
                 finish();
@@ -115,26 +118,5 @@ public class Splash extends AppCompatActivity {
         // Show splash screen for 3 seconds
         new Timer().schedule(task, 5000);
     }
-
-    public void updateUserUI() {
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                // go to the main activity
-                Intent i = new Intent(getApplicationContext(), UserActivity.class);
-                startActivity(i);
-                // kill current activity
-                finish();
-            }
-        };
-        // Show splash screen for 3 seconds
-        new Timer().schedule(task, 5000);
-    }
-    private String getUID() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String UserID = user.getUid();
-
-        return UserID;
-    }
-
+    
 }

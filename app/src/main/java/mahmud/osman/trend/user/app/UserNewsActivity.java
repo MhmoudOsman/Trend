@@ -1,6 +1,7 @@
 package mahmud.osman.trend.user.app;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.LayoutDirection;
 import android.view.Gravity;
@@ -17,6 +18,7 @@ import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +33,9 @@ import java.util.Date;
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 
+import static mahmud.osman.trend.Utils.initialYouTubeVideo;
+import static mahmud.osman.trend.Utils.timestampToDateString;
+
 
 public class UserNewsActivity extends AppCompatActivity {
 
@@ -39,6 +44,7 @@ public class UserNewsActivity extends AppCompatActivity {
     private TextView subject, ex_title, cl_title, writer, date;
     private SpeedDialView fab;
     private CardView card_title;
+    private YouTubePlayerFragment youtubeFragment;
 
 
     @Override
@@ -48,6 +54,8 @@ public class UserNewsActivity extends AppCompatActivity {
 
         Bundle extra = getIntent().getExtras();
         Toolbar toolbar = findViewById(R.id.toolbar_collapsing);
+
+        youtubeFragment = (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_player);
         news_image = findViewById(R.id.expand_image);
         subject = findViewById(R.id.subject_scroll);
         writer = findViewById(R.id.tv_writer);
@@ -143,19 +151,34 @@ public class UserNewsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 NewsModel newsModel = dataSnapshot.getValue(NewsModel.class);
+                String[] youtube_link;
+                String video_link;
+                if (newsModel != null) {
+                    if (!TextUtils.isEmpty(newsModel.getSubject())) {
+                        subject.setText(newsModel.getSubject());
+                    } else {
+                        subject.setVisibility(View.GONE);
+                    }
+                    if (!TextUtils.isEmpty(newsModel.getVideo_url())) {
+                        youtube_link = newsModel.getVideo_url().split("/");
+                        video_link = youtube_link[youtube_link.length - 1];
+                        initialYouTubeVideo(youtubeFragment, video_link, getString(R.string.google_api_key));
+                        youtubeFragment.getView().setVisibility(View.VISIBLE);
+                    } else {
+                        youtubeFragment.getView().setVisibility(View.GONE);
+                    }
 
-                cl_title.setText(newsModel.getTitle());
-                ex_title.setText(newsModel.getTitle());
-                subject.setText(newsModel.getSubject());
-                writer.setText("كتب : " + newsModel.getWriter());
-                date.setText(timestampToDateString((long) newsModel.getDate()));
+                    cl_title.setText(newsModel.getTitle());
+                    ex_title.setText(newsModel.getTitle());
+                    writer.setText("كتب : " + newsModel.getWriter());
+                    date.setText(timestampToDateString((long) newsModel.getDate()));
 
-                Picasso.get()
-                        .load(newsModel.getImage_uri())
-                        .placeholder(R.drawable.defult_pic)
-                        .error(R.drawable.defult_pic)
-                        .into(news_image);
-
+                    Picasso.get()
+                            .load(newsModel.getImage_uri())
+                            .placeholder(R.drawable.defult_pic)
+                            .error(R.drawable.defult_pic)
+                            .into(news_image);
+                }
             }
 
             @Override
@@ -182,10 +205,5 @@ public class UserNewsActivity extends AppCompatActivity {
         UserNewsActivity.super.onBackPressed();
     }
 
-    public static String timestampToDateString(long timestamp) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = new Date(timestamp);
-        return dateFormat.format(date);
-    }
 
 }

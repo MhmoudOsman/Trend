@@ -21,6 +21,8 @@ import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 import mahmud.osman.trend.presenters.adapter.NewsAdaptor;
 
+import static mahmud.osman.trend.Utils.getUID;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -55,7 +57,7 @@ public class EducationAdminFragment extends Fragment implements SwipeRefreshLayo
             databaseReference = firebaseDatabase.getReference();
             databaseReference.keepSynced(true);
 
-            recyclerView.setHasFixedSize(false);
+            recyclerView.setNestedScrollingEnabled(false);
 
             refreshLayout.setColorSchemeResources(R.color.gold);
             refreshLayout.setProgressBackgroundColorSchemeResource(R.color.background);
@@ -73,8 +75,7 @@ public class EducationAdminFragment extends Fragment implements SwipeRefreshLayo
                     .child(getString(R.string.Admin_news))
                     .child(getUID())
                     .child(type)
-                    .orderByChild("date")
-                    .limitToLast(10);
+                    .orderByChild("date");
 
             FirebaseRecyclerOptions<NewsModel> options =
                     new FirebaseRecyclerOptions.Builder<NewsModel>()
@@ -106,11 +107,6 @@ public class EducationAdminFragment extends Fragment implements SwipeRefreshLayo
                   newsAdaptor.startListening();
             }
 
-      }
-
-      private String getUID() {
-            String id = mAuth.getCurrentUser().getUid();
-            return id;
       }
 
       private void onLoadingSwipeRefresh() {
