@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -22,7 +21,7 @@ import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 import mahmud.osman.trend.presenters.adapter.NewsAdaptor;
 
-import static mahmud.osman.trend.Utils.getUID;
+import static mahmud.osman.trend.utils.Utils.getUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -105,15 +104,6 @@ public class ArtAdminFragment extends Fragment implements SwipeRefreshLayout.OnR
             refreshLayout.setRefreshing(false);
       }
 
-      @Override
-      public void onResume() {
-            super.onResume();
-            if (newsAdaptor != null) {
-                  refreshLayout.setRefreshing(true);
-                  newsAdaptor.startListening();
-            }
-            refreshLayout.setRefreshing(false);
-      }
 
 
       private void onLoadingSwipeRefresh() {

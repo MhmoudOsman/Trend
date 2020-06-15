@@ -2,6 +2,7 @@ package mahmud.osman.trend.admin.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -11,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -42,7 +42,7 @@ import mahmud.osman.trend.admin.app.fragment.HealthAdminFragment;
 import mahmud.osman.trend.admin.app.fragment.SportAdminFragment;
 import mahmud.osman.trend.admin.app.fragment.TrendAdminFragment;
 
-import static mahmud.osman.trend.Utils.getUID;
+import static mahmud.osman.trend.utils.Utils.getUID;
 
 public class AdminActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -162,13 +162,15 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
                                 name_text = profileModel.getName();
                                 name.setText(name_text);
                                 email.setText(profileModel.getEmail());
-                                Picasso.get()
-                                        .load(profileModel.getImageUri())
-                                        .placeholder(R.drawable.ic_user)
-                                        .error(R.drawable.ic_user)
-                                        .into(profile_pic);
 
-                          }
+                                      Picasso.get()
+                                              .load(profileModel.getImageUri())
+                                              .placeholder(R.drawable.ic_user)
+                                              .error(R.drawable.ic_user)
+                                              .into(profile_pic);
+                                }
+
+
 
                           @Override
                           public void onCancelled(@NonNull DatabaseError databaseError) {

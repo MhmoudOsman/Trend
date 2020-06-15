@@ -123,21 +123,7 @@ public class HealthUserFragment extends Fragment implements SwipeRefreshLayout.O
             onLoadingSwipeRefresh();
       }
 
-      @Override
-      public void onStart() {
-            super.onStart();
-            if (newsAdaptor != null) {
-                  newsAdaptor.startListening();
-            }
-      }
 
-      @Override
-      public void onStop() {
-            super.onStop();
-            if (newsAdaptor != null) {
-                  newsAdaptor.startListening();
-            }
-      }
 
       @Override
       public void onResponse(Call<CountryModel> call, Response<CountryModel> response) {

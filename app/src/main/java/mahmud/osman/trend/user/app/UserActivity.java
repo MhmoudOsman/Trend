@@ -1,8 +1,8 @@
 package mahmud.osman.trend.user.app;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -31,7 +31,7 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 import mahmud.osman.trend.Covid19Fragment;
 import mahmud.osman.trend.LoginActivity;
-import mahmud.osman.trend.Models.ProfileModel;
+import mahmud.osman.trend.Models.UserProfileModel;
 import mahmud.osman.trend.ProfileActivity;
 import mahmud.osman.trend.R;
 import mahmud.osman.trend.user.app.fragment.ArtUserFragment;
@@ -39,6 +39,8 @@ import mahmud.osman.trend.user.app.fragment.EducationUserFragment;
 import mahmud.osman.trend.user.app.fragment.HealthUserFragment;
 import mahmud.osman.trend.user.app.fragment.SportUserFragment;
 import mahmud.osman.trend.user.app.fragment.TrendUserFragment;
+
+import static mahmud.osman.trend.utils.Utils.getUID;
 
 public class UserActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -60,7 +62,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
     FirebaseStorage firebaseStorage;
     FirebaseAuth mAuth;
 
-    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,33 +96,27 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         name = view.findViewById(R.id.name_filed);
         profil_pic = view.findViewById(R.id.profile_image1);
         email = view.findViewById(R.id.email_filed);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(UserActivity.this, ProfileActivity.class);
-                intent.putExtra("profile", "Users");
-                startActivity(intent);
-            }
+        view.setOnClickListener(v -> {
+            Intent intent = new Intent(UserActivity.this, ProfileActivity.class);
+            intent.putExtra("profile", "Users");
+            startActivity(intent);
         });
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        logout.setOnClickListener(v -> {
 
-                FirebaseAuth.getInstance().signOut();
+            FirebaseAuth.getInstance().signOut();
 
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
 
-            }
         });
 
         returnData();
 
-
         loadFragment( new TrendUserFragment());
         getSupportActionBar().setTitle(getString(R.string.trends));
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
 
@@ -146,17 +141,18 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get user value
-                        ProfileModel userModel = dataSnapshot.getValue(ProfileModel.class);
+                        UserProfileModel userModel = dataSnapshot.getValue(UserProfileModel.class);
 
                         name_text = userModel.getName();
                         name.setText(name_text);
                         email.setText(userModel.getEmail());
 
-                        Picasso.get()
-                                .load(userModel.getImageUri())
-                                .placeholder(R.drawable.ic_user)
-                                .error(R.drawable.ic_user)
-                                .into(profil_pic);
+                            Picasso.get()
+                                    .load(userModel.getImageUri())
+                                    .placeholder(R.drawable.ic_user)
+                                    .error(R.drawable.ic_user)
+                                    .into(profil_pic);
+
                     }
 
                     @Override
@@ -168,18 +164,13 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            mDrawerLayout.openDrawer(GravityCompat.START);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private String getUID() {
-        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        return id;
-    }
 
     @Override
     public void onBackPressed() {
@@ -192,35 +183,30 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             case R.id.trend:
                 getSupportActionBar().setTitle(getString(R.string.trends));
                 loadFragment(new TrendUserFragment());
-                mDrawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.health:
                 getSupportActionBar().setTitle(getString(R.string.health));
                 loadFragment(new HealthUserFragment());
-                mDrawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.education:
                 getSupportActionBar().setTitle(getString(R.string.education));
                 loadFragment(new EducationUserFragment());
-                mDrawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.sport:
                 getSupportActionBar().setTitle(getString(R.string.sport));
                 loadFragment(new SportUserFragment());
-                mDrawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.art:
                 getSupportActionBar().setTitle(getString(R.string.art));
                 loadFragment(new ArtUserFragment());
-                mDrawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.cov19:
                 getSupportActionBar().setTitle("احصائيات كرونا");
                 loadFragment(new Covid19Fragment());
                 break;
         }
-
-        return onNavigationItemSelected(menuItem);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override

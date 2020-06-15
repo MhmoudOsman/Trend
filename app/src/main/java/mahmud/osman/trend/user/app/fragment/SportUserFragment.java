@@ -77,21 +77,7 @@ public class SportUserFragment extends Fragment implements SwipeRefreshLayout.On
             onLoadingSwipeRefresh();
       }
 
-      @Override
-      public void onStart() {
-            super.onStart();
-            if (newsAdaptor != null) {
-                  newsAdaptor.startListening();
-            }
-      }
 
-      @Override
-      public void onStop() {
-            super.onStop();
-            if (newsAdaptor != null) {
-                  newsAdaptor.startListening();
-            }
-      }
       private void onLoadingSwipeRefresh() {
             refreshLayout.post(() -> {
                   if (newsAdaptor != null) {

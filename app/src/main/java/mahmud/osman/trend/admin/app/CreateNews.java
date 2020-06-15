@@ -44,9 +44,9 @@ import java.util.List;
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 
-import static mahmud.osman.trend.Utils.fieldToTimestamp;
-import static mahmud.osman.trend.Utils.getUID;
-import static mahmud.osman.trend.Utils.timestampToDateString;
+import static mahmud.osman.trend.utils.Utils.fieldToTimestamp;
+import static mahmud.osman.trend.utils.Utils.getUID;
+import static mahmud.osman.trend.utils.Utils.timestampToDateString;
 
 public class CreateNews extends AppCompatActivity implements View.OnClickListener, Validator.ValidationListener {
 
@@ -284,7 +284,7 @@ public class CreateNews extends AppCompatActivity implements View.OnClickListene
 
             uploadTask = rf.putFile(add_pic);
 
-            Task<Uri> uriTask = uploadTask.continueWithTask(task -> {
+            uploadTask.continueWithTask(task -> {
                   if (!task.isSuccessful()) {
                         throw task.getException();
                   }

@@ -21,7 +21,7 @@ import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 import mahmud.osman.trend.presenters.adapter.NewsAdaptor;
 
-import static mahmud.osman.trend.Utils.getUID;
+import static mahmud.osman.trend.utils.Utils.getUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -91,23 +91,7 @@ public class EducationAdminFragment extends Fragment implements SwipeRefreshLayo
 
       }
 
-      @Override
-      public void onStart() {
-            super.onStart();
-            if (newsAdaptor != null) {
-                  newsAdaptor.startListening();
 
-            }
-      }
-
-      @Override
-      public void onStop() {
-            super.onStop();
-            if (newsAdaptor != null) {
-                  newsAdaptor.startListening();
-            }
-
-      }
 
       private void onLoadingSwipeRefresh() {
             refreshLayout.post(() -> {

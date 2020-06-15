@@ -81,21 +81,7 @@ public class EducationUserFragment extends Fragment implements SwipeRefreshLayou
 
       }
 
-      @Override
-      public void onStart() {
-            super.onStart();
-            if (newsAdaptor != null) {
-                  newsAdaptor.startListening();
-            }
-      }
 
-      @Override
-      public void onResume() {
-            super.onResume();
-            if (newsAdaptor != null) {
-                  newsAdaptor.startListening();
-            }
-      }
 
 
       private void onLoadingSwipeRefresh() {

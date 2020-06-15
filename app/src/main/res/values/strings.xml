@@ -59,5 +59,7 @@
     <string name="invalid_name">Use Alphabet Letters Only</string>
     <string name="join">Join</string>
     <string name="add_youtube_video_link">Add YouTube Video Link ?</string>
+    <string name="please_check_internet_connection">Please Check Internet Connection</string>
+    <string name="try_again">TRY AGAIN</string>
 
 </resources>

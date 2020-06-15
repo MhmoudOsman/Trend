@@ -31,9 +31,10 @@ import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 import mahmud.osman.trend.dialog.DeleteDialog;
 
-import static mahmud.osman.trend.Utils.getUID;
-import static mahmud.osman.trend.Utils.initialYouTubeVideo;
-import static mahmud.osman.trend.Utils.timestampToDateString;
+import static mahmud.osman.trend.utils.Utils.YOUTUBE_API_KAY;
+import static mahmud.osman.trend.utils.Utils.getUID;
+import static mahmud.osman.trend.utils.Utils.initialYouTubeVideo;
+import static mahmud.osman.trend.utils.Utils.timestampToDateString;
 
 
 public class AdminNewsActivity extends AppCompatActivity {
@@ -234,7 +235,7 @@ public class AdminNewsActivity extends AppCompatActivity {
                                       if (!TextUtils.isEmpty(newsModel.getVideo_url())) {
                                             youtube_link = newsModel.getVideo_url().split("/");
                                             video_link = youtube_link[youtube_link.length - 1];
-                                            initialYouTubeVideo(youtubeFragment, video_link, getString(R.string.google_api_key));
+                                            initialYouTubeVideo(youtubeFragment, video_link, YOUTUBE_API_KAY);
                                             youtubeFragment.getView().setVisibility(View.VISIBLE);
                                       } else {
                                             youtubeFragment.getView().setVisibility(View.GONE);

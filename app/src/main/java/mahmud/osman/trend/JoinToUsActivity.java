@@ -39,9 +39,11 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import mahmud.osman.trend.Models.ProfileModel;
 import mahmud.osman.trend.admin.app.AdminActivity;
+import mahmud.osman.trend.dialog.ReconnectDialog;
 import mahmud.osman.trend.presenters.adapter.TextInputLayoutAdapter;
 
-import static mahmud.osman.trend.Utils.getUID;
+import static mahmud.osman.trend.utils.Utils.getUID;
+import static mahmud.osman.trend.utils.Utils.isConnected;
 
 public class JoinToUsActivity extends AppCompatActivity implements Validator.ValidationListener {
 
@@ -135,8 +137,25 @@ public class JoinToUsActivity extends AppCompatActivity implements Validator.Val
         join_btn.setOnClickListener(v -> {
             validator.validate();
             if (validated & validateCode()) {
-                mJoin();
                 rotateLoading.start();
+                if (isConnected(this)) {
+                    mJoin();
+                } else {
+                    ReconnectDialog dialog = new ReconnectDialog(this);
+                    dialog.getRetry().setOnClickListener(v1 -> {
+                        dialog.getError_massage().setVisibility(View.GONE);
+                        dialog.getReconnect_loading().start();
+
+                        if (isConnected(this)) {
+                            mJoin();
+                            dialog.dismiss();
+                        }else {
+                            dialog.getError_massage().setVisibility(View.VISIBLE);
+                            dialog.getReconnect_loading().stop();
+                        }
+                    });
+                    dialog.show();
+                }
             }
         });
     }
@@ -163,39 +182,24 @@ public class JoinToUsActivity extends AppCompatActivity implements Validator.Val
         final String pass_text = pass.getEditText().getText().toString();
         final String mobile_text = mobile.getEditText().getText().toString();
 
-
-        mAuth.fetchSignInMethodsForEmail(email_text).addOnCompleteListener(task -> {
-
-            boolean check = false;
-            try {
-                check = task.getResult().getSignInMethods().isEmpty();
-            } catch (Exception e) {
-                Toast.makeText(JoinToUsActivity.this, "Check Internet Connection", Toast.LENGTH_LONG).show();
-                rotateLoading.stop();
-                return;
-            }
-            if (check) {
-
-                mAuth.createUserWithEmailAndPassword(email_text, pass_text).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-                            addUserPicDB(name_text, email_text, mobile_text);
-
+        if (isConnected(this)) {
+            mAuth.fetchSignInMethodsForEmail(email_text).addOnCompleteListener(task -> {
+                boolean check = task.getResult().getSignInMethods().isEmpty();
+                if (check) {
+                    mAuth.createUserWithEmailAndPassword(email_text, pass_text).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                addUserPicDB(name_text, email_text, mobile_text);
+                            }
                         }
-                    }
-                });
-
-            } else {
-
-                email.setError(getString(R.string.tacked_email));
-                rotateLoading.stop();
-            }
-
-
-        });
-
+                    });
+                } else {
+                    email.setError(getString(R.string.tacked_email));
+                    rotateLoading.stop();
+                }
+            });
+        }
     }
 
     private void addUserPicDB(final String name, final String email, final String mobile) {

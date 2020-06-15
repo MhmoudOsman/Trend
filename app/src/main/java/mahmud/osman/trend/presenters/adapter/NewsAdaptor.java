@@ -20,7 +20,7 @@ import mahmud.osman.trend.admin.app.AdminNewsActivity;
 import mahmud.osman.trend.presenters.holders.NewsHolders;
 import mahmud.osman.trend.user.app.UserNewsActivity;
 
-import static mahmud.osman.trend.Utils.timestampToDateString;
+import static mahmud.osman.trend.utils.Utils.timestampToDateString;
 
 public class NewsAdaptor extends FirebaseRecyclerAdapter<NewsModel, NewsHolders> {
 

@@ -83,21 +83,6 @@ public class ArtUserFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
       }
 
-      @Override
-      public void onStart() {
-            super.onStart();
-            if (newsAdaptor != null) {
-                  newsAdaptor.startListening();
-            }
-      }
-
-      @Override
-      public void onResume() {
-            super.onResume();
-            if (newsAdaptor != null) {
-                  newsAdaptor.startListening();
-            }
-      }
 
       private void onLoadingSwipeRefresh() {
             refreshLayout.post(() -> {

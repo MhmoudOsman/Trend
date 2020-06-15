@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "29.0.3"
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -11,9 +11,9 @@ android {
     defaultConfig {
         applicationId "mahmud.osman.trend"
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 5
-        versionName "2.0.0"
+        targetSdkVersion 30
+        versionCode 8
+        versionName "2.0.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

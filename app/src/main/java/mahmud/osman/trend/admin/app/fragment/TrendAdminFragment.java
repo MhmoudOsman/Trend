@@ -23,11 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
 import mahmud.osman.trend.Covid19Fragment;
 import mahmud.osman.trend.Models.CountryModel;
 import mahmud.osman.trend.Models.NewsModel;
@@ -39,7 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static mahmud.osman.trend.Utils.getUID;
+import static mahmud.osman.trend.utils.Utils.getUID;
 
 
 public class TrendAdminFragment extends Fragment implements Callback<CountryModel>, SwipeRefreshLayout.OnRefreshListener {
@@ -133,21 +128,6 @@ public class TrendAdminFragment extends Fragment implements Callback<CountryMode
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (newsAdaptor != null) {
-            newsAdaptor.startListening();
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (newsAdaptor != null) {
-            newsAdaptor.startListening();
-        }
-    }
 
 
     @Override

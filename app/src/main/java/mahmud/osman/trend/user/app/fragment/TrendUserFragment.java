@@ -90,6 +90,7 @@ public class TrendUserFragment extends Fragment implements Callback<CountryModel
 
       }
 
+
       private void onLoadingSwipeRefresh() {
             refreshLayout.post(() -> {
                   if (newsAdaptor != null) {
@@ -124,21 +125,6 @@ public class TrendUserFragment extends Fragment implements Callback<CountryModel
             onLoadingSwipeRefresh();
       }
 
-      @Override
-      public void onStart() {
-            super.onStart();
-            if (newsAdaptor != null) {
-                  newsAdaptor.startListening();
-            }
-      }
-
-      @Override
-      public void onStop() {
-            super.onStop();
-            if (newsAdaptor != null) {
-                  newsAdaptor.startListening();
-            }
-      }
 
       @Override
       public void onResponse(Call<CountryModel> call, Response<CountryModel> response) {

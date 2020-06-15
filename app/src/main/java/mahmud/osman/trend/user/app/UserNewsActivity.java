@@ -3,12 +3,10 @@ package mahmud.osman.trend.user.app;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.util.LayoutDirection;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,14 +25,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.leinardi.android.speeddial.SpeedDialView;
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import mahmud.osman.trend.Models.NewsModel;
 import mahmud.osman.trend.R;
 
-import static mahmud.osman.trend.Utils.initialYouTubeVideo;
-import static mahmud.osman.trend.Utils.timestampToDateString;
+import static mahmud.osman.trend.utils.Utils.YOUTUBE_API_KAY;
+import static mahmud.osman.trend.utils.Utils.initialYouTubeVideo;
+import static mahmud.osman.trend.utils.Utils.timestampToDateString;
 
 
 public class UserNewsActivity extends AppCompatActivity {
@@ -162,7 +158,7 @@ public class UserNewsActivity extends AppCompatActivity {
                     if (!TextUtils.isEmpty(newsModel.getVideo_url())) {
                         youtube_link = newsModel.getVideo_url().split("/");
                         video_link = youtube_link[youtube_link.length - 1];
-                        initialYouTubeVideo(youtubeFragment, video_link, getString(R.string.google_api_key));
+                        initialYouTubeVideo(youtubeFragment, video_link, YOUTUBE_API_KAY);
                         youtubeFragment.getView().setVisibility(View.VISIBLE);
                     } else {
                         youtubeFragment.getView().setVisibility(View.GONE);

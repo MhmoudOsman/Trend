@@ -1,6 +1,8 @@
-package mahmud.osman.trend;
+package mahmud.osman.trend.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -14,6 +16,7 @@ import java.util.Locale;
 
 public class Utils {
     public static final String BASE_URL="https://disease.sh/";
+    public static final String YOUTUBE_API_KAY="AIzaSyB44xKL4IK5EUBi1Y4ZX3YGmDfJIapGAzk";
 
     public static String getUID(){
         return  FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -43,6 +46,25 @@ public class Utils {
 
                     }
                 });
+    }
+    public static boolean isConnected(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                context.getSystemService(context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null){
+
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+            if (networkInfo != null){
+
+                if (networkInfo.getState() == NetworkInfo.State.CONNECTED){
+                    return true;
+                }
+
+            }
+
+        }
+
+        return false;
     }
 
 }

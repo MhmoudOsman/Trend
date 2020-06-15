@@ -25,7 +25,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static mahmud.osman.trend.Utils.timestampToDateString;
+import static mahmud.osman.trend.utils.Utils.isConnected;
+import static mahmud.osman.trend.utils.Utils.timestampToDateString;
 
 public class Covid19Fragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback<CountryModel> {
 
@@ -61,10 +62,12 @@ public class Covid19Fragment extends Fragment implements SwipeRefreshLayout.OnRe
     }
 
     private void onLoadingSwipeRefresh() {
-        refreshLayout.post(() -> {
-            loudCovid();
-        });
-        refreshLayout.setRefreshing(false);
+        if (isConnected(getContext())) {
+            refreshLayout.post(() -> {
+                loudCovid();
+            });
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     private void loudCovid() {
@@ -74,10 +77,11 @@ public class Covid19Fragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     @Override
     public void onRefresh() {
-        loudCovid();
-        refreshLayout.setRefreshing(false);
+        if (isConnected(getContext())) {
+            loudCovid();
+            refreshLayout.setRefreshing(false);
+        }
     }
-
 
     @Override
     public void onResponse(Call<CountryModel> call, Response<CountryModel> response) {

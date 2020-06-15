@@ -13,10 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,7 +31,7 @@ import mahmud.osman.trend.Models.ProfileModel;
 import mahmud.osman.trend.Models.UserProfileModel;
 import mahmud.osman.trend.dialog.EditDialog;
 
-import static mahmud.osman.trend.Utils.getUID;
+import static mahmud.osman.trend.utils.Utils.getUID;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -90,7 +86,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                   databaseReference.child(profile).child(getUID()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                              ProfileModel model = dataSnapshot.getValue(ProfileModel.class);
+                              UserProfileModel model = dataSnapshot.getValue(UserProfileModel.class);
                               if (model != null) {
                                     Picasso.get()
                                             .load(model.getImageUri())
