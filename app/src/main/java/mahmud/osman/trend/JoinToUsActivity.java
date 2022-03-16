@@ -289,7 +289,6 @@ public class JoinToUsActivity extends AppCompatActivity implements Validator.Val
     @Override
     public void onBackPressed() {
         JoinToUsActivity.super.onBackPressed();
-        return;
     }
 
     @Override

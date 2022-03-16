@@ -34,7 +34,7 @@ public class Covid19Fragment extends Fragment implements SwipeRefreshLayout.OnRe
     private TextView new_cases, new_deaths, last_update;
     private CountAnimationTextView all_cases, all_deaths, recovered, active_cases;
     private SwipeRefreshLayout refreshLayout;
-    private Covid19ApiInterface apiInterface = ApiClient.getApiClient().create(Covid19ApiInterface.class);
+    private final Covid19ApiInterface apiInterface = ApiClient.getApiClient().create(Covid19ApiInterface.class);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

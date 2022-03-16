@@ -2,7 +2,6 @@ package mahmud.osman.trend.admin.app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -46,211 +45,208 @@ import static mahmud.osman.trend.utils.Utils.getUID;
 
 public class AdminActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-      private DrawerLayout mDrawerLayout;
-      public NavigationView navigationView;
-      private TextView name, email, logout;
-      private CircleImageView profile_pic;
-      private String name_text;
+    private DrawerLayout mDrawerLayout;
+    public NavigationView navigationView;
+    private TextView name, email, logout;
+    private CircleImageView profile_pic;
+    private String name_text;
 
-      private FloatingActionButton add_new;
-      private FragmentManager fragmentManager;
-      private FragmentTransaction fragmentTransaction;
-      private SheetLayout sheetLayout;
-      private Toolbar toolbar;
+    private FloatingActionButton add_new;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
+    private SheetLayout sheetLayout;
+    private Toolbar toolbar;
 
-      //firebase
-      FirebaseDatabase firebaseDatabase;
-      DatabaseReference databaseReference;
-      FirebaseStorage firebaseStorage;
-      FirebaseAuth mAuth;
-      private static final int REQUEST_CODE = 1;
-
-
-      @Override
-      protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.admin_activity);
-
-            fragmentManager = getSupportFragmentManager();
-
-            logout = findViewById(R.id.logout_btn);
-            sheetLayout = findViewById(R.id.expand_fab);
-
-            toolbar = findViewById(R.id.toolbar_main);
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_menu);
+    //firebase
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+    FirebaseStorage firebaseStorage;
+    FirebaseAuth mAuth;
+    private static final int REQUEST_CODE = 1;
 
 
-            mAuth = FirebaseAuth.getInstance();
-            firebaseDatabase = FirebaseDatabase.getInstance();
-            databaseReference = firebaseDatabase.getReference();
-            databaseReference.keepSynced(true);
-            firebaseStorage = FirebaseStorage.getInstance();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.admin_activity);
 
-            mDrawerLayout = findViewById(R.id.drawer);
-            navigationView = findViewById(R.id.nev_view);
-            View view = navigationView.getHeaderView(0);
-            navigationView.setNavigationItemSelectedListener(this);
+        fragmentManager = getSupportFragmentManager();
 
+        logout = findViewById(R.id.logout_btn);
+        sheetLayout = findViewById(R.id.expand_fab);
 
-            name = view.findViewById(R.id.name_filed);
-            profile_pic = view.findViewById(R.id.profile_image1);
-            email = view.findViewById(R.id.email_filed);
-            view.setOnClickListener(v -> {
-                  Intent intent = new Intent(AdminActivity.this, ProfileActivity.class);
-                  intent.putExtra("profile", "Admin");
-                  startActivity(intent);
-            });
-
-            add_new = findViewById(R.id.add);
-            sheetLayout.setFab(add_new);
-            sheetLayout.setFabAnimationEndListener(() -> {
-
-                  Intent intent = new Intent(AdminActivity.this, CreateNews.class);
-                  intent.putExtra("edit", "create");
-                  startActivityForResult(intent, REQUEST_CODE);
-
-            });
+        toolbar = findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_menu);
 
 
-            add_new.setOnClickListener(v -> sheetLayout.expandFab());
+        mAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+        databaseReference.keepSynced(true);
+        firebaseStorage = FirebaseStorage.getInstance();
 
-            logout.setOnClickListener(v -> {
-
-                  FirebaseAuth.getInstance().signOut();
-
-                  Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
-                  intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                  startActivity(intent);
-
-            });
-            returnData();
-
-            loadFragment(new TrendAdminFragment());
-            getSupportActionBar().setTitle(getString(R.string.trends));
-            navigationView.getMenu().getItem(0).setChecked(true);
-
-      }
+        mDrawerLayout = findViewById(R.id.drawer);
+        navigationView = findViewById(R.id.nev_view);
+        View view = navigationView.getHeaderView(0);
+        navigationView.setNavigationItemSelectedListener(this);
 
 
+        name = view.findViewById(R.id.name_filed);
+        profile_pic = view.findViewById(R.id.profile_image1);
+        email = view.findViewById(R.id.email_filed);
+        view.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminActivity.this, ProfileActivity.class);
+            intent.putExtra("profile", "Admin");
+            startActivity(intent);
+        });
 
-      private void loadFragment(Fragment fragment) {
-            fragmentTransaction = fragmentManager.beginTransaction();
+        add_new = findViewById(R.id.add);
+        sheetLayout.setFab(add_new);
+        sheetLayout.setFabAnimationEndListener(() -> {
 
-            fragmentTransaction.replace(R.id.fragment_container , fragment);
-            fragmentTransaction.addToBackStack(null);
+            Intent intent = new Intent(AdminActivity.this, CreateNews.class);
+            intent.putExtra("edit", "create");
+            startActivityForResult(intent, REQUEST_CODE);
 
-            getFragmentManager().popBackStack();
-            // Commit the transaction
-            fragmentTransaction.commit();
-      }
-
-
-      private void returnData() {
-
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-            mDatabase.keepSynced(true);
-
-            mDatabase.child("Admin").child(getUID()).addListenerForSingleValueEvent(
-                    new ValueEventListener() {
-                          @Override
-                          public void onDataChange(DataSnapshot dataSnapshot) {
-                                // Get user value
-                                ProfileModel profileModel = dataSnapshot.getValue(ProfileModel.class);
-
-                                name_text = profileModel.getName();
-                                name.setText(name_text);
-                                email.setText(profileModel.getEmail());
-
-                                      Picasso.get()
-                                              .load(profileModel.getImageUri())
-                                              .placeholder(R.drawable.ic_user)
-                                              .error(R.drawable.ic_user)
-                                              .into(profile_pic);
-                                }
+        });
 
 
+        add_new.setOnClickListener(v -> sheetLayout.expandFab());
 
-                          @Override
-                          public void onCancelled(@NonNull DatabaseError databaseError) {
+        logout.setOnClickListener(v -> {
 
-                                Toast.makeText(getApplicationContext() , "can't fetch data", Toast.LENGTH_SHORT).show();
+            FirebaseAuth.getInstance().signOut();
 
-                          }
-                    });
-      }
+            Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
 
-      @Override
-      public boolean onOptionsItemSelected(MenuItem item) {
-            switch (item.getItemId()) {
-                  case android.R.id.home:
-                        mDrawerLayout.openDrawer(GravityCompat.START);
-                        return true;
-            }
-            return super.onOptionsItemSelected(item);
-      }
+        });
+        returnData();
 
+        loadFragment(new TrendAdminFragment());
+        getSupportActionBar().setTitle(getString(R.string.trends));
+        navigationView.getMenu().getItem(0).setChecked(true);
 
-      @Override
-      protected void onResume() {
-            super.onResume();
-            returnData();
-      }
-
-      @Override
-      protected void onStart() {
-            super.onStart();
-            returnData();
-      }
+    }
 
 
-      @Override
-      public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-            switch (menuItem.getItemId()) {
-                  case R.id.trend:
-                        getSupportActionBar().setTitle(getString(R.string.trends));
-                        loadFragment(new TrendAdminFragment());
-                        break;
-                  case R.id.health:
-                        getSupportActionBar().setTitle(getString(R.string.health));
-                        loadFragment(new HealthAdminFragment());
-                        break;
-                  case R.id.education:
-                        getSupportActionBar().setTitle(getString(R.string.education));
-                        loadFragment(new EducationAdminFragment());
+    private void loadFragment(Fragment fragment) {
+        fragmentTransaction = fragmentManager.beginTransaction();
 
-                        break;
-                  case R.id.sport:
-                        getSupportActionBar().setTitle(getString(R.string.sport));
-                        loadFragment(new SportAdminFragment());
-                        break;
-                  case R.id.art:
-                        getSupportActionBar().setTitle(getString(R.string.art));
-                        loadFragment(new ArtAdminFragment());
-                        break;
-                  case R.id.cov19:
-                        getSupportActionBar().setTitle("احصائيات كرونا");
-                        loadFragment(new Covid19Fragment());
-                        break;
-            }
-            mDrawerLayout.closeDrawer(GravityCompat.START);
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
 
-            return true;
-      }
-
-      @Override
-      public void onBackPressed() {
-            moveTaskToBack(false);
-      }
-
-      @Override
-      protected void onActivityResult(int requestCode , int resultCode , @Nullable Intent data) {
-            super.onActivityResult(requestCode , resultCode , data);
-            if (requestCode == REQUEST_CODE) {
-                  sheetLayout.contractFab();
-            }
-      }
+        getFragmentManager().popBackStack();
+        // Commit the transaction
+        fragmentTransaction.commit();
+    }
 
 
+    private void returnData() {
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.keepSynced(true);
+
+        mDatabase.child("Admin").child(getUID()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get user value
+                        ProfileModel profileModel = dataSnapshot.getValue(ProfileModel.class);
+
+                        name_text = profileModel.getName();
+                        name.setText(name_text);
+                        email.setText(profileModel.getEmail());
+
+                        Picasso.get()
+                                .load(profileModel.getImageUri())
+                                .placeholder(R.drawable.ic_user)
+                                .error(R.drawable.ic_user)
+                                .into(profile_pic);
+                    }
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        Toast.makeText(getApplicationContext(), "can't fetch data", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        returnData();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        returnData();
+    }
+
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.trend:
+                getSupportActionBar().setTitle(getString(R.string.trends));
+                loadFragment(new TrendAdminFragment());
+                break;
+            case R.id.health:
+                getSupportActionBar().setTitle(getString(R.string.health));
+                loadFragment(new HealthAdminFragment());
+                break;
+            case R.id.education:
+                getSupportActionBar().setTitle(getString(R.string.education));
+                loadFragment(new EducationAdminFragment());
+
+                break;
+            case R.id.sport:
+                getSupportActionBar().setTitle(getString(R.string.sport));
+                loadFragment(new SportAdminFragment());
+                break;
+            case R.id.art:
+                getSupportActionBar().setTitle(getString(R.string.art));
+                loadFragment(new ArtAdminFragment());
+                break;
+            case R.id.cov19:
+                getSupportActionBar().setTitle("احصائيات كرونا");
+                loadFragment(new Covid19Fragment());
+                break;
+        }
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        moveTaskToBack(false);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            sheetLayout.contractFab();
+        }
+    }
 }
